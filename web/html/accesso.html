@@ -4,17 +4,37 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" href="">
-    <title>Accedi | Comando Provinciale Milano VVF </title>
+    <title>Login | Crowdsourcing </title>
 
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+	<link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/accesso.css" rel="stylesheet">
   </head>
 
-  <body>
-
+  <body class="background-img">
+  <div class="div-center">
+    <div class="content">
+	  <h2 class="text-center form-signin-heading">CROWDSOURCING</h1>
+	  <hr />
+      <h3>Login</h3>
+      <form class="form-signin" method="post" action="../php/accesso.php">
+        <div class="form-group">
+          <label for="exampleInputEmail1"><h7>Email address</h7></label>
+          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <hr />
+        <button type="button" class="btn btn-link">Signup</button>
+        <button type="button" class="btn btn-link">Reset Password</button>
+      </form>
+    </div><!--
     <div class="container">
       <form class="form-signin" method="post" action="../php/accesso.php">
-        <h2 class="form-signin-heading">Accedi al portale di CROWDSOURCING</h2>
+		<h1 class="form-signin-heading">CROWDSOURCING</h1>
+		<h3 class="form-signin-heading">DASHBOARD</h3>
         </br>
         <label for="inputMail" class="sr-only">Mail</label>
         <input type="text" name="inputMail" id="inputMail" class="form-control" placeholder="example@domain.com" required autofocus>
@@ -24,10 +44,6 @@
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Accedi</button>
       </form>
-
-    </div> 
-    <script src="bootstrap-4.0.0-alpha.6/assets/js/ie10-viewport-bug-workaround.js"></script>
+    </div>-->
   </body>
 </html>
-
-
