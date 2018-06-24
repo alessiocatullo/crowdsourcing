@@ -1,0 +1,197 @@
+body {
+  background-color: #2d5b72;
+}
+input {
+  border: none;
+  font-size: 14px;
+  line-height: 1.5em;
+  padding: 0;
+  -webkit-appearance: none;
+}
+
+.alert{
+  font: 87.5%/1.5em 'Open Sans', sans-serif;
+  padding: 0.5rem 0.5rem;
+  border: none;
+  color: red;
+}
+.logo{
+  width: 30%;
+  margin-left: 3em;
+  margin-right: 3em;
+  display: block;
+  background-image: url("ref/logo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.header-text{
+  text-align:center;
+  display: inline-block;
+  padding-bottom: 2em;
+  color: #eee;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.text-style{
+  text-align:left;
+  display: inline-block;
+  padding-bottom: 10px;
+  color: #eee; 
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.text-style-link{
+  text-align:left;
+  display: inline-block;
+  padding-bottom: 10px;
+  color: #eee; 
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.text-style-link:hover, .text-style-link:focus{
+  text-align:left;
+  display: inline-block;
+  padding-bottom: 10px;
+  color: #eee; 
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.container {
+  left: 50%;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.middle {
+  display: flex;
+  width:60%;
+}
+/*--------
+LOGIN
+-----------*/
+#login form{
+  width: 250px;
+}
+
+#login{
+  border-right:1px solid #fff;
+  width: 59%;
+}
+
+#login form span.fa {
+  background-color: #fff;
+  border-radius: 3px 0px 0px 3px;
+  color: #575757;
+  display: block;
+  float: left;
+  height: 50px;
+  font-size:24px;
+  line-height: 50px;
+  width: 50px;
+}
+
+#login form input {
+  height: 50px;
+}
+#login form input[type="email"], input[type="password"] {
+  background-color: #fff;
+  border-radius: 0px 3px 3px 0px;
+  color: #575757;
+  margin-bottom: 1em;
+  padding: 0 16px;
+  width: 200px;
+}
+
+#login form input[type="submit"], .btn-reg, .btn-reg:focus{
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background-color: #fff;
+  color: #575757;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0px 5px;
+  height: 30px;
+}
+
+#login form input[type="submit"]:hover, .btn-reg:hover{
+  background-color: #000;
+  color: #fff;
+}
+
+/*--------
+REGISTER
+-----------*/
+#reg form{
+  width: 250px;
+}
+
+#reg{
+  border-left:1px solid #fff;
+  width: 59%;
+}
+
+.radio-edit:hover, .radio-edit:focus{
+  color: #fff; 
+  background-color: #000;
+  border-color: transparent;
+}
+
+#reg form span.fa {
+  background-color: #fff;
+  border-radius: 3px 0px 0px 3px;
+  color: #575757;
+  display: block;
+  float: left;
+  height: 50px;
+  font-size:24px;
+  line-height: 50px;
+  width: 50px;
+}
+
+#reg form input {
+  height: 50px;
+}
+#reg form input[type="email"], input[type="password"], input[type="text"] {
+  background-color: #fff;
+  border-radius: 0px 3px 3px 0px;
+  color: #575757;
+  margin-bottom: 1em;
+  padding: 0 16px;
+  width: 200px;
+}
+
+#reg form input[type="submit"], .btn-reg, .btn-reg:focus{
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background-color: #fff;
+  color: #575757;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0px 5px;
+  height: 30px;
+}
+
+#reg form input[type="submit"]:hover, .btn-reg:hover{
+  background-color: #000;
+  color: #fff;
+}
+
+.radio-edit{
+  font-weight: bold;
+  width:100%;
+  color: #575757;
+  background-color: #fff;
+  border-color: transparent;
+  text-align: left;
+  padding: 0px;
+  padding-left: 1em;
+}
+
+.radio-edit:hover, .radio-edit:focus{
+  color: #fff; 
+  background-color: #000;
+  border-color: transparent;
+}
