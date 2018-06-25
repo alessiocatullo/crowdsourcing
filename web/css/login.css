@@ -1,12 +1,14 @@
 body {
   background-color: #2d5b72;
+  color: #eee;
+  font-weight: bold;
 }
 input {
   border: none;
   font-size: 14px;
   line-height: 1.5em;
+  font-weight: bold;
   padding: 0;
-  -webkit-appearance: none;
 }
 
 .alert{
@@ -28,8 +30,6 @@ input {
   text-align:center;
   display: inline-block;
   padding-bottom: 2em;
-  color: #eee;
-  font-weight: bold;
   text-transform: uppercase;
 }
 .text-style{
@@ -99,6 +99,7 @@ LOGIN
   border-radius: 0px 3px 3px 0px;
   color: #575757;
   margin-bottom: 1em;
+  font-weight: bold;
   padding: 0 16px;
   width: 200px;
 }
@@ -109,6 +110,7 @@ LOGIN
   -webkit-border-radius: 3px;
   background-color: #fff;
   color: #575757;
+  cursor: pointer;
   font-weight: bold;
   text-transform: uppercase;
   padding: 0px 5px;
@@ -116,22 +118,20 @@ LOGIN
 }
 
 #login form input[type="submit"]:hover, .btn-reg:hover{
-  background-color: #000;
-  color: #fff;
+  background-color: #909ca5;
+  color: ##575757;
+  cursor: pointer;
 }
-
 /*--------
 REGISTER
 -----------*/
 #reg form{
-  width: 250px;
+  width: 60%;
 }
-
-#reg{
-  border-left:1px solid #fff;
-  width: 59%;
+#reg .middle {
+  display: flex;
+  width:100%;
 }
-
 .radio-edit:hover, .radio-edit:focus{
   color: #fff; 
   background-color: #000;
@@ -147,7 +147,7 @@ REGISTER
   height: 50px;
   font-size:24px;
   line-height: 50px;
-  width: 50px;
+  width: 20%;
 }
 
 #reg form input {
@@ -158,8 +158,10 @@ REGISTER
   border-radius: 0px 3px 3px 0px;
   color: #575757;
   margin-bottom: 1em;
+
+  font-weight: bold;
   padding: 0 16px;
-  width: 200px;
+  width: 80%;
 }
 
 #reg form input[type="submit"], .btn-reg, .btn-reg:focus{
@@ -168,15 +170,15 @@ REGISTER
   -webkit-border-radius: 3px;
   background-color: #fff;
   color: #575757;
-  font-weight: bold;
+  cursor: pointer;
   text-transform: uppercase;
   padding: 0px 5px;
   height: 30px;
 }
 
 #reg form input[type="submit"]:hover, .btn-reg:hover{
-  background-color: #000;
-  color: #fff;
+  background-color: #909ca5;
+  color: #575757;
 }
 
 .radio-edit{
@@ -191,7 +193,8 @@ REGISTER
 }
 
 .radio-edit:hover, .radio-edit:focus{
-  color: #fff; 
-  background-color: #000;
+  cursor: pointer;
+  color: #575757; 
+  background-color: #909ca5;
   border-color: transparent;
 }

@@ -11,67 +11,70 @@
   </head>
 
 <body>
-    <div class="container">
+    <div class="container" id="reg">
       <center>
         <span>
           <h1 class="header-text">Registrati</h1>
         </span>
-        <div class="middle">
-          <div class="logo"></div>
-          <div id="reg">
-            <form method="post" action="../php/register.php">
+        <form method="post" action="../php/register.php">
+          <div class="middle">
+            <div style="width: 50%; padding: 1em;">
               <!--NOME-->
-              <span class="text-style" style="width:100%">
-                <a for="inputNome" class="small-text">Nome</a>
-              </span>
-              <span class="fa fa-user"></span>
-              <input type="text" name="inputNome" id="inputNome" Placeholder="Il tuo nome" required autofocus>
-              <!--COGNOME-->
-              <span class="text-style" style="width:100%">
-                <a for="inputCognome" class="small-text">Cognome</a>
-              </span>
-              <span class="fa fa-user"></span>
-              <input type="text" name="inputCognome" id="inputCognome" Placeholder="Il tuo cognome" required>
-              <!--MAIL-->
-              <span class="text-style" style="width:100%">
-                <a for="inputMail" class="small-text">Email</a>
-              </span>
-              <span class="fa fa-user"></span>
-              <input type="email" name="inputMail" id="inputMail" Placeholder="esempio@dominio.com" required autofocus>
-              <!--PASSW-->
-              <span class="text-style" style="width:100%">
-                <a for="inputPassword" class="small-text">Password</a>
-              </span>
-              <span class="fa fa-lock"></span>
-              <input type="password" name="inputPassword" id="inputPassword" Placeholder="Password" required>
-              <!--CONFERMA PASSW-->
-              <span class="text-style" style="width:100%">
-                <a for="inputPasswordConf" class="small-text">Conferma Password</a>
-              </span>
-              <span class="fa fa-lock"></span>
-              <input type="password" name="inputPasswordConf" id="inputPasswordConf" Placeholder="Password" required>
-              <!--RADIO BUTTONS-->
-              <span class="text-style" style="width:100%">
-                <a for="inputPasswordConf" class="small-text">Tipologia</a>
-              </span>
-              <span class="text-style" style="width:100%">
-                <label class="radio-edit btn btn-primary">
-                  <input type="radio" style="vertical-align: middle" name="radio" id="Requester" required>
-                  <span style="margin-left: 5px;">Requester</span>
-                </label>
-                <label class="radio-edit btn btn-primary">
-                  <input type="radio" style="vertical-align: middle" name="radio" id="Worker" required>
-                  <span style="margin-left: 5px;">Worker</span>
-                </label>
-              </span>
-              <!--BUTTON-->
-              <span style="width:100%">
-                <a href="login.html" class="btn-reg" style="float:left; text-decoration:none;">Accedi</a>
-                <input style="float:right" name="login" type="submit" value="Registrati">
-              </span>
-            </form>
+                <span class="text-style" style="width:100%">
+                  <a for="inputNome" class="small-text">Nome</a>
+                </span>
+                <span class="fa fa-user"></span>
+                <input type="text" name="inputNome" id="inputNome" Placeholder="Il tuo nome" required autofocus>
+                <!--COGNOME-->
+                <span class="text-style" style="width:100%">
+                  <a for="inputCognome" class="small-text">Cognome</a>
+                </span>
+                <span class="fa fa-user"></span>
+                <input type="text" name="inputCognome" id="inputCognome" Placeholder="Il tuo cognome" required>
+                <!--RADIO BUTTONS-->
+                <span class="text-style" style="width:100%">
+                  <a for="inputPasswordConf" class="small-text">Tipologia</a>
+                </span>
+                <span class="text-style" style="width:100%">
+                  <label class="radio-edit btn btn-primary">
+                    <input type="radio" style="vertical-align: middle" name="radio" id="Requester" required>
+                    <span style="margin-left: 5px;">Requester</span>
+                  </label>
+                  <label class="radio-edit btn btn-primary">
+                    <input type="radio" style="vertical-align: middle" name="radio" id="Worker" required>
+                    <span style="margin-left: 5px;">Worker</span>
+                  </label>
+                </span>
+            </div>
+            <div div style="width: 48%; padding: 1em;">              
+                <!--MAIL-->
+                <span class="text-style" style="width:100%">
+                  <a for="inputMail" class="small-text">Email</a>
+                </span>
+                <span class="fa fa-envelope"></span>
+                <input type="email" name="inputMail" id="inputMail" Placeholder="esempio@dominio.com" required autofocus>
+                <!--PASSW-->
+                <span class="text-style" style="width:100%">
+                  <a for="inputPassword" class="small-text">Password</a>
+                </span>
+                <span class="fa fa-lock"></span>
+                <input type="password" name="inputPassword" id="inputPassword" Placeholder="Password" required>
+                <!--CONFERMA PASSW-->
+                <span class="text-style" style="width:100%">
+                  <a for="inputPasswordConf" class="small-text">Conferma Password</a>
+                </span>
+                <span class="fa fa-lock"></span>
+                <input type="password" name="inputPasswordConf" id="inputPasswordConf" Placeholder="Password" required>
+            </div>
           </div>
-        </div>
+          <div style="border-bottom:1px solid #fff; width: 100%; margin-bottom: 1em;">
+          </div>
+          <!--BUTTON-->
+          <span style="width:100%">
+            <a href="login.html" class="btn-reg" style="float:left; text-decoration:none;">Accedi</a>
+            <input style="float:right" name="login" type="submit" value="Registrati">
+          </span>
+        </form>
       </center>
     </div>
   </body>

@@ -6,7 +6,7 @@ session_start();
 $mail= $_POST['inputMail'];
 
 // definisco la query di inserimento dati
-$sql = "SELECT COUNT(*) AS register_check
+$sql = "SELECT COUNT(0) AS register_check
 		FROM user
         WHERE mail = '$mail'";
 
@@ -29,8 +29,8 @@ if($row['register_check'] == 0){
 		$_SESSION['login_value_mail'] = $row['mail'];
 		session_commit();
 		$sql = "INSERT INTO user (mail, password, firstname, lastname, role)
-				VALUES ($mail, $passw $nome, $cognome, $radio)";
-		$result = mysqli_query($con, $sql) or die ("Errore query last_login");
+				VALUES ($mail, $passw, $nome, $cognome, $radio)";
+		$result = mysqli_query($con, $sql) or die ("'$radio'");
 		header ("location: ../html/login.html");
 	} else {
 		header ("location: ../html/register_alt.html");
