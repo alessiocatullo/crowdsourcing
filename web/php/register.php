@@ -6,7 +6,7 @@ session_start();
 $mail= $_POST['inputMail'];
 
 // definisco la query di inserimento dati
-$sql = "SELECT COUNT(*) AS register_check
+$sql = "SELECT COUNT(0) AS register_check
 		FROM user
         WHERE mail = '$mail'";
 
