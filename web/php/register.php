@@ -22,14 +22,14 @@ if($row['register_check'] == 0){
 	$passw= $_POST['inputPassword'];
 	$passwConf= $_POST['inputPasswordConf'];
 	$radio= $_POST['radio'];
-
+	
 	if(strcmp($passw, $passwConf)==0){
 	// liberazione della memoria dal risultato della query
 		@mysqli_free_result($result); 
 		$_SESSION['login_value_mail'] = $row['mail'];
 		session_commit();
-		$sql = "INSERT INTO user (mail, password, firstname, lastname, role)
-				VALUES ($mail, $passw $nome, $cognome, $radio)";
+		$sql = "INSERT INTO user (mail, password, first_name, last_name, role)
+				VALUES ('$mail', '$passw', '$nome', '$cognome', '$radio')";
 		$result = mysqli_query($con, $sql) or die ("Errore query last_login");
 		header ("location: ../html/login.html");
 	} else {
