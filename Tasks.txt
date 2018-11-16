@@ -1,0 +1,11 @@
+TODO:
+
+FIX:
+- "sidebar menu" per matenere la pagina selezionata sul refresh
+
+NEW:
+- Aggiunta nuova pagina admin.php in cui gestire le richieste dei requester
+- Modificare lo script php per gestire la nuova pagina admin
+- Aggiungere pagina nel login per segnalare al requester appena registrato che dovrà attendere l'accettazione 
+- Implementare l'invio delle richieste agli utenti admin
+- definire il layout della pagina dell'admin
