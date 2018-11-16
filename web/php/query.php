@@ -1,135 +1,70 @@
-<?php 
+<?php
+    include("connection.php");
 
-	function query_sede($con, $distaccamento)
+    if(isset($_POST['Method'])){
+        $method = $_POST['Method'];
+        $method();
+    }
+
+
+	function query_campaign($requester)
 	{
-		 $sql_sede = "SELECT COUNT(disponibilita.IDDIsponibilita) FROM disponibilita, utenti, vigili, distaccamenti 
-                        	WHERE distaccamenti.IDDistaccamento = vigili.IDDistaccamento AND vigili.IDVigile = utenti.IDVigile 
-                        	AND utenti.IDUtente = disponibilita.IDUtente AND distaccamenti.Citta = '$distaccamento' AND vigili.Stato = '2'  
-                        	AND DATE_FORMAT(NOW(), '%Y, %c, %d') = DATE_FORMAT(disponibilita.Inserimento, '%Y, %c, %d')                                
-                        	AND TIME_FORMAT(NOW(), '%T') BETWEEN disponibilita.Inizio AND disponibilita.Fine";
-    	 $result_sede = @mysqli_query($con, $sql_sede) or die("Errore query vigili in sede");
-    	 $row_sede = mysqli_fetch_array($result_sede);
-    	 @mysqli_free_result($result_sede);
-    	 return $row_sede;
+        global $con; 
+		$sql_campaign = "SELECT * FROM campaign WHERE user = '$requester'";
+    	$result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
+    	while($row=mysqli_fetch_array($result_campaign)){
+            echo "<tr>"."<td>".$row['name']."</td>"."<td class='tabletxt-center'>".$row['dt_start']."</td>"."<td class='tabletxt-center'>".$row['dt_end'].
+                "</td>"."<td class='tabletxt-center'>".$row['dt_accession_start']."</td>"."<td class='tabletxt-center'>"
+                .$row['dt_accession_end']."</td>"."<td class='tabletxt-center'>"."<a class='tabletxt-center' href='#details' onclick="."details('".$row['name']."',".$row['id'].")".
+                "><i class='fas fa-eye'></i></a>"."</td>"."</tr>";
+        }
+    	@mysqli_free_result($result_campaign);
+    	return $result_campaign;
 	}
 
-	function query_reperibili($con, $distaccamento)
-	{
-		$sql_reperibili = "SELECT COUNT(disponibilita.IDDIsponibilita) FROM disponibilita, utenti, vigili, distaccamenti 
-                        	WHERE distaccamenti.IDDistaccamento = vigili.IDDistaccamento AND vigili.IDVigile = utenti.IDVigile 
-                        	AND utenti.IDUtente = disponibilita.IDUtente AND distaccamenti.Citta = '$distaccamento' AND vigili.Stato = '1'   
-                        	AND DATE_FORMAT(NOW(), '%Y, %c, %d') = DATE_FORMAT(disponibilita.Inserimento, '%Y, %c, %d')                                
-                        	AND TIME_FORMAT(NOW(), '%T') BETWEEN disponibilita.Inizio AND disponibilita.Fine";
+    function query_details()
+    {
+        global $con;
+        $idCampaign = $_POST['id'];
 
-    	$result_reperibili = @mysqli_query($con, $sql_reperibili) or die("Errore query vigili reperibili");
-    	 $row_reperibili = mysqli_fetch_array($result_reperibili);
-    	 @mysqli_free_result($result_reperibili); 
-    	 return $row_reperibili;
-	}
+        $sql_task = "SELECT * FROM task WHERE campaign = '$idCampaign'";
+        $result_task = @mysqli_query($con, $sql_task) or die("Errore query task-details");
+        while($row=mysqli_fetch_array($result_task)){
+            echo "<tr>"."<td>".$row['title']."</td>"."<td>".$row['description']."</td>"."<td class='tabletxt-center'>"
+                .$row['worker_max']."</td>"."<td class='tabletxt-center'>".$row['majority']."</td>"
+                ."<td class='tabletxt-center'>".$row['reward']."</td>"."<td class='tabletxt-center'>"
+                ."<a class='tabletxt-center' href='#answer' onclick="."answer(".$row['id'].")".
+                "><i class='fas fa-list-alt fa-fw'></i>"."</td>"."<td class='tabletxt-center'>"
+                ."<a class='tabletxt-center' href='#keywords' onclick="."keywords(".$row['id'].")".
+                "><i class='fas fa-list-alt fa-fw'></i>"."</td>"."<td style='background: yellow;'>"."</td>"."</tr>";
+        }
+        @mysqli_free_result($result_task);
+        return $result_task;
+    }
 
-	function query_disponibiliTot($con, $distaccamento)
-	{
-		$sql_disponibili = "SELECT COUNT(disponibilita.IDDIsponibilita) FROM disponibilita, utenti, vigili, distaccamenti 
-                		    WHERE distaccamenti.IDDistaccamento = vigili.IDDistaccamento AND vigili.IDVigile = utenti.IDVigile 
-	            			AND utenti.IDUtente = disponibilita.IDUtente AND distaccamenti.Citta = '$distaccamento'  
-	                        AND DATE_FORMAT(NOW(), '%Y, %c, %d') = DATE_FORMAT(disponibilita.Inserimento, '%Y, %c, %d')                                
-	                        AND TIME_FORMAT(NOW(), '%T') BETWEEN disponibilita.Inizio AND disponibilita.Fine";	
-         $result_disponibili = @mysqli_query($con, $sql_disponibili) or die("Errore query vigili disponibili");
-         $row_disponibili = mysqli_fetch_array($result_disponibili);
+    function query_skill()
+    {
+        global $con;
+        $sql_category = "SELECT * FROM skill";
+        $result_category = @mysqli_query($con, $sql_category) or die("Errore query task-category");
+        while($row = mysqli_fetch_array($result_category)){
+            echo "<option id=".$row['id'].">".$row['name']."</option>";
+        }
+        @mysqli_free_result($result_category);
+        return $result_category;
+    }
 
-         return $row_disponibili;
-	}
-
-	function query_dati($con, $distaccamento)
-	{
-		$sql = "SELECT distaccamenti.Indirizzo, distaccamenti.Telefono, distaccamenti.Cicalino FROM distaccamenti WHERE Citta = '$distaccamento'";
-      					$result = @mysqli_query($con, $sql) or die("Errore query su tabella distaccamenti");
-      					$row = mysqli_fetch_array($result);
-      					echo "<tr class='small-font'>". "<th>Indirizzo</th>" . "<td>" . $row['Indirizzo'] . "</td></tr>";      					
-      					echo "<tr class='small-font'>". "<th>Telefono</th>" . "<td>" . $row['Telefono'] . "</td></tr>";
-      					if($row['Cicalino'] != NULL)
-      						echo "<tr class='small-font'>". "<th>Cicalino</th>" . "<td>" . $row['Cicalino'] . "</td></tr>";
-
-      					@mysqli_free_result($result);
-	}
-
-	function query_capoPosto($con, $distaccamento)
-	{
-		$sql = "SELECT vigili.Cognome, vigili.Nome FROM vigili, distaccamenti 
-                        WHERE distaccamenti.IDDistaccamento = vigili.IDDistaccamento AND distaccamenti.Citta = '$distaccamento' 
-                        AND vigili.Capoposto = 1";
-				       	$result = @mysqli_query($con, $sql) or die("Errore query capoposto");
-				       	$row = mysqli_fetch_array($result);
-				       	if($row['Cognome'] && $row['Nome'])
-				       		echo "<tr class='small-font'>". "<th>Capo posto</th>" . "<td>" . $row['Cognome'] . " " . $row['Nome'] . "</td></tr>";
-				       	else
-				       		echo "<tr class='small-font'>". "<th>Capo posto</th>" . "<td>Nessuno</td></tr>";
-				       	@mysqli_free_result($result);
-	}
-
-	function query_capoSquadra($con, $distaccamento)
-	{
-		$sql = "SELECT COUNT(disponibilita.IDDIsponibilita) FROM disponibilita, utenti, vigili, distaccamenti 
-                        WHERE distaccamenti.IDDistaccamento = vigili.IDDistaccamento AND vigili.IDVigile = utenti.IDVigile 
-                        AND utenti.IDUtente = disponibilita.IDUtente AND distaccamenti.Citta = '$distaccamento' AND vigili.Ruolo = 'Capo squadra volontario'  
-                        AND DATE_FORMAT(NOW(), '%Y, %c, %d') = DATE_FORMAT(disponibilita.Inserimento, '%Y, %c, %d')                                
-                        AND TIME_FORMAT(NOW(), '%T') BETWEEN disponibilita.Inizio AND disponibilita.Fine";
-				       	$result = @mysqli_query($con, $sql) or die("Errore query conteggio disponibilità");
-				       	$row = mysqli_fetch_array($result);
-				       	echo "<tr>". "<th>Capi squadra</th>" . "<td>" . $row[0] . "</td></tr>";
-				       	@mysqli_free_result($result);
-	}
-
-	function query_gradoPatente($con, $distaccamento, $grado)
-	{
-		$sql = "SELECT COUNT(disponibilita.IDDIsponibilita) FROM disponibilita, utenti, vigili, distaccamenti 
-                        WHERE distaccamenti.IDDistaccamento = vigili.IDDistaccamento AND vigili.IDVigile = utenti.IDVigile 
-                        AND utenti.IDUtente = disponibilita.IDUtente AND distaccamenti.Citta = '$distaccamento' AND vigili.Patente = '$grado'  
-                        AND DATE_FORMAT(NOW(), '%Y, %c, %d') = DATE_FORMAT(disponibilita.Inserimento, '%Y, %c, %d')                                
-                        AND TIME_FORMAT(NOW(), '%T') BETWEEN disponibilita.Inizio AND disponibilita.Fine";
-				       	$result = @mysqli_query($con, $sql) or die("Errore query conteggio disponibilità");
-				       	$row = mysqli_fetch_array($result);
-				       	echo "<tr>". "<th>Vigili con patente " . $grado."</th>" . "<td>" . $row[0] . "</td></tr>";
-				       	@mysqli_free_result($result);
-	}
-
-	function query_tipoIntervento($con, $distaccamento)
-	{
-		$sql = "SELECT distaccamenti.Intervento FROM distaccamenti WHERE Citta = '$distaccamento'";
-		$result = @mysqli_query($con, $sql) or die("Errore query tipo intervento");
-		$row = mysqli_fetch_array($result);
-		if($row[0] == 1)
-			echo "<tr><th>Tipo intervento</th><td>Tutti i casi</td>";
-		else if($row[0] == 2)
-			echo "<tr><th>Tipo intervento</th><td>Solo emergenze</td>";
-		else
-			echo "<tr><th>Tipo intervento</th><td>Nessuno</td>";
-		@mysqli_free_result($result);
-	}
-
-	function query_vigiliDisponibili($con, $distaccamento)
-	{
-		 $sql = "SELECT vigili.IDVigile, vigili.Cognome, vigili.Nome, vigili.Ruolo, vigili.Patente, vigili.Stato FROM vigili, distaccamenti, utenti, 
-                        disponibilita 
-                        WHERE distaccamenti.IDDistaccamento = vigili.IDDistaccamento AND vigili.IDVigile = utenti.IDVigile 
-                        AND utenti.IDUtente = disponibilita.IDUtente AND distaccamenti.Citta = '$distaccamento'  
-                        AND DATE_FORMAT(NOW(), '%Y, %c, %d') = DATE_FORMAT(disponibilita.Inserimento, '%Y, %c, %d')                                
-                        AND TIME_FORMAT(NOW(), '%T') 
-                        BETWEEN disponibilita.Inizio AND disponibilita.Fine
-                        GROUP BY vigili.IDVigile
-                        ORDER BY vigili.Stato DESC, vigili.IDVigile";
-                $result = @mysqli_query($con, $sql) or die("Errore query su tabella distaccamenti");
-                while($row=mysqli_fetch_array($result))
-                {
-                	if($row['Stato'] == 2)
-                   		echo "<tr>"."<td class='sede'>".$row['IDVigile']."</td>"."<td>".$row['Cognome']."</td>"."<td>".$row['Nome']."</td>"."<td>".$row['Ruolo']."</td>"."<td>".$row['Patente']."</td>"."</tr>";
-                   	else if($row['Stato'] == 1)
-                   		echo "<tr>"."<td class='reperibili'>".$row['IDVigile']."</td>"."<td>".$row['Cognome']."</td>"."<td>".$row['Nome']."</td>"."<td>".$row['Ruolo']."</td>"."<td>".$row['Patente']."</td>"."</tr>";
-                   	else
-                   		echo "<tr>"."<td>".$row['IDVigile']."</td>"."<td>".$row['Cognome']."</td>"."<td>".$row['Nome']."</td>"."<td>".$row['Ruolo']."</td>"."<td>".$row['Patente']."</td>"."</tr>";
-                  
-                }       
-                @mysqli_free_result($result);
-	}
+    function query_skill_subcategory()
+    {
+        global $con;
+        $category = $_POST['id_category']; 
+        $sql_subcategory = "SELECT * FROM skill_subcategory WHERE category = '$category'";
+        $result_subcategory = @mysqli_query($con, $sql_subcategory) or die("Errore query task-category");
+        while($row = mysqli_fetch_array($result_subcategory)){
+           echo "<option id=".$row['id'].">".$row['name']."</option>";
+        }
+        @mysqli_free_result($result_subcategory);
+        return $result_subcategory;
+    }
 
 ?>
