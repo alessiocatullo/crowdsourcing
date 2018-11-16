@@ -3,22 +3,27 @@ GESTIONE SIDEBAR MENU
 *******************************************/
 //FUNZIONE MENU
 $(document).ready(function(){
-      var navItems = $('.admin-menu li > a');
+
       var navListItems = $('.admin-menu li');
       var allWells = $('.admin-content');
-      var allWellsExceptFirst = $('.admin-content:not(:first)');
-    
-      allWellsExceptFirst.hide();
-      navItems.click(function(e)
-      {
-          e.preventDefault();
+      allWells.hide();
+
+      var activeTab = window.localStorage.getItem('activeTab');
+      if (activeTab) {
+          allWells.hide();
+          location.hash = activeTab;
+          $(activeTab).show();
+          navListItems.removeClass('active');
+          $('li a[href="' + activeTab + '"]').closest('li').addClass('active');
+      }
+
+      $('a[data-toggle="tab"]').on('click', function(e) {
+          window.localStorage.setItem('activeTab', $(this).attr('href'));
           navListItems.removeClass('active');
           $(this).closest('li').addClass('active');
-          
           allWells.hide();
-          var target = $(this).attr('data-target-id');
-          location.hash = target;
-          $('#' + target).show();
+          var target = $(this).attr('href');
+          $(target).show();
       });
 });
 

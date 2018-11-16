@@ -5,9 +5,9 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-2 col-md-1 sidebar">
-      <ul class="nav nav-pills nav-stacked admin-menu">
-        <li class="nav-link"><a class="nav-item" href="" data-target-id="new_campaign"><i class="fas fa-plus-square fa-fw"></i></a></li>
-        <li class="nav-link active"><a class="nav-item" href="" data-target-id="campaigns"><i class="fas fa-list-alt fa-fw"></i></a></li>
+      <ul class="nav nav-pills nav-stacked admin-menu" id="myTab">
+        <li class="nav-link"><a class="nav-item" href="#campaigns" data-toggle="tab"><i class="fas fa-list-alt fa-fw"></i></a></li>
+        <li class="nav-link"><a class="nav-item" href="#new_campaign" data-toggle="tab"><i class="fas fa-plus-square fa-fw"></i></a></li>
       </ul>
     </div>
   </div>
