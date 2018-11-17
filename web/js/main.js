@@ -10,11 +10,15 @@ $(document).ready(function(){
 
       var activeTab = window.localStorage.getItem('activeTab');
       if (activeTab) {
-          allWells.hide();
-          location.hash = activeTab;
-          $(activeTab).show();
-          navListItems.removeClass('active');
-          $('li a[href="' + activeTab + '"]').closest('li').addClass('active');
+        allWells.hide();
+        location.hash = activeTab;
+        $(activeTab).show();
+        navListItems.removeClass('active');
+        $('li a[href="' + activeTab + '"]').closest('li').addClass('active');
+      } else {
+        TabToActive = navListItems.first();
+        TabToActive.addClass('active');
+        $(TabToActive).show();
       }
 
       $('a[data-toggle="tab"]').on('click', function(e) {
@@ -61,7 +65,10 @@ $(document).ready(function () {
 
         if (!$item.hasClass('disabled')) {
             navListItems.removeClass('btn-primary').addClass('btn-default');
+            navListItems.addClass('disabled');
             $item.addClass('btn-primary');
+            $item.addClass('btn-primary');
+            $item.removeClass('disabled')
             allWells.hide();
             $target.show();
             $target.find('input:eq(0)').focus();
@@ -137,6 +144,8 @@ function addTask() {
   clone.find('.skill-select').val('---');
   clone.find('.skill-category-select').val('---');
   clone.find('.skill-select').css('border-color', '#ced4da');
+  clone.find('.nTask').text('#' + i);
+  clone.find('.content-task').removeAttr('hidden');
   clone.find('input').each(function(){
     $(this).attr('id', $(this).attr("id").substring(0, $(this).attr("id").length - 2) + "-" + i);
   });

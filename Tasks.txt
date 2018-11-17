@@ -1,7 +1,8 @@
 TODO:
 
-FIX:
-- "sidebar menu" per matenere la pagina selezionata sul refresh
+FIXED:
+- Aggiungere function per gestire il button "indietro"
+- Pensare come gestire la visualizzazione del riepilogo dei task
 
 NEW:
 - Aggiunta nuova pagina admin.php in cui gestire le richieste dei requester
