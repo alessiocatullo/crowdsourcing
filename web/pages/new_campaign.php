@@ -145,7 +145,7 @@
                         </div>
                         <div class="col-md-1">
                           <button class="skill-confirm btn btn-primary float-right" type="button">
-                            <i class="fas fa-plus"></i>
+                            <i class=fas fa-plus"></i>
                           </button>
                         </div>
                       </div>
@@ -178,7 +178,7 @@
                 <h6>Nome</h6>
               </div>
               <div class="col-md-10" style="text-align:left">
-                <p id="name-recap"></p>
+                <p class="name-recap"></p>
               </div>
             </div>
             <div class="row">
@@ -186,7 +186,7 @@
                 <h6>Data inizio</h6>
               </div>
               <div class="col-md-10" style="text-align:left">
-                <p id="dt_start-recap"></p>
+                <p class="dt_start-recap"></p>
               </div>
             </div>
             <div class="row">
@@ -194,7 +194,7 @@
                 <h6>Data fine</h6>
               </div>
               <div class="col-md-10" style="text-align:left">
-                <p id="dt_end-recap"></p>
+                <p class="dt_end-recap"></p>
               </div>
             </div>
             <div class="row">
@@ -202,7 +202,7 @@
                 <h6>Data inizio iscrizione</h6>
               </div>
               <div class="col-md-10" style="text-align:left">
-                <p id="dt_accession_start-recap"></p>
+                <p class="dt_accession_start-recap"></p>
               </div>
             </div>
             <div class="row">
@@ -210,21 +210,37 @@
                 <h6>Data fine iscrizione</h6>
               </div>
               <div class="col-md-10" style="text-align: left;">
-                <p id="dt_accession_end-recap"></p>
+                <p class="dt_accession_end-recap"></p>
               </div>
             </div>
             <h3 class="recap-title" style="margin-top: 2pc;">Tasks</h3>
-            <div class="recap-task">
-              <span class="recap-item"><i class="fas fa-file">#1</i></span>
-               <span class="fa-layers fa-fw" style="background:MistyRose">
-    <i class="fas fa-calendar"></i>
-    <span class="fa-layers-text fa-inverse" data-fa-transform="shrink-8 down-3" style="font-weight:900">27</span>
-  </span>
-
+            <div class="col-md-12">
+            <div class="row">
+              <div class="recap-task">
+                <div clas="row">
+                  <div class="col-md-12">
+                    <h2 style="text-align: right">#1</h2>  
+                  </div> 
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <p class="title-task-recap">Titolo : </p>
+                    <p class="desc-task-recap">Descrizione : </p>
+                    <p class="worker-task-recap">Lavoratori : </p>
+                    <p class="majority-task-recap">Maggioranza : </p>
+                    <p class="key-task-recap">Parole chiave : </p>
+                    <p class="answer-task-recap">Risposte : </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+          </div>
         </div>
-        <button class="btn btn-success btn-lg float-right" type="submit">Crea</button>
+        <button class="btn btn-primary backBtn btn-lg float-left" style="margin-bottom: 2pc;" 
+          type="button">Indietro</button>
+        <button class="btn btn-success completeBtn btn-lg float-right" style="margin-bottom: 2pc;" 
+          type="submit">Crea</button>
     </div>
   </form>
 </div>

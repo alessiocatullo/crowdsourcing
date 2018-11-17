@@ -224,20 +224,18 @@ h1 {
   border-radius: 5px 5px 0px 0px;
 }
 
-.recap-task{
-  padding: 1.5pc;
-  font-size: 60px;
-  background-color: #272727;
-  color: white;
-  border: 0.5px solid;
-  border-color: #ccc;
-  border-radius: 10px;
-}
-
 .recap-title{
   border-bottom: 0.5px solid;
   border-bottom-color: #bfbebe;
   padding-bottom: 1pc;
+}
+
+.recap-task{
+  width: 50%;
+  padding: 10px;
+  background-color: #272727;
+  color: white;
+  border-radius: 5px;
 }
 
 .form-err{
