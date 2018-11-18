@@ -55,7 +55,7 @@ $(document).ready(function () {
     var navListItems = $('div.setup-panel div a'),
             allWells = $('.setup-content'),
             allNextBtn = $('.nextBtn');
-
+            allBackBtn = $('.backBtn');
     allWells.hide();
 
     navListItems.click(function (e) {
@@ -74,7 +74,6 @@ $(document).ready(function () {
             $target.find('input:eq(0)').focus();
         }
     });
-
     allNextBtn.click(function(){
         var curStep = $(this).closest(".setup-content"),
             curStepBtn = curStep.attr("id"),
@@ -90,20 +89,36 @@ $(document).ready(function () {
             }
         }
 
+        if(curStep.attr('id').substring(curStep.attr("id").length - 1) == 2){
+          $("#name-recap").append($("#name").val());
+          $("#dt_start-recap").append($("#dt_start").val());
+          $("#dt_end-recap").append($("#dt_end").val());
+          $("#dt_accession_start-recap").append($("#dt_accession_start").val());
+          $("#dt_accession_end-recap").append($("#dt_accession_end").val());
+        }
+
         if (isValid)
             nextStepWizard.removeClass('disabled').trigger('click');
     });
+    allBackBtn.click(function(){
+        var curStep = $(this).closest(".setup-content"),
+            curStepBtn = curStep.attr("id"),
+            backStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a");
 
+            if(curStep.attr('id').substring(curStep.attr("id").length - 1) == 2){
+              $('#dt_end').attr('disabled', 'disabled');
+              $('#dt_accession_start').attr('disabled', 'disabled');
+              $('#dt_accession_end').attr('disabled', 'disabled');
+            }
+
+            backStepWizard.removeClass('disabled').trigger('click');
+    });
     $('div.setup-panel div a.btn-primary').trigger('click');
 });
 
 //FUNZIONE RIEPILOGO
 function printResults(){
-  $("#name-recap").append($("#name").val());
-  $("#dt_start-recap").append($("#dt_start").val());
-  $("#dt_end-recap").append($("#dt_end").val());
-  $("#dt_accession_start-recap").append($("#dt_accession_start").val());
-  $("#dt_accession_end-recap").append($("#dt_accession_end").val());
+
 }
 
 //FUNZIONE SELECT TASK

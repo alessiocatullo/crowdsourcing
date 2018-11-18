@@ -8,7 +8,7 @@
   <div class="stepwizard">
       <div class="stepwizard-row setup-panel">
           <div class="stepwizard-step">
-              <a href="#step-1" type="button" class="btn btn-default btn-circle disabled">1</a>
+              <a href="#step-1" type="button" class="btn btn-primary btn-circle ">1</a>
               <p>Campagna</p>
           </div>
           <div class="stepwizard-step">
@@ -16,7 +16,7 @@
               <p>Task</p>
           </div>
           <div class="stepwizard-step">
-              <a href="#step-3" type="button" class="btn btn-primary btn-circle">3</a>
+              <a href="#step-3" type="button" class="btn btn-default btn-circle disabled">3</a>
               <p>Riepilogo</p>
           </div>
       </div>

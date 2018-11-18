@@ -1,7 +1,6 @@
 TODO:
 
 FIXED:
-- Aggiungere function per gestire il button "indietro"
 - Pensare come gestire la visualizzazione del riepilogo dei task
 
 NEW:
