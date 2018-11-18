@@ -1,7 +1,8 @@
 TODO:
 
-FIXED:
-- Pensare come gestire la visualizzazione del riepilogo dei task
+FIX:
+- Fixare function per la stampa dei task nel riepilogo
+- Fare pagina php per la nuova campagna
 
 NEW:
 - Aggiunta nuova pagina admin.php in cui gestire le richieste dei requester

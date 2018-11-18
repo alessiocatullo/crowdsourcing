@@ -230,8 +230,9 @@ h1 {
   padding-bottom: 1pc;
 }
 
-.recap-task{
-  width: 25%;
+.recap-item{
+  width: 19%;
+  margin: 3px;
   padding: 10px;
   background-color: #272727;
   color: white;

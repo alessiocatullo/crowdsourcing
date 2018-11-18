@@ -8,11 +8,11 @@
   <div class="stepwizard">
       <div class="stepwizard-row setup-panel">
           <div class="stepwizard-step">
-              <a href="#step-1" type="button" class="btn btn-primary btn-circle ">1</a>
+              <a href="#step-1" type="button" class="btn btn-default btn-circle disabled">1</a>
               <p>Campagna</p>
           </div>
           <div class="stepwizard-step">
-              <a href="#step-2" type="button" class="btn btn-default btn-circle disabled">2</a>
+              <a href="#step-2" type="button" class="btn btn-primary btn-circle ">2</a>
               <p>Task</p>
           </div>
           <div class="stepwizard-step">
@@ -145,7 +145,7 @@
                         </div>
                         <div class="col-md-1">
                           <button class="skill-confirm btn btn-primary float-right" type="button">
-                            <i class=fas fa-plus"></i>
+                            <i class="fas fa-plus"></i>
                           </button>
                         </div>
                       </div>
@@ -178,7 +178,7 @@
                 <h6>Nome</h6>
               </div>
               <div class="col-md-10" style="text-align:left">
-                <p class="name-recap"></p>
+                <p id="name-recap"></p>
               </div>
             </div>
             <div class="row">
@@ -186,7 +186,7 @@
                 <h6>Data inizio</h6>
               </div>
               <div class="col-md-10" style="text-align:left">
-                <p class="dt_start-recap"></p>
+                <p id="dt_start-recap"></p>
               </div>
             </div>
             <div class="row">
@@ -194,7 +194,7 @@
                 <h6>Data fine</h6>
               </div>
               <div class="col-md-10" style="text-align:left">
-                <p class="dt_end-recap"></p>
+                <p id="dt_end-recap"></p>
               </div>
             </div>
             <div class="row">
@@ -202,7 +202,7 @@
                 <h6>Data inizio iscrizione</h6>
               </div>
               <div class="col-md-10" style="text-align:left">
-                <p class="dt_accession_start-recap"></p>
+                <p id="dt_accession_start-recap"></p>
               </div>
             </div>
             <div class="row">
@@ -210,29 +210,29 @@
                 <h6>Data fine iscrizione</h6>
               </div>
               <div class="col-md-10" style="text-align: left;">
-                <p class="dt_accession_end-recap"></p>
+                <p id="dt_accession_end-recap"></p>
               </div>
             </div>
             <h3 class="recap-title" style="margin-top: 2pc;">Tasks</h3>
             <div class="col-md-12">
-            <div class="row">
-              <div class="recap-task">
-                <div clas="row">
-                  <div class="col-md-12">
-                    <h2 style="text-align: right">#1</h2>  
-                  </div> 
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <p class="title-task-recap">Titolo : </p>
-                    <p class="desc-task-recap">Descrizione : </p>
-                    <p class="worker-task-recap">Lavoratori : </p>
-                    <p class="majority-task-recap">Maggioranza : </p>
-                    <p class="key-task-recap">Parole chiave : </p>
-                    <p class="answer-task-recap">Risposte : </p>
-                  </div>
+            <div class="recap-item" hidden>
+              <div clas="row">
+                <div class="col-md-12">
+                  <h2 class="nTask-recap" style="text-align: right"></h2>  
+                </div> 
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <p class="title-task-recap"></p>
+                  <p class="desc-task-recap"></p>
+                  <p class="worker-task-recap"></p>
+                  <p class="majority-task-recap"></p>
+                  <p class="key-task-recap"></p>
+                  <p class="answer-task-recap"></p>
                 </div>
               </div>
+            </div>
+            <div class="row recap-tasks">
             </div>
           </div>
           </div>
@@ -261,7 +261,7 @@
     $('#dt_accession_end').removeAttr("disabled");
   });
 
-  $('.skill-select').change(function() {
+  $('#step-2').on('change', '.skill-select' ,function(){
     populateSubCategory(
       $(this).closest("div.row").closest("div.task-div").attr("id") ,
       $(this).children(":selected").attr("id")

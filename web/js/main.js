@@ -90,11 +90,7 @@ $(document).ready(function () {
         }
 
         if(curStep.attr('id').substring(curStep.attr("id").length - 1) == 2){
-          $("#name-recap").append($("#name").val());
-          $("#dt_start-recap").append($("#dt_start").val());
-          $("#dt_end-recap").append($("#dt_end").val());
-          $("#dt_accession_start-recap").append($("#dt_accession_start").val());
-          $("#dt_accession_end-recap").append($("#dt_accession_end").val());
+
         }
 
         if (isValid)
@@ -115,11 +111,6 @@ $(document).ready(function () {
     });
     $('div.setup-panel div a.btn-primary').trigger('click');
 });
-
-//FUNZIONE RIEPILOGO
-function printResults(){
-
-}
 
 //FUNZIONE SELECT TASK
 function populateSelect(){
@@ -158,6 +149,7 @@ function addTask() {
   clone.attr('disabled', 'disabled');
   clone.find('.skill-select').val('---');
   clone.find('.skill-category-select').val('---');
+  clone.find('.skill-category-select').attr('disabled', 'disabled');
   clone.find('.skill-select').css('border-color', '#ced4da');
   clone.find('.nTask').text('#' + i);
   clone.find('.content-task').removeAttr('hidden');
@@ -165,4 +157,29 @@ function addTask() {
     $(this).attr('id', $(this).attr("id").substring(0, $(this).attr("id").length - 2) + "-" + i);
   });
   $("div.main-div").append(clone);
+}
+
+//FUNZIONE RIEPILOGO
+function printResults(){
+  $("#name-recap").text($("#name").val());
+  $("#dt_start-recap").text($("#dt_start").val());
+  $("#dt_end-recap").text($("#dt_end").val());
+  $("#dt_accession_start-recap").text($("#dt_accession_start").val());
+  $("#dt_accession_end-recap").text($("#dt_accession_end").val());
+  
+  $('.recap-tasks').empty();
+
+  for(var k=1; k<i+1; k++){
+    clone = $('.recap-item').clone();
+    clone.removeClass('.recap-item');
+    clone.find('.nTask-recap').text("#"+k);
+    clone.find('.title-task-recap').text("Titolo : " + $('#title-'+k).val());
+    clone.find('.desc-task-recap').text("Descrizione : " + $('#description-'+k).val());
+    clone.find('.worker-task-recap').text("Lavoratori : " + $('#worker-'+k).val());
+    clone.find('.majority-task-recap').text("Maggioranza : " + $('#majority-'+k).val());
+    clone.find('.key-task-recap').text("Parole chiave : " + $('#reward-'+k).val());
+    clone.find('.answer-task-recap').text("Risposte : " + $('#answer-'+k).val());;
+    clone.removeAttr('hidden');
+    $('.recap-tasks').append(clone);
+  }
 }
