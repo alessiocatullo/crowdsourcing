@@ -170,16 +170,19 @@ function printResults(){
   $('.recap-tasks').empty();
 
   for(var k=1; k<i+1; k++){
-    clone = $('.recap-item').clone();
-    clone.removeClass('.recap-item');
-    clone.find('.nTask-recap').text("#"+k);
-    clone.find('.title-task-recap').text("Titolo : " + $('#title-'+k).val());
-    clone.find('.desc-task-recap').text("Descrizione : " + $('#description-'+k).val());
-    clone.find('.worker-task-recap').text("Lavoratori : " + $('#worker-'+k).val());
-    clone.find('.majority-task-recap').text("Maggioranza : " + $('#majority-'+k).val());
-    clone.find('.key-task-recap').text("Parole chiave : " + $('#reward-'+k).val());
-    clone.find('.answer-task-recap').text("Risposte : " + $('#answer-'+k).val());;
-    clone.removeAttr('hidden');
-    $('.recap-tasks').append(clone);
+    if($('#task-'+k).length){
+      clone = $('.recap-item-ref').clone();
+      clone.removeClass('recap-item-ref');
+      clone.addClass('recap-item');
+      clone.find('.nTask-recap').text("#"+k);
+      clone.find('.title-task-recap').text("Titolo : " + $('#title-'+k).val());
+      clone.find('.desc-task-recap').text("Descrizione : " + $('#description-'+k).val());
+      clone.find('.worker-task-recap').text("Lavoratori : " + $('#worker-'+k).val());
+      clone.find('.majority-task-recap').text("Maggioranza : " + $('#majority-'+k).val());
+      clone.find('.key-task-recap').text("Parole chiave : " + $('#reward-'+k).val());
+      clone.find('.answer-task-recap').text("Risposte : " + $('#answer-'+k).val());;
+      clone.removeAttr('hidden');
+      $('.recap-tasks').append(clone);
+    }
   }
 }

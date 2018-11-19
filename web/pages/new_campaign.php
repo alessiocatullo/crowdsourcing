@@ -215,7 +215,7 @@
             </div>
             <h3 class="recap-title" style="margin-top: 2pc;">Tasks</h3>
             <div class="col-md-12">
-            <div class="recap-item" hidden>
+            <div class="recap-item-ref" hidden>
               <div clas="row">
                 <div class="col-md-12">
                   <h2 class="nTask-recap" style="text-align: right"></h2>  
