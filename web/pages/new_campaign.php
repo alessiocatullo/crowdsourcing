@@ -2,7 +2,7 @@
 <?php
   include("../php/new_campaign.php");
 ?>
-<div class="container-fluid">
+<div class="container-fluid new_campaign-div">
   <h2 class="title">Nuova Campagna</h2>
   <!--STEP-->
   <div class="stepwizard">
@@ -12,19 +12,15 @@
               <p>Campagna</p>
           </div>
           <div class="stepwizard-step">
-              <a href="#step-2" type="button" class="btn btn-primary btn-circle ">2</a>
+              <a href="#step-2" type="button" class="btn btn-default btn-circle disabled">2</a>
               <p>Task</p>
           </div>
           <div class="stepwizard-step">
-              <a href="#step-3" type="button" class="btn btn-default btn-circle disabled">3</a>
+              <a href="#step-3" type="button" class="btn btn-primary btn-circle">3</a>
               <p>Riepilogo</p>
           </div>
       </div>
   </div>
-  <!--STEP ERROR-->
-  <p class="form-err" style="background: <?php echo $bgcolor; ?>; color:<?php echo $color; ?>; " <?php echo $hidden; ?>>
-    <a><strong><?php echo $error; ?></strong></a> 
-  </p>
   <!--FORM-->
   <form role="form" id="new_campaign_form" method="post" action="">
     <!-- STEP 1 - DETTAGLI CAMPAGNA -->
@@ -33,20 +29,20 @@
       <div class="col-md-12 task-div" style="padding: 15px;">     
         <div class="form-group">
           <label class="control-label">Nome</label>
-          <input  maxlength="100" id="name" type="text" required="required" class="form-control" placeholder="nome campagna"/>
+          <input  maxlength="100" id="name" name="name" type="text" required="required" class="form-control" placeholder="nome campagna"/>
         </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data inizio</label>
-              <input type="date" id="dt_start" required="required" class="form-control" min="<?php echo date("Y-m-d") ?>" 
+              <input type="date" id="dt_start" name="name" required="required" class="form-control" min="<?php echo date("Y-m-d") ?>" 
                 max="2099-01-01"/>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data fine</label>
-              <input type="date" id="dt_end" required="required" class="form-control" max="2099-01-01" disabled/>
+              <input type="date" id="dt_end" name="dt_end" required="required" class="form-control" max="2099-01-01" disabled/>
             </div>
           </div>
         </div>
@@ -54,13 +50,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data iscrizione inizio</label>
-              <input type="date" id="dt_accession_start" required="required" class="form-control" disabled/>
+              <input type="date" id="dt_accession_start" name="dt_accession_start" required="required" class="form-control" disabled/>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data iscrizione fine</label>
-              <input type="date" id="dt_accession_end" required="required" class="form-control" disabled/>
+              <input type="date" id="dt_accession_end" name="dt_accession_end" required="required" class="form-control" disabled/>
             </div>
           </div>
         </div>
@@ -100,32 +96,32 @@
               <div class="content-task" style="padding: 15px;">
                 <div class="form-group">
                   <label class="control-label">Titolo</label>
-                  <input maxlength="200" type="text" id="title-1" required="required" class="form-control" placeholder="Inserisci il titolo"/>
+                  <input maxlength="200" type="text" id="title-1" name="title-1" required="required" class="form-control" placeholder="Inserisci il titolo"/>
                 </div>
                 <div class="form-group">
                   <label class="control-label">Descrizione</label>
-                  <input maxlength="200" type="text" id="description-1" required="required" class="form-control" placeholder="Inserisci la descrizione"/>
+                  <input maxlength="200" type="text" id="description-1" name="description-1" required="required" class="form-control" placeholder="Inserisci la descrizione"/>
                 </div>
                 <div class="row form-group">
                   <div class="col-md-6">
                     <div class="row">
                       <div class="col-md-2">
                         <label class="control-label">Lavoratori</label>
-                        <input type="number" id="worker-1" required="required" class="form-control" placeholder="1" min="1" max="10" step="1"/>
+                        <input type="number" id="worker-1" name="worker-1" required="required" class="form-control" placeholder="1" min="1" max="10" step="1"/>
                       </div>
                       <div class="col-md-5">
                         <label class="control-label">Maggioranza</label>
-                        <input type="number" id="majority-1" required="required" class="form-control" placeholder="0%" min="0" max="100" step="10"/>
+                        <input type="number" id="majority-1" name="majority-1" required="required" class="form-control" placeholder="0%" min="0" max="100" step="10"/>
                       </div>
                       <div class="col-md-5">
                         <label class="control-label">Ricompenza</label>
-                        <input maxlength="20" type="text" id="reward-1" class="form-control" placeholder="Inserisci la ricompenza"/>
+                        <input maxlength="20" type="text" id="reward-1" name="reward-1" class="form-control" placeholder="Inserisci la ricompenza"/>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-12">
                         <label class="control-label">Risposte</label>
-                        <input maxlength="130" type="text" id="answer-1" required="required" class="form-control" placeholder="Parole alternate dal punto e virgola"/>
+                        <input maxlength="130" type="text" id="answer-1" name="answer-1" required="required" class="form-control" placeholder="Parole alternate dal punto e virgola"/>
                       </div>
                     </div>
                   </div>
@@ -151,7 +147,7 @@
                       </div>
                       <div class="row">
                         <div class="col-md-12" style="margin-top: 1pc;">
-                          <input class="skill-input form-control" id="skill-1" type="text" required="required" placeholder="#">
+                          <input class="skill-input form-control" id="skill-1" name="skill-1" type="text" required="required" placeholder="#">
                         </div>
                       </div>
                     </div>
@@ -227,6 +223,7 @@
                   <p class="desc-task-recap"></p>
                   <p class="worker-task-recap"></p>
                   <p class="majority-task-recap"></p>
+                  <p class="reward-task-recap"></p>
                   <p class="key-task-recap"></p>
                   <p class="answer-task-recap"></p>
                 </div>
@@ -239,13 +236,51 @@
         </div>
         <button class="btn btn-primary backBtn btn-lg float-left" style="margin-bottom: 2pc;" 
           type="button">Indietro</button>
-        <button class="btn btn-success completeBtn btn-lg float-right" style="margin-bottom: 2pc;" 
-          type="submit">Crea</button>
+        <button type="button" class="btn btn-success completeBtn btn-lg float-right" onclick="showModal()" style="margin-bottom: 2pc;"
+          data-toggle="modal" data-target="#exampleModal">Crea</button>
+
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
     </div>
   </form>
 </div>
 
+<!--
+<div class="response-div">
+  <div>
+  </div>
+  --STEP ERROR--
+  <p class="form-err" style="background: <?php echo $bgcolor; ?>; color:<?php echo $color; ?>; " <?php echo $hidden; ?>>
+    <a><strong><?php echo $error; ?></strong></a> 
+  </p> 
+</div>
+-->
 <script>
+function showModal() {
+  $('#exampleModal').modal();
+}
+
+
+
   $('#dt_start').change(function() {
       document.getElementById('dt_end').setAttribute("min", ($(this).val()));
       document.getElementById('dt_accession_start').setAttribute("min", ($(this).val()));

@@ -155,6 +155,7 @@ function addTask() {
   clone.find('.content-task').removeAttr('hidden');
   clone.find('input').each(function(){
     $(this).attr('id', $(this).attr("id").substring(0, $(this).attr("id").length - 2) + "-" + i);
+    $(this).attr('name', $(this).attr("name").substring(0, $(this).attr("id").length - 2) + "-" + i);
   });
   $("div.main-div").append(clone);
 }
@@ -179,7 +180,8 @@ function printResults(){
       clone.find('.desc-task-recap').text("Descrizione : " + $('#description-'+k).val());
       clone.find('.worker-task-recap').text("Lavoratori : " + $('#worker-'+k).val());
       clone.find('.majority-task-recap').text("Maggioranza : " + $('#majority-'+k).val());
-      clone.find('.key-task-recap').text("Parole chiave : " + $('#reward-'+k).val());
+      clone.find('.reward-task-recap').text("Ricompenza : " + $('#reward-'+k).val());
+      clone.find('.key-task-recap').text("Parole chiave : " + $('#skill-'+k).val());
       clone.find('.answer-task-recap').text("Risposte : " + $('#answer-'+k).val());;
       clone.removeAttr('hidden');
       $('.recap-tasks').append(clone);
