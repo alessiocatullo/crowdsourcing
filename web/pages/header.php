@@ -20,10 +20,10 @@
 
   <body>
     <nav class="navbar navbar-default sticky-top" style="max-height: 54px !important">
-      <div class="col-md-11">
-        <a class="navbar-brand" href="<?php echo strtolower($_SESSION['role']);?>.php">Dashboard | <?php echo $_SESSION['role'];?></a>
-      </div>
-      <div class="col-md-1" style="text-align:right">
+      <a class="navbar-brand navbar-left" href="<?php echo strtolower($_SESSION['role']);?>.php">
+        Dashboard | <?php echo $_SESSION['role'];?>
+      </a>
+      <div class="navbar-buttons navbar-right" style="text-align:right">
         <?php
           if(strcmp($_SESSION['role'],"REQUESTER") != 0){
             echo "<a href='profile.php' class='navbar-brand'><i class='fas fa-user'></i></a>";

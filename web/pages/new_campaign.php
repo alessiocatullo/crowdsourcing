@@ -1,7 +1,4 @@
 <!--NEW CAMPAIGN-->
-<?php
-  include("../php/new_campaign.php");
-?>
 <div class="container-fluid new_campaign-div">
   <h2 class="title">Nuova Campagna</h2>
   <!--STEP-->
@@ -22,27 +19,27 @@
       </div>
   </div>
   <!--FORM-->
-  <form role="form" id="new_campaign_form" method="post" action="">
+  <form role="form" id="new_campaign_form">
     <!-- STEP 1 - DETTAGLI CAMPAGNA -->
     <div class="setup-content" id="step-1">
       <h3>Crea la campagna</h3>
       <div class="col-md-12 task-div" style="padding: 15px;">     
         <div class="form-group">
           <label class="control-label">Nome</label>
-          <input  maxlength="100" id="name" name="name" type="text" required="required" class="form-control" placeholder="nome campagna"/>
+          <input  maxlength="100" id="name" name="name" type="text" required="required" class="form-control" placeholder="nome campagna" value="test"/>
         </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data inizio</label>
               <input type="date" id="dt_start" name="name" required="required" class="form-control" min="<?php echo date("Y-m-d") ?>" 
-                max="2099-01-01"/>
+                max="2099-01-01" value="2018-12-04"/>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data fine</label>
-              <input type="date" id="dt_end" name="dt_end" required="required" class="form-control" max="2099-01-01" disabled/>
+              <input type="date" id="dt_end" name="dt_end" required="required" class="form-control" max="2099-01-01" value="2018-12-07"disabled/>
             </div>
           </div>
         </div>
@@ -50,13 +47,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data iscrizione inizio</label>
-              <input type="date" id="dt_accession_start" name="dt_accession_start" required="required" class="form-control" disabled/>
+              <input type="date" id="dt_accession_start" name="dt_accession_start" required="required" class="form-control" value="2018-12-05"disabled/>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data iscrizione fine</label>
-              <input type="date" id="dt_accession_end" name="dt_accession_end" required="required" class="form-control" disabled/>
+              <input type="date" id="dt_accession_end" name="dt_accession_end" required="required" class="form-control" value="2018-12-06"disabled/>
             </div>
           </div>
         </div>
@@ -96,32 +93,32 @@
               <div class="content-task" style="padding: 15px;">
                 <div class="form-group">
                   <label class="control-label">Titolo</label>
-                  <input maxlength="200" type="text" id="title-1" name="title-1" required="required" class="form-control" placeholder="Inserisci il titolo"/>
+                  <input maxlength="200" type="text" id="title-1" name="title-1" required="required" class="form-control" placeholder="Inserisci il titolo"value="test"/>
                 </div>
                 <div class="form-group">
                   <label class="control-label">Descrizione</label>
-                  <input maxlength="200" type="text" id="description-1" name="description-1" required="required" class="form-control" placeholder="Inserisci la descrizione"/>
+                  <input maxlength="200" type="text" id="description-1" name="description-1" required="required" class="form-control" placeholder="Inserisci la descrizione"value="test"/>
                 </div>
                 <div class="row form-group">
                   <div class="col-md-6">
                     <div class="row">
                       <div class="col-md-2">
                         <label class="control-label">Lavoratori</label>
-                        <input type="number" id="worker-1" name="worker-1" required="required" class="form-control" placeholder="1" min="1" max="10" step="1"/>
+                        <input type="number" id="worker-1" name="worker-1" required="required" class="form-control" placeholder="1" min="1" max="10" step="1"value="1"/>
                       </div>
                       <div class="col-md-5">
                         <label class="control-label">Maggioranza</label>
-                        <input type="number" id="majority-1" name="majority-1" required="required" class="form-control" placeholder="0%" min="0" max="100" step="10"/>
+                        <input type="number" id="majority-1" name="majority-1" required="required" class="form-control" placeholder="0%" min="0" max="100" step="10" value="10"/>
                       </div>
                       <div class="col-md-5">
                         <label class="control-label">Ricompenza</label>
-                        <input maxlength="20" type="text" id="reward-1" name="reward-1" class="form-control" placeholder="Inserisci la ricompenza"/>
+                        <input maxlength="20" type="text" id="reward-1" name="reward-1" class="form-control" placeholder="Inserisci la ricompenza"value="test"/>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-12">
                         <label class="control-label">Risposte</label>
-                        <input maxlength="130" type="text" id="answer-1" name="answer-1" required="required" class="form-control" placeholder="Parole alternate dal punto e virgola"/>
+                        <input maxlength="130" type="text" id="answer-1" name="answer-1" required="required" class="form-control" placeholder="Parole alternate dal punto e virgola"value="test"/>
                       </div>
                     </div>
                   </div>
@@ -147,7 +144,7 @@
                       </div>
                       <div class="row">
                         <div class="col-md-12" style="margin-top: 1pc;">
-                          <input class="skill-input form-control" id="skill-1" name="skill-1" type="text" required="required" placeholder="#">
+                          <input class="skill-input form-control" id="skill-1" name="skill-1" type="text" required="required" placeholder="#" value="test"/>
                         </div>
                       </div>
                     </div>
@@ -248,15 +245,6 @@
       <!-- Modal Header -->
       <div class="modal-header">
         <h4 class="modal-title">
-        <?php
-          if(isset($done)){
-            if($done){
-              echo "<i class='response-icon fas fa-check-circle'></i> Campagna inserita";
-            }else {
-              echo "<i class='fas fa-times-circle'></i> Errore";
-            }
-          }
-        ?>
         </h4>
         <button type="button" class="close" data-dismiss="modal" onclick="location.href=''">&times;</button>
       </div>
@@ -264,15 +252,6 @@
       <div class="modal-body"></div>
       <!-- Modal footer -->
       <div class="modal-footer">
-        <?php
-          if(isset($done)){
-            if($done){
-              echo "<button type='button' class='btn btn-success' data-dismiss='modal' onclick="."location.href='#campaigns'".">Campagne</button>";
-            }else {
-              echo "<button type='button' class='btn btn-danger' data-dismiss='modal'>Riprova</button>";
-            }
-          }
-        ?>
       </div>
     </div>
   </div>
@@ -283,16 +262,27 @@
 $('#new_campaign_form').bind('submit',function(e) { 
   e.preventDefault();
 
-  var form = $(this);
-  var url = 'new_campaign.php';
+  var formData = $(this).serialize();
+  var url = '../php/new_campaign.php';
+  var button = '';
+  var titleText = '';
 
   $.ajax({
     type: "POST",
     url: url,
-    data: form, // serializes the form's elements.
-    success: function(){
+    data: formData,
+    success: function(response){
       $('.modal-header').addClass("response-header-success");
-      $('.modal-body').append(); // show response from the php script.
+      $('.modal-body').append(response); // show response from the php script.
+      if(false){
+        button = "<button type='button' class='btn btn-success' data-dismiss='modal' onclick='location.href=#campaigns'>Le mie campagne</button>";
+        titleText = "<i class='response-icon fas fa-check-circle'></i> Campagna inserita";
+      }else {
+        button = "<button type='button' class='btn btn-danger' data-dismiss='modal'>Riprova</button>";
+        titleText = "<i class='fas fa-times-circle'></i> Errore";
+      }
+      $('.modal-footer').append(button);
+      $('.modal-title').append(titleText);
     }
   });
 });

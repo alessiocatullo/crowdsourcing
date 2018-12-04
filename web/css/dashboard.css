@@ -10,6 +10,23 @@ h1 {
 
 /***********************************************/
 /*
+ * Navbar
+ */
+.navbar{
+  background-color: #2d5b72;
+  width:100%;
+}
+
+.navbar-brand{
+  color: white;
+}
+
+.navbar-brand:hover{
+  color: #ffffff8f;
+}
+
+/***********************************************/
+/*
  * Sidebar
  */
  .sidebar {
@@ -43,22 +60,7 @@ h1 {
 .sidebar .nav-item:hover{
   color: white;
 }
-/***********************************************/
-/*
- * Navbar
- */
-.navbar{
-  background-color: #2d5b72;
-  width:100%;
-}
 
-.navbar-brand{
-  color: white;
-}
-
-.navbar-brand:hover{
-  color: #ffffff8f;
-}
 /*
  * Dashboard
  */
@@ -95,7 +97,12 @@ h1 {
  /*
   * Modal Custom
   */
-.response-modal{
+.modal-content{
+    border: 0px;
+    box-shadow: -1px 1.5px 4px;
+}
+
+.reponse-modal{
   max-width: 40%;
 }
 
