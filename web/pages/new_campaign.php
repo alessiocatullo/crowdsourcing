@@ -236,50 +236,66 @@
         </div>
         <button class="btn btn-primary backBtn btn-lg float-left" style="margin-bottom: 2pc;" 
           type="button">Indietro</button>
-        <button type="button" class="btn btn-success completeBtn btn-lg float-right" onclick="showModal()" style="margin-bottom: 2pc;"
-          data-toggle="modal" data-target="#exampleModal">Crea</button>
-
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
+        <button type="submit" class="btn btn-success completeBtn btn-lg float-right" style="margin-bottom: 2pc;"
+          data-toggle="modal" data-target="#response">Crea</button>
     </div>
   </form>
 </div>
 
-<!--
-<div class="response-div">
-  <div>
+<div class="modal fade" id="response">
+  <div class="modal-dialog response-modal response-error">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">
+        <?php
+          if(isset($done)){
+            if($done){
+              echo "<i class='response-icon fas fa-check-circle'></i> Campagna inserita";
+            }else {
+              echo "<i class='fas fa-times-circle'></i> Errore";
+            }
+          }
+        ?>
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" onclick="location.href=''">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body"></div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <?php
+          if(isset($done)){
+            if($done){
+              echo "<button type='button' class='btn btn-success' data-dismiss='modal' onclick="."location.href='#campaigns'".">Campagne</button>";
+            }else {
+              echo "<button type='button' class='btn btn-danger' data-dismiss='modal'>Riprova</button>";
+            }
+          }
+        ?>
+      </div>
+    </div>
   </div>
-  --STEP ERROR--
-  <p class="form-err" style="background: <?php echo $bgcolor; ?>; color:<?php echo $color; ?>; " <?php echo $hidden; ?>>
-    <a><strong><?php echo $error; ?></strong></a> 
-  </p> 
 </div>
--->
+
 <script>
-function showModal() {
-  $('#exampleModal').modal();
-}
+//AJAX SEND NUOVA CAMPAGNA
+$('#new_campaign_form').bind('submit',function(e) { 
+  e.preventDefault();
 
+  var form = $(this);
+  var url = 'new_campaign.php';
 
+  $.ajax({
+    type: "POST",
+    url: url,
+    data: form, // serializes the form's elements.
+    success: function(){
+      $('.modal-header').addClass("response-header-success");
+      $('.modal-body').append(); // show response from the php script.
+    }
+  });
+});
 
   $('#dt_start').change(function() {
       document.getElementById('dt_end').setAttribute("min", ($(this).val()));
