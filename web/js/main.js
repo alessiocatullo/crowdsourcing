@@ -27,6 +27,7 @@ $(document).ready(function(){
           $(this).closest('li').addClass('active');
           allWells.hide();
           var target = $(this).attr('href');
+          location.hash = target;
           $(target).show();
       });
 });
