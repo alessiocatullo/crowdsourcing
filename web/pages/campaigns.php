@@ -14,7 +14,7 @@
 	        	</tr>
 	        	<tbody>
 	                <?php
-	                    $requester = $_SESSION['login_user'];
+	                    $requester = $_SESSION['user'];
 	                    query_campaign($requester);
 	                ?>
 	            </tbody>

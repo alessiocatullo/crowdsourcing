@@ -10,7 +10,7 @@
 		// definisco la query di inserimento dati
 		$sql = "SELECT COUNT(0) AS register_check
 				FROM user
-		        WHERE mail = '$mail'";
+		        WHERE user = '$mail'";
 
 		//Eseguo la query
 		$result = mysqli_query($con, $sql) or die ("Errore");
@@ -28,7 +28,7 @@
 			if(strcmp($passw, $passwConf)==0){
 			// liberazione della memoria dal risultato della query
 				@mysqli_free_result($result); 
-				$sql = "INSERT INTO user (mail, password, first_name, last_name, role)
+				$sql = "INSERT INTO user (user, password, first_name, last_name, role)
 						VALUES ('$mail', '$passw', '$nome', '$cognome', '$radio')";
 				$result = mysqli_query($con, $sql) or die ("'$mail', '$passw', '$nome', '$cognome', '$radio'");
 				$_SESSION['response']='Utente registrato! Effettua il login';

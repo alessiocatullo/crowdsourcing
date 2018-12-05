@@ -9,7 +9,7 @@
 		// definisco la query di inserimento dati
 		$sql = "SELECT COUNT(*) AS test
 				FROM user
-		        WHERE mail = '$mail'";
+		        WHERE user = '$mail'";
 
 		//Eseguo la query
 		$result = mysqli_query($con, $sql) or die ("Errore");
@@ -28,7 +28,7 @@
 				$error = "Password diverse!";
 			} else {
 				$sql = "UPDATE user SET password='$password'
-		        WHERE mail = '$mail'";
+		        WHERE user = '$mail'";
 		        $result = mysqli_query($con, $sql) or die ("Errore modifica password");
 		        $_SESSION['response']='Password modificata! Effettua il login'; // Initializing Session
 				header("location: login.php");

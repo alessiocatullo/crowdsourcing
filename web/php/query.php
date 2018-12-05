@@ -67,4 +67,41 @@
         return $result_subcategory;
     }
 
+    function delete_campaigns($id){
+        global $con;
+        $sql_delete_campaigns = "DELETE FROM campaign WHERE id = '$id'";
+        $result_delete_campaigns = @mysqli_query($con, $sql_delete_campaigns) or die("Errore eliminazione campagna!");
+        @mysqli_free_result($result_subcategory);
+        return $result_subcategory;
+    }
+
+    function insert_campaigns(){
+        global $con;
+
+        $user = $_POST['user'];
+        parse_str($_POST['formData'], $_POST);
+        $name = $_POST['name'];
+        $dt_start = $_POST['dt_start'];
+        $dt_end = $_POST['dt_end'];
+        $dt_accession_start = $_POST['dt_accession_start'];
+        $dt_accession_end = $_POST['dt_accession_end'];
+
+        $sql_insert_campaigns = "INSERT INTO campaign (name, dt_start, dt_end, dt_accession_start, dt_accession_end, user) 
+            VALUES ('$name', '$dt_start', '$dt_end', '$dt_accession_start', '$dt_accession_end', '$user')";
+        $result_insert_campaigns = @mysqli_query($con, $sql_insert_campaigns) or die("Errore inserimento campagna!");
+        @mysqli_free_result($result_insert_campaigns);
+        
+        $sql_id_campaign = "SELECT id FROM campaign WHERE name = '$name' AND user = '$user'";
+        $result_id_campaigns = @mysqli_query($con, $sql_id_campaigns) or die("Errore recupero id campagna! '$name' '$user");
+        $row = mysqli_fetch_array($result_id_campaigns);
+        echo ($row[0]);
+        echo ($row[1]);
+        @mysqli_free_result($result_id_campaigns);
+
+        $i=1;
+        do{
+            $i++;
+        }while(isset($_POST['task-' + i]));
+        return;
+    }
 ?>

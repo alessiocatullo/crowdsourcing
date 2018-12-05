@@ -5,7 +5,7 @@
   <div class="stepwizard">
       <div class="stepwizard-row setup-panel">
           <div class="stepwizard-step">
-              <a href="#step-1" type="button" class="btn btn-default btn-circle disabled">1</a>
+              <a href="#step-1" type="button" class="btn btn-primary btn-circle">1</a>
               <p>Campagna</p>
           </div>
           <div class="stepwizard-step">
@@ -13,7 +13,7 @@
               <p>Task</p>
           </div>
           <div class="stepwizard-step">
-              <a href="#step-3" type="button" class="btn btn-primary btn-circle">3</a>
+              <a href="#step-3" type="button" class="btn btn-default btn-circle disabled">3</a>
               <p>Riepilogo</p>
           </div>
       </div>
@@ -32,7 +32,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data inizio</label>
-              <input type="date" id="dt_start" name="name" required="required" class="form-control" min="<?php echo date("Y-m-d") ?>" 
+              <input type="date" id="dt_start" name="dt_start" required="required" class="form-control" min="<?php echo date("Y-m-d") ?>" 
                 max="2099-01-01" value="2018-12-04"/>
             </div>
           </div>
@@ -240,13 +240,13 @@
 </div>
 
 <div class="modal fade" id="response">
-  <div class="modal-dialog response-modal response-error">
+  <div class="modal-dialog response-modal">
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
         <h4 class="modal-title">
         </h4>
-        <button type="button" class="close" data-dismiss="modal" onclick="location.href=''">&times;</button>
+        <button type="button" class="close" data-dismiss='modal' onclick="refreshOnTarget('#campaigns')">&times;</button>
       </div>
       <!-- Modal body -->
       <div class="modal-body"></div>
@@ -258,34 +258,40 @@
 </div>
 
 <script>
-//AJAX SEND NUOVA CAMPAGNA
-$('#new_campaign_form').bind('submit',function(e) { 
-  e.preventDefault();
+  //AJAX SEND NUOVA CAMPAGNA
+  $('#new_campaign_form').bind('submit',function(e) { 
+    e.preventDefault();
 
-  var formData = $(this).serialize();
-  var url = '../php/new_campaign.php';
-  var button = '';
-  var titleText = '';
+    var formData = $(this).serialize();
+    var user = '<?php echo $_SESSION['user'] ?>';
+    var button = '';
+    var titleText = '';
 
-  $.ajax({
-    type: "POST",
-    url: url,
-    data: formData,
-    success: function(response){
-      $('.modal-header').addClass("response-header-success");
-      $('.modal-body').append(response); // show response from the php script.
-      if(false){
-        button = "<button type='button' class='btn btn-success' data-dismiss='modal' onclick='location.href=#campaigns'>Le mie campagne</button>";
-        titleText = "<i class='response-icon fas fa-check-circle'></i> Campagna inserita";
-      }else {
-        button = "<button type='button' class='btn btn-danger' data-dismiss='modal'>Riprova</button>";
-        titleText = "<i class='fas fa-times-circle'></i> Errore";
+    $('.modal-header').removeClass("response-header-success");
+    $('.modal-header').removeClass("response-header-error");
+
+    $.ajax({
+      type: "POST",
+      url: '../php/query.php',
+      data: {Method:'insert_campaigns', formData, user},
+      success: function(response){
+        if(response == ''){
+          button = "<button type='button' class='btn btn-success' data-dismiss='modal' onclick=location.href=" + "''" + ">Nuova campagna</button>";
+          titleText = "<i class='response-icon fas fa-check-circle'></i> Campagna inserita";
+          $('#new_campaign_form').find('input').val("");
+          $('.modal-body').text("Campagna inserita con successo! Consulta le tue campagne");
+          $('.modal-header').addClass("response-header-success");
+        }else {
+          button = "<button type='button' class='btn btn-danger' data-dismiss='modal'>Modifica e riprova</button>";
+          titleText = "<i class='fas fa-times-circle'></i> Errore";
+          $('.modal-body').text(response);
+          $('.modal-header').addClass("response-header-error");
+        }
+        $('.modal-footer').html(button);
+        $('.modal-title').html(titleText);
       }
-      $('.modal-footer').append(button);
-      $('.modal-title').append(titleText);
-    }
+    });
   });
-});
 
   $('#dt_start').change(function() {
       document.getElementById('dt_end').setAttribute("min", ($(this).val()));

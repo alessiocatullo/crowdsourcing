@@ -32,6 +32,16 @@ $(document).ready(function(){
       });
 });
 
+function refreshOnTarget(target){
+  var navListItems = $('.admin-menu li');
+  var allWells = $('.admin-content');
+  allWells.hide();
+  navListItems.removeClass('active');
+  
+  $('a[href="'+ target +'"]').closest('li').addClass('active');
+  location.hash = target;
+  $(target).show();
+}
 /*******************************************
 ELENCO CAMPAGNE
 *******************************************/
