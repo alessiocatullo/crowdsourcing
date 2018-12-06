@@ -143,8 +143,13 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-12" style="margin-top: 1pc;">
-                          <input class="skill-input form-control" id="skill-1" name="skill-1" type="text" required="required" placeholder="#" value="Jazz; "/>
+                        <div class="col-md-11" style="margin-top: 1pc;">
+                          <input class="skill-input form-control readonly" id="skill-1" name="skill-1" type="text" required="required" placeholder="#"/>
+                        </div>
+                        <div class="col-md-1" style="margin-top: 1pc;">
+                          <button class="skill-remove btn btn-danger float-right" type="button">
+                            <i class="fas fa-times"></i>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -316,7 +321,6 @@
     $(this).closest("div.row").find('.skill-category-select').removeAttr("disabled");
   });
 
-
   //FUNZIONE AGGIUNGI PAROLA CHIAVE
   $('#step-2').on('click', '.skill-confirm' ,function(){
     refCategorySub = $(this).closest("div.row").find('.skill-category-select');
@@ -335,6 +339,23 @@
     } else {;
       skillInput.val(skillInput.val() + (refCategory.children(":selected").val() + "; "));
     }
+  });
+
+  //FUNZIONE RIMUOVI PAROLA CHIAVE
+  $('#step-2').on('click', '.skill-remove' ,function(){
+    skillInput = $(this).closest("div.row").find('.skill-input').val();
+    skillInput = skillInput.substring(0, skillInput.length-2);
+    var pod = skillInput.lastIndexOf("; ");
+    skillInput = skillInput.substring(0, pod);
+    if(skillInput != ''){
+      $(this).closest("div.row").find('.skill-input').val(skillInput + "; ");
+    } else {
+      $(this).closest("div.row").find('.skill-input').val(skillInput);
+    }
+  });
+
+  $(".readonly").keydown(function(e){
+    e.preventDefault();
   });
 
   //REMOVE DIV
