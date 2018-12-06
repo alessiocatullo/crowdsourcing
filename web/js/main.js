@@ -40,8 +40,11 @@ function refreshOnTarget(target){
   
   $('a[href="'+ target +'"]').closest('li').addClass('active');
   location.hash = target;
+  window.localStorage.setItem('activeTab', $('a[href="'+ target +'"]').attr('href'));
   $(target).show();
+  location.reload();
 }
+
 /*******************************************
 ELENCO CAMPAGNE
 *******************************************/
@@ -54,6 +57,16 @@ function details(name, id) {
            type: 'POST',
            success: function(e) {
              $(".content-details").append(e);
+           }
+  });
+}
+
+function deleteCampaign(id) {
+  $.ajax({ url: '../php/query.php',
+           data: {Method:'delete_campaign', id: id},
+           type: 'POST',
+           success: function(e) {
+            alert("Campagna eliminata");
            }
   });
 }

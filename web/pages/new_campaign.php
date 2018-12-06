@@ -22,7 +22,7 @@
   <form role="form" id="new_campaign_form">
     <!-- STEP 1 - DETTAGLI CAMPAGNA -->
     <div class="setup-content" id="step-1">
-      <h3>Crea la campagna</h3>
+      <h3>Crea la tua campagna</h3>
       <div class="col-md-12 task-div" style="padding: 15px;">     
         <div class="form-group">
           <label class="control-label">Nome</label>
@@ -33,13 +33,13 @@
             <div class="form-group">
               <label class="control-label">Data inizio</label>
               <input type="date" id="dt_start" name="dt_start" required="required" class="form-control" min="<?php echo date("Y-m-d") ?>" 
-                max="2099-01-01" value="2018-12-04"/>
+                max="2099-01-01" value="2030-12-04"/>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data fine</label>
-              <input type="date" id="dt_end" name="dt_end" required="required" class="form-control" max="2099-01-01" value="2018-12-07"disabled/>
+              <input type="date" id="dt_end" name="dt_end" required="required" class="form-control" max="2099-01-01" value="2030-12-07"/>
             </div>
           </div>
         </div>
@@ -47,13 +47,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data iscrizione inizio</label>
-              <input type="date" id="dt_accession_start" name="dt_accession_start" required="required" class="form-control" value="2018-12-05"disabled/>
+              <input type="date" id="dt_accession_start" name="dt_accession_start" required="required" class="form-control" value="2030-12-05"/>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data iscrizione fine</label>
-              <input type="date" id="dt_accession_end" name="dt_accession_end" required="required" class="form-control" value="2018-12-06"disabled/>
+              <input type="date" id="dt_accession_end" name="dt_accession_end" required="required" class="form-control" value="2030-12-06"/>
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <label class="control-label">Risposte</label>
-                        <input maxlength="130" type="text" id="answer-1" name="answer-1" required="required" class="form-control" placeholder="Parole alternate dal punto e virgola"value="test"/>
+                        <input maxlength="130" type="text" id="answer-1" name="answer-1" required="required" class="form-control" placeholder="Parole alternate dal punto e virgola"value="test; balla; "/>
                       </div>
                     </div>
                   </div>
@@ -144,7 +144,7 @@
                       </div>
                       <div class="row">
                         <div class="col-md-12" style="margin-top: 1pc;">
-                          <input class="skill-input form-control" id="skill-1" name="skill-1" type="text" required="required" placeholder="#" value="test"/>
+                          <input class="skill-input form-control" id="skill-1" name="skill-1" type="text" required="required" placeholder="#" value="Jazz; "/>
                         </div>
                       </div>
                     </div>
@@ -239,14 +239,14 @@
   </form>
 </div>
 
-<div class="modal fade" id="response">
+<div class="modal fade" data-backdrop="static" id="response">
   <div class="modal-dialog response-modal">
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
         <h4 class="modal-title">
         </h4>
-        <button type="button" class="close" data-dismiss='modal' onclick="refreshOnTarget('#campaigns')">&times;</button>
+        <button type="button" class="close" data-dismiss='modal' onclick="refreshOnTarget('#new_campaign')">&times;</button>
       </div>
       <!-- Modal body -->
       <div class="modal-body"></div>
@@ -276,7 +276,7 @@
       data: {Method:'insert_campaigns', formData, user},
       success: function(response){
         if(response == ''){
-          button = "<button type='button' class='btn btn-success' data-dismiss='modal' onclick=location.href=" + "''" + ">Nuova campagna</button>";
+          button = "<button type='button' class='btn btn-success' data-dismiss='modal' onclick="+"refreshOnTarget('#campaigns')"+">Le mie campagne</button>";
           titleText = "<i class='response-icon fas fa-check-circle'></i> Campagna inserita";
           $('#new_campaign_form').find('input').val("");
           $('.modal-body').text("Campagna inserita con successo! Consulta le tue campagne");

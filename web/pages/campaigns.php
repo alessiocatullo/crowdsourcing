@@ -11,6 +11,7 @@
 	                <th class='tabletxt-center'>Apertura registrazione</th>
 	                <th class='tabletxt-center'>Chiusura registrazione</th>
 	                <th class='tabletxt-center'>Dettagli</th>
+	                <th class='tabletxt-center'>Elimina</th>
 	        	</tr>
 	        	<tbody>
 	                <?php
