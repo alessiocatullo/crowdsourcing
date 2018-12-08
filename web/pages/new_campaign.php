@@ -91,66 +91,88 @@
                 </div>
               </div> 
               <div class="content-task" style="padding: 15px;">
-                <div class="form-group">
-                  <label class="control-label">Titolo</label>
-                  <input maxlength="200" type="text" id="title-1" name="title-1" required="required" class="form-control" placeholder="Inserisci il titolo"value="test"/>
-                </div>
-                <div class="form-group">
-                  <label class="control-label">Descrizione</label>
-                  <input maxlength="200" type="text" id="description-1" name="description-1" required="required" class="form-control" placeholder="Inserisci la descrizione"value="test"/>
-                </div>
                 <div class="row form-group">
+                  <div class="col-md-6">
+                    <label class="control-label">Titolo</label>
+                    <input maxlength="200" type="text" id="title-1" name="title-1" required="required" class="form-control" placeholder="Inserisci il titolo"value="test"/>
+                  </div>
                   <div class="col-md-6">
                     <div class="row">
                       <div class="col-md-2">
                         <label class="control-label">Lavoratori</label>
                         <input type="number" id="worker-1" name="worker-1" required="required" class="form-control" placeholder="1" min="1" max="10" step="1"value="1"/>
                       </div>
-                      <div class="col-md-5">
+                      <div class="col-md-3">
                         <label class="control-label">Maggioranza</label>
                         <input type="number" id="majority-1" name="majority-1" required="required" class="form-control" placeholder="0%" min="0" max="100" step="10" value="10"/>
                       </div>
-                      <div class="col-md-5">
+                      <div class="col-md-7">
                         <label class="control-label">Ricompenza</label>
                         <input maxlength="20" type="text" id="reward-1" name="reward-1" class="form-control" placeholder="Inserisci la ricompenza"value="test"/>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
                     <div class="row">
                       <div class="col-md-12">
-                        <label class="control-label">Risposte</label>
-                        <input maxlength="130" type="text" id="answer-1" name="answer-1" required="required" class="form-control" placeholder="Parole alternate dal punto e virgola"value="test; balla; "/>
+                        <label class="control-label">Descrizione</label>
+                      </div>
+                    </div>
+                    <div class="row form-group">
+                      <div class="col-md-12">
+                         <textarea class="form-control" type="text" style="resize: none; height: 120%;" row="3" id="description-1" name="description-1" 
+                         placeholder="Inserisci la descrizione" required='required'></textarea>
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6 border-div">
                     <label class="control-label">Parole chiave</label>
-                    <div class="border-div">
-                      <div class="row">
-                        <div class="col-md-5">
-                          <select class="form-control skill-select">
-                            <option>---</option>
-                          </select>
-                        </div>
-                        <div class="col-md-6">
-                          <select class="form-control skill-category-select" disabled>
-                            <option>---</option>
-                          </select>
-                        </div>
-                        <div class="col-md-1">
-                          <button class="skill-confirm btn btn-primary float-right" type="button">
-                            <i class="fas fa-plus"></i>
-                          </button>
-                        </div>
+                    <div class="row form-group">
+                      <div class="col-md-5">
+                        <select class="form-control skill-select">
+                          <option>---</option>
+                        </select>
                       </div>
-                      <div class="row">
-                        <div class="col-md-11" style="margin-top: 1pc;">
-                          <input class="skill-input form-control readonly" id="skill-1" name="skill-1" type="text" required="required" placeholder="#"/>
-                        </div>
-                        <div class="col-md-1" style="margin-top: 1pc;">
-                          <button class="skill-remove btn btn-danger float-right" type="button">
-                            <i class="fas fa-times"></i>
-                          </button>
-                        </div>
+                      <div class="col-md-6">
+                        <select class="form-control skill-category-select" disabled>
+                          <option>---</option>
+                        </select>
+                      </div>
+                      <div class="col-md-1">
+                        <button class="skill-confirm btn btn-primary float-right" type="button">
+                          <i class="fas fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="row form-group">
+                      <div class="col-md-11">
+                        <input class="skill-input form-control readonly" id="skill-1" name="skill-1" type="text" required="required" placeholder="#" autocomplete="off"/>
+                      </div>
+                      <div class="col-md-1">
+                        <button class="skill-remove btn btn-danger float-right" type="button">
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row form-group">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <label class="control-label">Risposte</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-11">
+                        <input class="form-control readonly input-answer" id="answer-1" name="answer-1" type="text" required="required"  placeholder="Premi il tasto edit per aggiungere risposte"/>
+                      </div>
+                      <div class="col-md-1">
+                        <button type="button" class="btn btn-primary answerBtn float-right" data-toggle="modal" data-target="#answer">
+                          <i class="fas fa-edit"></i>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -262,6 +284,42 @@
   </div>
 </div>
 
+<div class="modal fade" data-backdrop="static" id="answer">
+  <div class="modal-dialog response-modal">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">
+          Inserisci le risposte
+        </h4>
+        <button type="button" class="close" data-dismiss='modal'>&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="container-fluid modal-body">
+        <div class="row form-group">
+          <div class="col-md-11">
+            <input type="text" id="test" class="form-control input-answer-div" placeholder="Scrivi la risposta" autocomplete="off"/>
+          </div>
+          <div class="col-md-1">
+            <button type="button" class="btn btn-primary float-right add-answer">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <ul class="answer-div ul-answer"></ul>
+          </div>
+        </div> 
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type='button' class='btn btn-success confirm-answer' data-dismiss='modal'>Conferma</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   //AJAX SEND NUOVA CAMPAGNA
   $('#new_campaign_form').bind('submit',function(e) { 
@@ -353,8 +411,13 @@
       $(this).closest("div.row").find('.skill-input').val(skillInput);
     }
   });
-
+  //UN SIMIL READONLY
   $(".readonly").keydown(function(e){
+    if(e.which != 9){
+      e.preventDefault();
+    }
+  });
+  $('.readonly').bind("cut paste",function(e) {
     e.preventDefault();
   });
 
@@ -377,4 +440,42 @@
       div.removeAttr('hidden');
     }
   });
+
+  //AGGIUNGI RISPOSTA
+  $('#step-2').on('click', '.answerBtn' ,function(){
+    var index = 0;
+
+    value = $(this).closest('.row').find('.input-answer').val();
+    id = $(this).closest('.task-div').attr('id');
+    $('#answer').addClass(id);
+    $('ul').empty();
+    while((index = value.indexOf('; ')) != -1){
+      $('.answer-div').append('<li class="li-answer">'+ value.substring(0, index) + '<span class="close-answer"><i class="fas fa-times"></i></span></li>');
+      value = value.substring(index+2, value.length);
+    }
+  });
+
+  $('#answer').on('click', '.add-answer' ,function(){
+    answer = $('.input-answer-div').val();
+    if(answer != ''){
+      $('.answer-div').append('<li class="li-answer">'+ answer + '<span class="close-answer"><i class="fas fa-times"></i></span></li>');
+    }
+    $('.input-answer-div').val('');
+  });
+
+  $('#answer').on('click', '.confirm-answer' ,function(){
+    pointOfTask = $('#answer').attr('class').indexOf('task-');
+    taskid = $('#answer').attr('class').substring(pointOfTask, pointOfTask+6);
+    input = '';
+    $('.answer-div li').each(function(i){
+      input = input + $(this).text() + '; ';
+    });
+    $('#'+taskid).find('.input-answer').val(input);
+    $('#answer').removeClass(taskid);
+  });
+
+  $('#answer').on('click', '.close-answer' ,function(){
+    $(this).closest('li').remove()
+  });
+
 </script>

@@ -1,8 +1,7 @@
 TODO:
 
 FIX:
-- Fixare function per la stampa dei task nel riepilogo
-- Fare pagina php per la nuova campagna
+- Fixare .readonly per il task creati dinamicamente
 
 NEW:
 - Aggiunta nuova pagina admin.php in cui gestire le richieste dei requester

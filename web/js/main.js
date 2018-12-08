@@ -62,12 +62,14 @@ function details(name, id) {
 }
 
 function deleteCampaign(id) {
-  $.ajax({ url: '../php/query.php',
-           data: {Method:'delete_campaign', id: id},
-           type: 'POST',
-           success: function(e) {
-            alert("Campagna eliminata");
-           }
+  $.ajax({  
+    url: '../php/query.php',
+    data: {Method:'delete_campaign', id: id},
+    type: 'POST',
+    success: function(e) {
+      alert(e);
+      location.reload();
+    },
   });
 }
 
@@ -102,7 +104,7 @@ $(document).ready(function () {
         var curStep = $(this).closest(".setup-content"),
             curStepBtn = curStep.attr("id"),
             nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-            curInputs = curStep.find("input[type='text'],input[type='date'],input[type='number']"),
+            curInputs = curStep.find("input[type='text'],input[type='date'],input[type='number'], textarea[type='text']"),
             isValid = true;
 
         $(".form-control").removeClass("is-invalid");
@@ -176,11 +178,14 @@ function addTask() {
   clone.find('.skill-category-select').attr('disabled', 'disabled');
   clone.find('.skill-select').css('border-color', '#ced4da');
   clone.find('.nTask').text('#' + i);
+  clone.find('.input-answer').removeClass('readonly');
   clone.find('.content-task').removeAttr('hidden');
   clone.find('input').each(function(){
     $(this).attr('id', $(this).attr("id").substring(0, $(this).attr("id").length - 2) + "-" + i);
     $(this).attr('name', $(this).attr("name").substring(0, $(this).attr("id").length - 2) + "-" + i);
   });
+  clone.find('textarea').attr('id', clone.find('textarea').attr("id").substring(0, clone.find('textarea').attr("id").length - 2) + "-" + i);
+  clone.find('textarea').attr('name', clone.find('textarea').attr("name").substring(0, clone.find('textarea').attr("id").length - 2) + "-" + i);
   $("div.main-div").append(clone);
 }
 
