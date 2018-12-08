@@ -24,13 +24,28 @@
         Dashboard | <?php echo $_SESSION['role'];?>
       </a>
       <div class="navbar-buttons navbar-right" style="text-align:right">
-        <?php
-          if(strcmp($_SESSION['role'],"REQUESTER") != 0){
-            echo "<a href='profile.php' class='navbar-brand'><i class='fas fa-user'></i></a>";
-          }
-        ?>
+        <a href='' class="navbar-brand" data-toggle="modal" data-target="#profile"><i class='fas fa-user'></i></a>
         <a href="../php/logout.php" class="navbar-brand"><i class="fas fa-sign-out-alt"></i></a>
       </div>
     </nav>
+
+    <div class="modal fade" data-backdrop="static" id="profile">
+  <div class="modal-dialog response-modal">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">
+        </h4>
+        <button type="button" class="close" data-dismiss='modal' onclick="refreshOnTarget('#new_campaign')">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body"></div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
   </body>
 </html>

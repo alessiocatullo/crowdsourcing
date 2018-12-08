@@ -67,7 +67,6 @@ function deleteCampaign(id) {
     data: {Method:'delete_campaign', id: id},
     type: 'POST',
     success: function(e) {
-      alert(e);
       location.reload();
     },
   });
