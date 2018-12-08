@@ -448,7 +448,7 @@
     value = $(this).closest('.row').find('.input-answer').val();
     id = $(this).closest('.task-div').attr('id');
     $('#answer').addClass(id);
-    $('ul').empty();
+    $('.ul-answer').empty();
     while((index = value.indexOf('; ')) != -1){
       $('.answer-div').append('<li class="li-answer">'+ value.substring(0, index) + '<span class="close-answer"><i class="fas fa-times"></i></span></li>');
       value = value.substring(index+2, value.length);
