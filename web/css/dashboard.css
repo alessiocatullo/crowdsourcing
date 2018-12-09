@@ -158,6 +158,10 @@ h1 {
   padding-bottom: 2pc;
 }
 
+.profile-modal{
+  max-width: 45%;
+}
+
  /***********************************************/
 /*
  * New Campaign CSS
@@ -307,4 +311,15 @@ h1 {
 
 .close-anser:hover {
   background: #bbb;
+}
+
+/***********************************************/
+/*
+ * ul-li CSS answer
+ */
+
+.skill-rate {
+  margin-top: 2em;
+  padding-top: 2em;
+  border-top: 0.5px solid #ddd;
 }
