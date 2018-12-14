@@ -28,10 +28,14 @@
 			if(strcmp($passw, $passwConf)==0){
 			// liberazione della memoria dal risultato della query
 				@mysqli_free_result($result); 
-				$sql = "INSERT INTO user (user, password, first_name, last_name, role)
-						VALUES ('$mail', '$passw', '$nome', '$cognome', '$radio')";
+				$sql = "INSERT INTO user (user, password, first_name, last_name, role, status)
+						VALUES ('$mail', '$passw', '$nome', '$cognome', '$radio',".(strcmp($radio,'REQUESTER')==0?"0":("'1'"))." )";
 				$result = mysqli_query($con, $sql) or die ("'$mail', '$passw', '$nome', '$cognome', '$radio'");
-				$_SESSION['response']='Utente registrato! Effettua il login';
+				if(strcmp($radio,'REQUESTER') == 0){
+					$_SESSION['response']='Richiesta effettuata! Appena verrà confermata riceverai una mail';
+				} else {
+					$_SESSION['response']='Utente registrato! Effettua il login';
+				}
 				header ("location: login.php");
 			} else {
 				$hidden='';

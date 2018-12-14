@@ -43,6 +43,51 @@
         return $result_task;
     }
 
+    function query_user_request()
+    {
+        global $con;
+        $sql_user_request = "SELECT * FROM user WHERE status = 0";
+        $result_user_request = @mysqli_query($con, $sql_user_request) or die("Errore query user_request");
+        while($row = mysqli_fetch_array($result_user_request)){
+            echo "<tr>".
+                "<td>".$row['user']."</td>".
+                "<td class='tabletxt-center'>".$row['first_name']."</td>".
+                "<td class='tabletxt-center'>".$row['last_name']."</td>".
+                "<td class='tabletxt-center'>".$row['country']."</td>".
+                "<td>".
+                "<a class='tabletxt-center float-left' data-toggle='modal' 
+                data-target='#accept' onclick="."esito('".$row['user']."','accept')".
+                "><i class='fas fa-check' style='color: green;'></i>".
+                "<a class='tabletxt-center float-right' data-toggle='modal' data-target='#refused'>
+                <i class='fas fa-times' style='color: red;'></i>"."</td>".
+                "</tr>";
+        }
+        @mysqli_free_result($result_user_request);
+        return $result_user_request;
+    }
+
+    function query_accept_user()
+    {
+        global $con;
+        $user = $_POST['user'];
+
+        $sql_user = "UPDATE user SET status = 1 WHERE user = '$user'";
+        $result_user = @mysqli_query($con, $sql_user) or die("Errore query update");
+        $row = mysqli_fetch_array($result_user);
+        return $result_user;
+    }
+
+    function query_refuse_user()
+    {
+        global $con;
+        $user = $_POST['user'];
+
+        $sql_user = "DELETE FROM user WHERE user = '$user' AND role = 'REQUESTER'";
+        $result_user = @mysqli_query($con, $sql_user) or die("Errore rifiuto user!");
+        @mysqli_free_result($result_user);
+        return $result_user;
+    }
+
     function query_skill()
     {
         global $con;

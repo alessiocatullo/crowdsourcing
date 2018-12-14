@@ -1,15 +1,21 @@
-<!--LOGIN PAGE ERR-->
+<!--INDEX PAGE-->
 <?php
-	include('../php/lostPassw.php'); 
-?>
+	include('../../php/login.php'); // Includes Login Script
+	
+	/*
+	if(isset($_SESSION["login_user"])){
+		session_start();
+		header("location: home.php");
+	}*/
 
+?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<!--REFERENCES-->
-		<link href="../css/base.css" rel="stylesheet">
+		<link href="../../css/base.css" rel="stylesheet">
 		<!--TITLE-->
-   		<title>Password | Crowdsourcing </title>
+   		<title>Login | Crowdsourcing </title>
 	</head>
 	<body>
 		<div class="container">
@@ -19,7 +25,7 @@
 		        <!--BEGIN DIV FORM-->
 		        <div class="form-card">
 		        	<form method="post" action="">
-		        		<h2 class="form-text title">PASSWORD DIMENTICATA?</h2>
+		        		<h2 class="form-text title">LOGIN</h2>
 		        		<p>
 		        			<p>
 			        			<!--MAIL-->
@@ -27,24 +33,19 @@
 	                				<a for="inputMail" class="form-text">Email</a>
 				            		<input type="email" name="inputMail" id="inputMail" Placeholder="esempio@dominio.com" required autofocus>
 				            	</p>
-				            	<!--NUOVA PASSWORD-->
+				            	<!--PASSWORD-->
 				            	<p>
-		             		    	<a for="inputPassword" class="form-text">Nuova password</a>
-					            	<input type="password" name="inputNewPassword" id="inputPassword" Placeholder="Password" required>
-					            </p>
-					           <!--CONFERMA PASSWORD-->
-				            	<p>
-		             		    	<a for="inputPassword" class="form-text">Conferma password</a>
-					            	<input type="password" name="inputNewPasswordConf" id="inputPassword" Placeholder="Conferma Password" required>
+		             		    	<a for="inputPassword" class="form-text">Password</a>
+					            	<input type="password" name="inputPassword" id="inputPassword" Placeholder="Password" required>
 					            </p>
 			            	</p>
-			            	<p class="form-err" <?php echo $hidden; ?>>
+			            	<p class="form-err" style="background: <?php echo $bgcolor; ?>; color:<?php echo $color; ?>; " <?php echo $hidden; ?>>
                 				<a><strong><?php echo $error; ?></strong></a> 
               				</p>
 			            	<center>
-				           		<!--ACCEDI-->
+				           		<!--PASSWORD DIMENTICATA-->
 				           		<p style="-webkit-margin-before: 0px; -webkit-margin-after: 0px;">
-	                				<a class="form-text-2nd" href="login.php">Accedi</a>
+	                				<a class="form-text-2nd" href="lostPassw.php">Password dimenticata?</a>
 				            	</p>
 				            	<!--REGISTRATI-->
 	                			<p style="-webkit-margin-before: 0px; -webkit-margin-after: 0px;">
@@ -53,8 +54,8 @@
                 			</center>
                 		</p>
                 		<!--ACCEDI-->
-                  		<input class="form-btn" name="login" type="submit" value="MODIFICA">
-					</form>
+                  		<input class="form-btn" name="login" type="submit" value="Accedi">
+		        	</form>
 		        </div>
 		        <!--END DIV FORM-->
 		</div>

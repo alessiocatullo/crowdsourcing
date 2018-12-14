@@ -159,7 +159,19 @@ h1 {
 }
 
 .profile-modal{
-  max-width: 45%;
+  max-width: 35%;
+}
+
+
+ /***********************************************/
+/*
+ * Profile
+ */
+ .small {
+  display: block;
+  line-height: 1.428571429;
+  color: #999;
+  margin-bottom: 0px;
 }
 
  /***********************************************/

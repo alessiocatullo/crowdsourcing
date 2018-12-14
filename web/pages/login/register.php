@@ -1,13 +1,13 @@
 <!--REGISTER PAGE-->
 <?php
-	include('../php/register.php');
+	include('../../php/register.php');
 ?>
 
 <!DOCTYPE html>
 <html>
 	<head>
 		<!--REFERENCES-->
-		<link href="../css/base.css" rel="stylesheet">
+		<link href="../../css/base.css" rel="stylesheet">
 		<!--TITLE-->
    		<title>Registrati | Crowdsourcing </title>
 	</head>

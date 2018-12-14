@@ -52,7 +52,7 @@ ELENCO CAMPAGNE
 function details(name, id) {
   $(".content-details").html("");
   $( ".title-details" ).append(name);
-  $.ajax({ url: '../php/query.php',
+  $.ajax({ url: '../../php/query.php',
            data: {Method:'query_details', id: id},
            type: 'POST',
            success: function(e) {
@@ -63,7 +63,7 @@ function details(name, id) {
 
 function deleteCampaign(id) {
   $.ajax({  
-    url: '../php/query.php',
+    url: '../../php/query.php',
     data: {Method:'delete_campaign', id: id},
     type: 'POST',
     success: function(e) {
@@ -140,7 +140,7 @@ $(document).ready(function () {
 //FUNZIONE SELECT TASK
 function populateSelect(){
   $.ajax({ 
-    url: '../php/query.php',
+    url: '../../php/query.php',
     data: {Method:'query_skill'},
     type: 'POST',
       success: function(e) {
@@ -154,7 +154,7 @@ function populateSelect(){
 //FUNZIONE SELECT SUB CATEGORY
 function populateSubCategory(id, category){
   $.ajax({ 
-    url: '../php/query.php',
+    url: '../../php/query.php',
     data: {Method:'query_skill_subcategory', id_category: category},
     type: 'POST',
       success: function(e) {
@@ -214,5 +214,37 @@ function printResults(){
       clone.removeAttr('hidden');
       $('.recap-tasks').append(clone);
     }
+  }
+}
+
+/*******************************************
+PROFILE
+*******************************************/
+
+function profile(){
+
+}
+
+/*******************************************
+ADMIN
+*******************************************/
+function esito(user, esito){
+  if(esito.localeCompare("accept") == 0){
+    $.ajax({ 
+      url: '../../php/query.php',
+      data: {Method:'query_accept_user', user: user},
+      type: 'POST',
+        success: function(e) {
+        }
+    });
+  } else {
+    $.ajax({ 
+      url: '../../php/query.php',
+      data: {Method:'query_refuse_user', user: user},
+      type: 'POST',
+        success: function(e) {
+          location.reload();
+        }
+    });
   }
 }
