@@ -1,0 +1,1 @@
+CALL task_results(1 , @answer);
