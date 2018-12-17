@@ -9,3 +9,7 @@ NEW:
 - Aggiungere pagina nel login per segnalare al requester appena registrato che dovrà attendere l'accettazione 
 - Implementare l'invio delle richieste agli utenti admin
 - definire il layout della pagina dell'admin
+
+
+README:
+-Ho spostato il dum nella cartella DB, e ho messo delle folder per le view e le procedure in modo che non si sovrascrivino ad ogni import del db

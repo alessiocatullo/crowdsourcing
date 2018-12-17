@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: localhost    Database: crowd_sourcing
+-- Host: 127.0.0.1    Database: crowd_sourcing
 -- ------------------------------------------------------
 -- Server version	5.6.38-log
 
@@ -139,6 +139,7 @@ CREATE TABLE `task` (
   `worker_max` int(5) NOT NULL,
   `majority` int(3) NOT NULL,
   `reward` varchar(100) DEFAULT NULL,
+  `state` int(1) DEFAULT '0' COMMENT '0 = creato\n1 = in corso\n2 = risultato calcolato',
   `campaign` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `campaign_task_idx` (`campaign`),
@@ -152,9 +153,30 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
-INSERT INTO `task` VALUES (1,'Indica la categoria migliore per il seguente album musicale ','The dark side of moon ',5,60,NULL,1);
+INSERT INTO `task` VALUES (1,'Indica la categoria migliore per il seguente album musicale ','The dark side of moon ',5,60,NULL,1,1);
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `task_analytics`
+--
+
+DROP TABLE IF EXISTS `task_analytics`;
+/*!50001 DROP VIEW IF EXISTS `task_analytics`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `task_analytics` AS SELECT 
+ 1 AS `campaign_id`,
+ 1 AS `campaign_name`,
+ 1 AS `task_id`,
+ 1 AS `task_title`,
+ 1 AS `task_description`,
+ 1 AS `worker_max`,
+ 1 AS `majority_required`,
+ 1 AS `task_state`,
+ 1 AS `nof_answer`,
+ 1 AS `answer`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `task_performed`
@@ -186,22 +208,6 @@ LOCK TABLES `task_performed` WRITE;
 /*!40000 ALTER TABLE `task_performed` DISABLE KEYS */;
 /*!40000 ALTER TABLE `task_performed` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Temporary view structure for view `task_result`
---
-
-DROP TABLE IF EXISTS `task_result`;
-/*!50001 DROP VIEW IF EXISTS `task_result`*/;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-/*!50001 CREATE VIEW `task_result` AS SELECT 
- 1 AS `campaign_name`,
- 1 AS `task_title`,
- 1 AS `task_description`,
- 1 AS `worker_max`,
- 1 AS `majority_required`*/;
-SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `task_skill`
@@ -296,10 +302,42 @@ LOCK TABLES `user_skills` WRITE;
 UNLOCK TABLES;
 
 --
--- Final view structure for view `task_result`
+-- Dumping routines for database 'crowd_sourcing'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `task_results` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `task_results`(IN task_id INT(11))
+BEGIN
+ DECLARE result_answer VARCHAR(150);
+    SET result_answer = NULL;
+
+    SELECT (tsk_a.answer) INTO result_answer
+    FROM task_analytics AS tsk_a
+    WHERE tsk_a.nof_answer >= (tsk_a.worker_max * tsk_a.majority_required) / 100 AND tsk_a.task_state >= 1 AND tsk_a.task_id = task_id
+    ORDER BY tsk_a.nof_answer
+    LIMIT 0, 1;
+    
+    select result_answer;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Final view structure for view `task_analytics`
 --
 
-/*!50001 DROP VIEW IF EXISTS `task_result`*/;
+/*!50001 DROP VIEW IF EXISTS `task_analytics`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
@@ -308,7 +346,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `task_result` AS select `cmp`.`name` AS `campaign_name`,`tsk`.`title` AS `task_title`,`tsk`.`description` AS `task_description`,`tsk`.`worker_max` AS `worker_max`,`tsk`.`majority` AS `majority_required` from (`campaign` `cmp` join `task` `tsk`) where (`cmp`.`id` = `tsk`.`campaign`) */;
+/*!50001 VIEW `task_analytics` AS select `cmp`.`id` AS `campaign_id`,`cmp`.`name` AS `campaign_name`,`tsk`.`id` AS `task_id`,`tsk`.`title` AS `task_title`,`tsk`.`description` AS `task_description`,`tsk`.`worker_max` AS `worker_max`,`tsk`.`majority` AS `majority_required`,`tsk`.`state` AS `task_state`,count(`tsk_p`.`answer`) AS `nof_answer`,`ans`.`answer` AS `answer` from (((`campaign` `cmp` join `task` `tsk` on((`tsk`.`campaign` = `cmp`.`id`))) left join `task_performed` `tsk_p` on((`tsk_p`.`task` = `tsk`.`id`))) left join `answer_options` `ans` on((`ans`.`id` = `tsk_p`.`answer`))) where (`tsk`.`state` >= 1) group by `campaign_id`,`campaign_name`,`task_id`,`task_title`,`task_description`,`tsk`.`worker_max`,`majority_required`,`task_state`,`ans`.`answer` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -322,4 +360,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-14 13:02:21
+-- Dump completed on 2018-12-17 16:31:46
