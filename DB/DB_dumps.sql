@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: crowd_sourcing
+-- Host: localhost    Database: crowd_sourcing
 -- ------------------------------------------------------
 -- Server version	5.6.38-log
 
@@ -26,10 +26,11 @@ CREATE TABLE `answer_options` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `answer` varchar(150) NOT NULL,
   `task` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`answer`,`task`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `task_answers_idx` (`task`),
-  CONSTRAINT `task_answers` FOREIGN KEY (`task`) REFERENCES `task` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  CONSTRAINT `task_answers` FOREIGN KEY (`task`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=15664 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,10 +58,11 @@ CREATE TABLE `campaign` (
   `dt_accession_start` date NOT NULL,
   `dt_accession_end` date NOT NULL,
   `user` varchar(254) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`name`,`user`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `user_creation_idx` (`user`),
-  CONSTRAINT `user_creation` FOREIGN KEY (`user`) REFERENCES `user` (`mail`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  CONSTRAINT `user_creation` FOREIGN KEY (`user`) REFERENCES `user` (`user`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +71,7 @@ CREATE TABLE `campaign` (
 
 LOCK TABLES `campaign` WRITE;
 /*!40000 ALTER TABLE `campaign` DISABLE KEYS */;
-INSERT INTO `campaign` VALUES (1,'PROVA1','2018-06-21','2099-06-25','2018-06-21','2099-06-24','acatullo@test.com'),(2,'PROVA 2','2018-06-21','2099-06-25','2018-06-21','2099-06-24','frigamonti@test.com'),(3,'PROVA 3','2018-06-21','2099-06-25','2018-06-21','2099-06-24','frigamonti@test.com'),(4,'PROVA 4','2018-06-21','2099-06-25','2018-06-21','2099-06-24','acatullo@test.com'),(5,'PROVA 5','2018-06-21','2099-06-25','2018-06-21','2099-06-24','acatullo@test.com');
+INSERT INTO `campaign` VALUES (2,'PROVA 2','2018-06-21','2099-06-25','2018-06-21','2099-06-24','frigamonti@test.com'),(3,'PROVA 3','2018-06-21','2099-06-25','2018-06-21','2099-06-24','frigamonti@test.com'),(4,'PROVA 4','2018-06-21','2099-06-25','2018-06-21','2099-06-24','acatullo@test.com'),(5,'PROVA 5','2018-06-21','2099-06-25','2018-06-21','2099-06-24','acatullo@test.com'),(1,'PROVA1','2018-06-21','2099-06-25','2018-06-21','2099-06-24','acatullo@test.com');
 /*!40000 ALTER TABLE `campaign` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,7 +85,8 @@ DROP TABLE IF EXISTS `skill`;
 CREATE TABLE `skill` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`name`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -139,8 +142,8 @@ CREATE TABLE `task` (
   `campaign` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `campaign_task_idx` (`campaign`),
-  CONSTRAINT `campaign_task` FOREIGN KEY (`campaign`) REFERENCES `campaign` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  CONSTRAINT `campaign_task` FOREIGN KEY (`campaign`) REFERENCES `campaign` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=15581 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,15 +166,15 @@ DROP TABLE IF EXISTS `task_performed`;
 CREATE TABLE `task_performed` (
   `task` int(11) NOT NULL,
   `user` varchar(254) NOT NULL,
-  `score` int(1) DEFAULT NULL,
-  `state` int(1) DEFAULT NULL COMMENT '0 = assegnato\n1 = risposto\n2 = task finito e calcolato',
+  `score` int(1) NOT NULL,
+  `state` int(1) DEFAULT NULL,
   `answer` int(11) DEFAULT NULL,
   PRIMARY KEY (`task`,`user`),
   KEY `user_answer_idx` (`answer`),
   KEY `user_id_idx` (`user`),
   CONSTRAINT `task_id` FOREIGN KEY (`task`) REFERENCES `task` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `user_answer` FOREIGN KEY (`answer`) REFERENCES `answer_options` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `user_id` FOREIGN KEY (`user`) REFERENCES `user` (`mail`) ON DELETE NO ACTION ON UPDATE CASCADE
+  CONSTRAINT `user_id` FOREIGN KEY (`user`) REFERENCES `user` (`user`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -181,52 +184,55 @@ CREATE TABLE `task_performed` (
 
 LOCK TABLES `task_performed` WRITE;
 /*!40000 ALTER TABLE `task_performed` DISABLE KEYS */;
-INSERT INTO `task_performed` VALUES (1,'a@test.com',NULL,1,1),(1,'acatullo_wrk@test.com',NULL,1,1),(1,'b@test.com',NULL,1,2),(1,'c@test.com',NULL,1,2),(1,'frigamonti_wrk@test.com',NULL,1,2);
 /*!40000 ALTER TABLE `task_performed` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Temporary view structure for view `task_results`
+-- Temporary view structure for view `task_result`
 --
 
-DROP TABLE IF EXISTS `task_results`;
-/*!50001 DROP VIEW IF EXISTS `task_results`*/;
+DROP TABLE IF EXISTS `task_result`;
+/*!50001 DROP VIEW IF EXISTS `task_result`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `task_results` AS SELECT 
+/*!50001 CREATE VIEW `task_result` AS SELECT 
  1 AS `campaign_name`,
  1 AS `task_title`,
  1 AS `task_description`,
  1 AS `worker_max`,
- 1 AS `majority_required`,
- 1 AS `final_answer`*/;
+ 1 AS `majority_required`*/;
 SET character_set_client = @saved_cs_client;
 
 --
--- Table structure for table `task_skills`
+-- Table structure for table `task_skill`
 --
 
-DROP TABLE IF EXISTS `task_skills`;
+DROP TABLE IF EXISTS `task_skill`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `task_skills` (
-  `task` int(11) NOT NULL,
+CREATE TABLE `task_skill` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `skill` int(11) NOT NULL,
-  PRIMARY KEY (`task`,`skill`),
+  `skill_subcategory` int(11) DEFAULT NULL,
+  `task` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `task_idx` (`task`),
   KEY `skill_idx` (`skill`),
-  CONSTRAINT `skill` FOREIGN KEY (`skill`) REFERENCES `skill` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `task` FOREIGN KEY (`task`) REFERENCES `task` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `skill_category_idx` (`skill_subcategory`),
+  CONSTRAINT `skill` FOREIGN KEY (`skill`) REFERENCES `skill` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `skill_subcategory` FOREIGN KEY (`skill_subcategory`) REFERENCES `skill_subcategory` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `task` FOREIGN KEY (`task`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `task_skills`
+-- Dumping data for table `task_skill`
 --
 
-LOCK TABLES `task_skills` WRITE;
-/*!40000 ALTER TABLE `task_skills` DISABLE KEYS */;
-INSERT INTO `task_skills` VALUES (1,1);
-/*!40000 ALTER TABLE `task_skills` ENABLE KEYS */;
+LOCK TABLES `task_skill` WRITE;
+/*!40000 ALTER TABLE `task_skill` DISABLE KEYS */;
+INSERT INTO `task_skill` VALUES (1,1,NULL,1);
+/*!40000 ALTER TABLE `task_skill` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -237,7 +243,7 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
-  `mail` varchar(254) NOT NULL,
+  `user` varchar(254) NOT NULL,
   `password` varchar(20) NOT NULL,
   `first_name` varchar(45) NOT NULL,
   `last_name` varchar(100) NOT NULL,
@@ -247,7 +253,8 @@ CREATE TABLE `user` (
   `country` varchar(45) DEFAULT NULL,
   `last_login` datetime DEFAULT NULL,
   `role` varchar(45) NOT NULL,
-  PRIMARY KEY (`mail`)
+  `status` tinyint(4) NOT NULL,
+  PRIMARY KEY (`user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -257,7 +264,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('a@test.com','a','a','a',NULL,NULL,NULL,NULL,'2018-10-29 17:04:18','REQUESTER'),('acatullo@test.com','1234','Alessio','Catullo',NULL,NULL,NULL,NULL,'2018-11-05 12:15:12','REQUESTER'),('acatullo_wrk@test.com','1234','Alessio','Catullo',NULL,NULL,NULL,NULL,NULL,'WORKER'),('b@test.com','1234','b','b',NULL,NULL,NULL,NULL,NULL,'WORKER'),('c@test.com','1234','c','c',NULL,NULL,NULL,NULL,NULL,'WORKER'),('frigamonti@test.com','1234','Filippo','Rigamonti',NULL,NULL,NULL,NULL,'2018-12-05 15:52:12','REQUESTER'),('frigamonti_wrk@test.com','1234','Filippo','Rigamonti',NULL,NULL,NULL,NULL,NULL,'WORKER'),('g@g','g','Andrea','g',NULL,NULL,NULL,NULL,'2018-10-02 22:51:14','WORKER'),('gasdf@asdf','asd','giada','gge',NULL,NULL,NULL,NULL,NULL,'REQUESTER'),('h@h','h','h','h',NULL,NULL,NULL,NULL,NULL,'WORKER'),('nacar@gmail.com','asd','andrea','nacar',NULL,NULL,NULL,NULL,'2018-08-24 18:31:16','WORKER'),('p@p','p','p','p',NULL,NULL,NULL,NULL,NULL,'WORKER'),('q@q','q','q','q',NULL,NULL,NULL,NULL,'2018-10-02 11:33:45','REQUESTER'),('v@c','c','viviana','catullo',NULL,NULL,NULL,NULL,'2018-08-26 17:40:55','REQUESTER');
+INSERT INTO `user` VALUES ('1@1','1','admin','admin','2018-10-08','Via dei pini','Pieve Emanuele','Milano','2018-12-14 12:20:26','ADMIN',1),('a@test.com','a','a','a',NULL,NULL,NULL,NULL,'2018-10-29 17:04:18','REQUESTER',1),('acatullo@test.com','1234','Alessio','Catullo',NULL,NULL,NULL,NULL,'2018-12-14 12:20:16','REQUESTER',1),('acatullo_wrk@test.com','1234','Alessio','Catullo',NULL,NULL,NULL,NULL,'2018-12-13 14:49:57','WORKER',1),('asd@asd','asd','asd','asd',NULL,NULL,NULL,NULL,NULL,'REQUESTER',1),('b@test.com','1234','b','b',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('c@test.com','1234','c','c',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('dfg@dfg','dfg','dfg','dfg',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('fg@test.com','1234','Fil','gor',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('frigamonti@test.com','1234','Filippo','Rigamonti',NULL,NULL,NULL,NULL,'2018-06-20 15:37:12','REQUESTER',1),('frigamonti_wrk@test.com','1234','Filippo','Rigamonti',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('g@g','g','Andrea','g',NULL,NULL,NULL,NULL,'2018-10-02 22:51:14','WORKER',1),('gasdf@asdf','asd','giada','gge',NULL,NULL,NULL,NULL,NULL,'REQUESTER',1),('h@h','h','h','h',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('m@c','1234','marta','castoldi',NULL,NULL,NULL,NULL,NULL,'REQUESTER',0),('nacar@gmail.com','asd','andrea','nacar',NULL,NULL,NULL,NULL,'2018-08-24 18:31:16','WORKER',1),('p@p','p','p','p',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('sdf@sdf','sdf','sdf','sdf',NULL,NULL,NULL,NULL,NULL,'REQUESTER',0),('v@c','c','viviana','catullo',NULL,NULL,NULL,NULL,'2018-08-26 17:40:55','REQUESTER',0),('wer@wer','wer','wer','wer',NULL,NULL,NULL,NULL,'2018-12-14 12:11:02','REQUESTER',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -275,7 +282,7 @@ CREATE TABLE `user_skills` (
   PRIMARY KEY (`user`,`skill`),
   KEY `skill_id_idx` (`skill`),
   CONSTRAINT `skill_id` FOREIGN KEY (`skill`) REFERENCES `skill` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  CONSTRAINT `user_mail` FOREIGN KEY (`user`) REFERENCES `user` (`mail`) ON DELETE NO ACTION ON UPDATE CASCADE
+  CONSTRAINT `user_mail` FOREIGN KEY (`user`) REFERENCES `user` (`user`) ON DELETE NO ACTION ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -289,10 +296,10 @@ LOCK TABLES `user_skills` WRITE;
 UNLOCK TABLES;
 
 --
--- Final view structure for view `task_results`
+-- Final view structure for view `task_result`
 --
 
-/*!50001 DROP VIEW IF EXISTS `task_results`*/;
+/*!50001 DROP VIEW IF EXISTS `task_result`*/;
 /*!50001 SET @saved_cs_client          = @@character_set_client */;
 /*!50001 SET @saved_cs_results         = @@character_set_results */;
 /*!50001 SET @saved_col_connection     = @@collation_connection */;
@@ -301,7 +308,7 @@ UNLOCK TABLES;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `task_results` AS select `cmp`.`name` AS `campaign_name`,`tsk`.`title` AS `task_title`,`tsk`.`description` AS `task_description`,`tsk`.`worker_max` AS `worker_max`,`tsk`.`majority` AS `majority_required`,(select `ans`.`answer` from ((`answer_options` `ans` join `task` `tsk` on((`tsk`.`id` = `ans`.`task`))) join `task_performed` `tsk_p` on(((`tsk_p`.`task` = `tsk`.`id`) and (`tsk_p`.`answer` = `ans`.`id`)))) where (`tsk_p`.`state` >= 1) group by `ans`.`answer` having (count(`ans`.`answer`) >= ((`tsk`.`majority` * `tsk`.`worker_max`) / 100)) limit 0,1) AS `final_answer` from (`campaign` `cmp` join `task` `tsk` on((`tsk`.`campaign` = `cmp`.`id`))) */;
+/*!50001 VIEW `task_result` AS select `cmp`.`name` AS `campaign_name`,`tsk`.`title` AS `task_title`,`tsk`.`description` AS `task_description`,`tsk`.`worker_max` AS `worker_max`,`tsk`.`majority` AS `majority_required` from (`campaign` `cmp` join `task` `tsk`) where (`cmp`.`id` = `tsk`.`campaign`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -315,4 +322,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-05 17:25:57
+-- Dump completed on 2018-12-14 13:02:21
