@@ -1,1 +1,1 @@
-CALL task_results(1 , @answer);
+CALL task_results(1);
