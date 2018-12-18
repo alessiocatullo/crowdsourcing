@@ -153,7 +153,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
-INSERT INTO `task` VALUES (1,'Indica la categoria migliore per il seguente album musicale ','The dark side of moon ',5,60,NULL,1,1);
+INSERT INTO `task` VALUES (1,'Indica la categoria migliore per il seguente album musicale ','The dark side of moon ',5,60,NULL,2,1),(2,'PROVA 1','PROVA 1',5,60,NULL,1,1);
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -175,6 +175,7 @@ SET character_set_client = utf8;
  1 AS `majority_required`,
  1 AS `task_state`,
  1 AS `nof_answer`,
+ 1 AS `answer_id`,
  1 AS `answer`*/;
 SET character_set_client = @saved_cs_client;
 
@@ -188,8 +189,7 @@ DROP TABLE IF EXISTS `task_performed`;
 CREATE TABLE `task_performed` (
   `task` int(11) NOT NULL,
   `user` varchar(254) NOT NULL,
-  `score` int(1) NOT NULL,
-  `state` int(1) DEFAULT NULL,
+  `score` int(1) DEFAULT NULL,
   `answer` int(11) DEFAULT NULL,
   PRIMARY KEY (`task`,`user`),
   KEY `user_answer_idx` (`answer`),
@@ -206,6 +206,7 @@ CREATE TABLE `task_performed` (
 
 LOCK TABLES `task_performed` WRITE;
 /*!40000 ALTER TABLE `task_performed` DISABLE KEYS */;
+INSERT INTO `task_performed` VALUES (1,'acatullo_wrk@test.com',1,1),(1,'b@test.com',1,1),(1,'c@test.com',0,2),(1,'fg@test.com',0,2),(1,'p@p',1,1);
 /*!40000 ALTER TABLE `task_performed` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,6 +305,62 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'crowd_sourcing'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `calculating_score` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `calculating_score`(IN task_id INT(11))
+BEGIN
+DECLARE result_answer INT(11);
+DECLARE answer_number INT(5);
+DECLARE max_worker INT(5);
+    SET result_answer = NULL;
+    SET answer_number = 0;
+    SET max_worker = 0;
+
+SELECT 
+    (tsk_a.answer_id)
+INTO result_answer FROM
+    task_analytics AS tsk_a
+WHERE
+    tsk_a.nof_answer >= (tsk_a.worker_max * tsk_a.majority_required) / 100
+        AND tsk_a.task_state >= 1
+        AND tsk_a.task_id = task_id
+ORDER BY tsk_a.nof_answer DESC
+LIMIT 0 , 1;
+
+SELECT 
+    COUNT(tsk_a.answer), tsk_a.worker_max
+INTO answer_number , max_worker FROM
+    task_analytics AS tsk_a
+WHERE
+    tsk_a.task_state >= 1
+        AND tsk_a.task_id = task_id;
+    
+IF result_answer IS NOT NULL OR answer_number = max_worker
+THEN 
+	UPDATE task SET state = 2
+	WHERE id = task_id;
+    
+    UPDATE task_performed SET score = 1
+	WHERE task = task_id AND answer = result_answer;
+    
+    UPDATE task_performed SET score = 0
+	WHERE task = task_id AND answer != result_answer;
+    
+END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `task_results` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -316,16 +373,18 @@ UNLOCK TABLES;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `task_results`(IN task_id INT(11))
 BEGIN
+ DECLARE result_answer_id INT(11);
  DECLARE result_answer VARCHAR(150);
+    SET result_answer_id = NULL;
     SET result_answer = NULL;
 
-    SELECT (tsk_a.answer) INTO result_answer
+    SELECT tsk_a.answer_id, tsk_a.answer INTO result_answer_id, result_answer
     FROM task_analytics AS tsk_a
     WHERE tsk_a.nof_answer >= (tsk_a.worker_max * tsk_a.majority_required) / 100 AND tsk_a.task_state >= 1 AND tsk_a.task_id = task_id
-    ORDER BY tsk_a.nof_answer
+    ORDER BY tsk_a.nof_answer DESC
     LIMIT 0, 1;
     
-    select result_answer;
+    select result_answer_id, result_answer;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -346,7 +405,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `task_analytics` AS select `cmp`.`id` AS `campaign_id`,`cmp`.`name` AS `campaign_name`,`tsk`.`id` AS `task_id`,`tsk`.`title` AS `task_title`,`tsk`.`description` AS `task_description`,`tsk`.`worker_max` AS `worker_max`,`tsk`.`majority` AS `majority_required`,`tsk`.`state` AS `task_state`,count(`tsk_p`.`answer`) AS `nof_answer`,`ans`.`answer` AS `answer` from (((`campaign` `cmp` join `task` `tsk` on((`tsk`.`campaign` = `cmp`.`id`))) left join `task_performed` `tsk_p` on((`tsk_p`.`task` = `tsk`.`id`))) left join `answer_options` `ans` on((`ans`.`id` = `tsk_p`.`answer`))) where (`tsk`.`state` >= 1) group by `campaign_id`,`campaign_name`,`task_id`,`task_title`,`task_description`,`tsk`.`worker_max`,`majority_required`,`task_state`,`ans`.`answer` */;
+/*!50001 VIEW `task_analytics` AS select `cmp`.`id` AS `campaign_id`,`cmp`.`name` AS `campaign_name`,`tsk`.`id` AS `task_id`,`tsk`.`title` AS `task_title`,`tsk`.`description` AS `task_description`,`tsk`.`worker_max` AS `worker_max`,`tsk`.`majority` AS `majority_required`,`tsk`.`state` AS `task_state`,count(`tsk_p`.`answer`) AS `nof_answer`,`ans`.`id` AS `answer_id`,`ans`.`answer` AS `answer` from (((`campaign` `cmp` join `task` `tsk` on((`tsk`.`campaign` = `cmp`.`id`))) left join `task_performed` `tsk_p` on((`tsk_p`.`task` = `tsk`.`id`))) left join `answer_options` `ans` on((`ans`.`id` = `tsk_p`.`answer`))) where (`tsk`.`state` >= 1) group by `campaign_id`,`campaign_name`,`task_id`,`task_title`,`task_description`,`tsk`.`worker_max`,`majority_required`,`task_state`,`answer_id`,`ans`.`answer` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -360,4 +419,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-17 16:31:46
+-- Dump completed on 2018-12-18 15:49:54
