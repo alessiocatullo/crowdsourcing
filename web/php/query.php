@@ -23,6 +23,66 @@
     	return $result_campaign;
 	}
 
+    function query_campaign_wrk($user)
+    {
+        global $con;
+        $pointer = '.';
+
+        $sql_campaign_wrk = "SELECT id, name, dt_accession_start, dt_accession_end, cp".$pointer."user 
+            FROM campaign as c 
+            LEFT JOIN 
+                (SELECT campaign, user 
+                FROM campaign_performed 
+                WHERE user = '$user') as cp
+            ON c".$pointer."id = cp".$pointer."campaign";
+
+        $result_campaign_wrk = @mysqli_query($con, $sql_campaign_wrk) or die("Errore query campagne -> $sql_campaign_wrk");
+        while($row=mysqli_fetch_array($result_campaign_wrk)){
+            echo "
+            <li class='campains-element col-12 col-md-6 col-lg-3'>
+                <div class='card-campaign' id=".$row['id'].">
+                    <div class='banner row'>
+                        <div class='col-md-12'>
+                            <button class='btn btn-result ".($row['user'] == null ? 'btn-sub':'btn-sub-remove')." float-right' type='button'>
+                                <i class='fas ".($row['user'] == null ? 'fa-plus':'fa-times')."'></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class='main ". ($row['user'] == null ? 'cnt-block':'cnt-block-sub')." equal-hight'>
+                        <h3 class='name-campaigns'>".$row['name']."</h3>
+                        <p class='dt_start_campagins'>Data inizio: ".$row['dt_accession_start']."</p>
+                        <p class='dt_end_campagins'>Data fine: ".$row['dt_accession_end']."</p>
+                    </div>
+                </div>
+            </li>";
+        }
+        @mysqli_free_result($result_campaign_wrk);
+        return $result_campaign_wrk;
+    }
+
+    function query_sub_campaign()
+    {
+        global $con;
+        $campaign = $_POST['campaign'];
+        $user = $_POST['user'];
+
+        $sql_sub_campaign = "INSERT INTO campaign_performed (campaign, user) VALUES ('$campaign', '$user')";
+        $result_sub_campaign = @mysqli_query($con, $sql_sub_campaign) 
+            or die("Errore query registrazione alla campagna ->".$campaign." ".$user);
+        return $result_sub_campaign;
+    }
+
+    function query_remove_campaign()
+    {
+        global $con;
+        $campaign = $_POST['campaign'];
+        $user = $_POST['user'];
+
+        $sql_remove_campaign = "DELETE FROM campaign_performed WHERE campaign = '$campaign' AND user = '$user'";
+        $result_remove_campaign = @mysqli_query($con, $sql_remove_campaign) or die("Errore query elimina iscrizione alla campagna");
+        return $result_remove_campaign;
+    }
+
     function query_details()
     {
         global $con;
