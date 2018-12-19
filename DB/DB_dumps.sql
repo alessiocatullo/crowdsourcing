@@ -153,7 +153,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
-INSERT INTO `task` VALUES (1,'Indica la categoria migliore per il seguente album musicale ','The dark side of moon ',5,60,NULL,2,1),(2,'PROVA 1','PROVA 1',5,60,NULL,1,1);
+INSERT INTO `task` VALUES (1,'Indica la categoria migliore per il seguente album musicale ','The dark side of moon ',5,60,NULL,2,1),(2,'PROVA 1','PROVA 1',5,60,NULL,2,1),(3,'PROVA 2','PROVA 2',5,60,NULL,2,1);
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -361,6 +361,55 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `campaign_analytics` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `campaign_analytics`(IN my_campaign_id INT(11))
+BEGIN
+	DECLARE fetch_done INT DEFAULT FALSE;
+    DECLARE procedure_done INT DEFAULT FALSE;
+	DECLARE my_task_id INT(11);
+	DECLARE task_id_cursor CURSOR FOR SELECT tsk.id FROM task tsk WHERE tsk.campaign = my_campaign_id AND tsk.state >= 2;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET fetch_done = TRUE, procedure_done = TRUE;
+    
+    DROP TEMPORARY TABLE IF EXISTS my_tmp_task;
+    CREATE TEMPORARY TABLE IF NOT EXISTS my_tmp_task 
+		(my_tsk_id INT(11) , my_tsk_title VARCHAR(150), my_tsk_description LONGTEXT, my_res_ans_id INT(11), my_res_ans VARCHAR(150));
+    
+    OPEN task_id_cursor;
+    LOOPTASK: LOOP
+    
+		FETCH task_id_cursor INTO my_task_id;
+		IF fetch_done = TRUE THEN
+			LEAVE LOOPTASK;
+		END IF;
+        
+		CALL task_results(my_task_id, @result_answer_id, @result_answer);
+            
+		IF (procedure_done = TRUE) THEN 
+		   SET fetch_done = FALSE;
+		END IF;
+		
+		-- SELECT tsk.id, tsk.title, tsk.description, @result_answer_id, @result_answer FROM task tsk WHERE tsk.id = my_task_id;
+		INSERT INTO my_tmp_task(my_tsk_id, my_tsk_title, my_tsk_description, my_res_ans_id, my_res_ans) 
+			SELECT tsk.id, tsk.title, tsk.description, @result_answer_id, @result_answer FROM task tsk WHERE tsk.id = my_task_id;   
+    END LOOP LOOPTASK;
+    
+    CLOSE task_id_cursor;
+    SELECT * FROM my_tmp_task;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `task_results` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -371,20 +420,13 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `task_results`(IN task_id INT(11))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `task_results`(IN task_id INT(11), OUT result_answer_id INT(11), OUT result_answer VARCHAR(150))
 BEGIN
- DECLARE result_answer_id INT(11);
- DECLARE result_answer VARCHAR(150);
-    SET result_answer_id = NULL;
-    SET result_answer = NULL;
-
-    SELECT tsk_a.answer_id, tsk_a.answer INTO result_answer_id, result_answer
+	SELECT tsk_a.answer_id, tsk_a.answer INTO result_answer_id, result_answer
     FROM task_analytics AS tsk_a
     WHERE tsk_a.nof_answer >= (tsk_a.worker_max * tsk_a.majority_required) / 100 AND tsk_a.task_state >= 1 AND tsk_a.task_id = task_id
     ORDER BY tsk_a.nof_answer DESC
     LIMIT 0, 1;
-    
-    select result_answer_id, result_answer;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -419,4 +461,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-18 15:49:54
+-- Dump completed on 2018-12-19 15:20:12
