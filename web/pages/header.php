@@ -25,7 +25,7 @@
       </a>
       <div class="navbar-buttons navbar-right" style="text-align:right">
         <a href='' class="navbar-brand" data-toggle="modal" data-target="#profile" onclick='profile()'><i class='fas fa-user'></i></a>
-        <a href="../../php/logout.php" class="navbar-brand"><i class="fas fa-sign-out-alt"></i></a>
+        <a href="../../php/logout.php" class="navbar-brand logout"><i class="fas fa-sign-out-alt"></i></a>
       </div>
     </nav>
 
@@ -93,3 +93,8 @@
     </div>
   </body>
 </html>
+<script>
+  $(".logout").on('click', function() {
+    window.localStorage.clear();
+  });
+</script>

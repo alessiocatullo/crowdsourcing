@@ -91,7 +91,7 @@
     function query_skill()
     {
         global $con;
-        $sql_category = "SELECT * FROM skill";
+        $sql_category = "SELECT * FROM skill WHERE main_skill = 0";
         $result_category = @mysqli_query($con, $sql_category) or die("Errore query task-category");
         while($row = mysqli_fetch_array($result_category)){
             echo "<option id=".$row['id'].">".$row['name']."</option>";
@@ -104,7 +104,7 @@
     {
         global $con;
         $category = $_POST['id_category']; 
-        $sql_subcategory = "SELECT * FROM skill_subcategory WHERE category = '$category'";
+        $sql_subcategory = "SELECT * FROM skill WHERE main_skill = '$category'";
         $result_subcategory = @mysqli_query($con, $sql_subcategory) or die("Errore query task-category");
         while($row = mysqli_fetch_array($result_subcategory)){
            echo "<option id=".$row['id'].">".$row['name']."</option>";

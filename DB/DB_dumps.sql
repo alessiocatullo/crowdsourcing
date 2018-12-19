@@ -85,9 +85,10 @@ DROP TABLE IF EXISTS `skill`;
 CREATE TABLE `skill` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
-  PRIMARY KEY (`name`),
+  `main_skill` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`name`,`main_skill`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +97,7 @@ CREATE TABLE `skill` (
 
 LOCK TABLES `skill` WRITE;
 /*!40000 ALTER TABLE `skill` DISABLE KEYS */;
-INSERT INTO `skill` VALUES (1,'Musica'),(2,'Games'),(3,'Film'),(4,'Informatica');
+INSERT INTO `skill` VALUES (1,'Musica',0),(2,'Games',0),(3,'Film',0),(4,'Informatica',0),(5,'Jazz',1),(6,'Blues',1),(7,'Metal',1),(8,'Folk',1),(9,'Funky',1),(10,'Rock',1),(11,'Hip-Pop',1),(12,'Rap',1),(13,'Pop',1),(14,'Indie',1),(15,'RPG',2),(16,'FPS Arena',2),(17,'Moba',2),(18,'Quiz',2),(19,'Survival horror',2),(20,'Simulazione',2),(21,'Sport',2),(22,'Indie',2),(23,'Avventura Grafica',2),(24,'Animazione',3),(25,'Commedia',3),(26,'Documentario',3),(27,'Avventura',3),(28,'Horror',3),(29,'Thriller',3),(30,'Storico',3),(31,'Fantasy',3),(32,'Drammatico',3),(33,'Notebook',4),(34,'Tablet',4),(35,'Schede Grafiche',4),(36,'Monitor',4),(37,'Stampanti',4),(38,'Hard Disk',4),(39,'Router',4),(40,'Mouse',4),(41,'Tastiere',4);
 /*!40000 ALTER TABLE `skill` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,24 +108,6 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `skill_subcategory`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `skill_subcategory` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  `category` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`name`,`category`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `skill_subcategory`
---
-
-LOCK TABLES `skill_subcategory` WRITE;
-/*!40000 ALTER TABLE `skill_subcategory` DISABLE KEYS */;
-INSERT INTO `skill_subcategory` VALUES (1,'Jazz',1),(2,'Blues',1),(3,'Metal',1),(4,'Folk',1),(5,'Funky',1),(6,'Rock',1),(7,'Hip-Pop',1),(8,'Rap',1),(9,'Pop',1),(10,'Indie',1),(11,'RPG',2),(12,'FPS Arena',2),(13,'Moba',2),(14,'Quiz',2),(15,'Survival horror',2),(16,'Simulazione',2),(17,'Sport',2),(18,'Indie',2),(19,'Avventura Grafica',2),(20,'Animazione',3),(21,'Commedia',3),(22,'Documentario',3),(23,'Avventura',3),(24,'Horror',3),(25,'Thriller',3),(26,'Storico',3),(27,'Fantasy',3),(28,'Drammatico',3),(29,'Notebook',4),(38,'Tablet',4),(39,'Schede Grafiche',4),(40,'Monitor',4),(41,'Stampanti',4),(42,'Hard Disk',4),(43,'Router',4),(44,'Mouse',4),(45,'Tastiere',4);
-/*!40000 ALTER TABLE `skill_subcategory` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `task`
 --

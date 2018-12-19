@@ -12,6 +12,6 @@
 	} else {
 		@mysqli_free_result($result);
 		@mysqli_close($con);
-		header('Location: login.php');
+		header('Location: ../login/login.php');
 	}
 ?>
