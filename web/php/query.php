@@ -40,18 +40,19 @@
         while($row=mysqli_fetch_array($result_campaign_wrk)){
             echo "
             <li class='campains-element col-12 col-md-6 col-lg-3'>
-                <div class='card card-campaign ' style='margin-bottom: 2pc;'>
-                    <div class='img-sub' style='height: 100%; width: 100%; position: absolute;' ". ($row['user'] != null ? '':'hidden') ."></div>
-                        <img class='img-fluid ". ($row['user'] != null ? 'sub':'') ."'' src='../../ico/campaign.png'>
-                        <div class='card-body'>
-                            <h4 class='card-title'>".$row['name']."</h4>
-                            <h6 class='card-text'>Iscrizioni:</h6>
-                            <h7 class='card-text'>Da: ".$row['dt_accession_start']."</h7>
-                            <p class='card-text'>A: ".$row['dt_accession_end']."</p>
-                            <div class='d-flex justify-content-center' style='margin-top: 2pc;'>
-                                <button class='btn btn-primary'>Iscriviti</button> 
-                            </div>                 
-                        </div>
+                <div class='card card-campaign ". ($row['user'] != null ? 'subbed':'') ."'' id='".$row['id']."' style='margin-bottom: 2pc;'>
+                    <button class='close btn-sub-remove' style='position: absolute; right: 15px; top: 10px;' ".($row['user'] != null ? '':'hidden')."><i class='fas fa-times'></i></button>
+                    <img class='img-fluid' src='../../ico/". ($row['user'] != null ? 'campaign-sub':'campaign').".png'>
+                    <div class='card-body ". ($row['user'] != null ? 'sub':'') ."'>
+                        <h4 class='card-title'>".$row['name']."</h4>
+                        <h6 class='card-text'>Iscrizioni:</h6>
+                        <h7 class='card-text'>Da: ".$row['dt_accession_start']."</h7>
+                        <p class='card-text'>A: ".$row['dt_accession_end']."</p>
+                    </div>
+                    <div class='card-footer'>
+                        <div class='d-flex justify-content-center'>
+                            <button class='btn btn-sub btn-". ($row['user'] != null ? 'success':'danger')."'>". ($row['user'] != null ? 'Richiedi Task':'Iscriviti')."</button> 
+                        </div>                 
                     </div>
                 </div>
             </li>";

@@ -14,40 +14,48 @@
   $('.card-campaign').on('click', '.btn-sub' ,function(){
     $user = '<?php echo $_SESSION['user'] ?>';
     $campaign = $(this).closest(".card-campaign").attr("id");
-    alert($(this).attr('class'));
-    $.ajax({ url: '../../php/query.php',
-      data: {Method:'query_sub_campaign', user: $user, campaign: $campaign},
-      type: 'POST',
-      success: function(e) {
-        alert($(this));
-        $(this).closest('.card-campaign').find('.main').removeClass('cnt-block');
-        $(this).closest('.card-campaign').find('.main').addClass("cnt-block-sub");
-        $(this).find('.fas').removeClass('fa-plus');
-        $(this).find('.fas').addClass("fa-times");
-        $(this).removeClass('btn-sub');
-        $(this).find('.btn-sub').addClass("btn-sub-remove");
-      },
-      error: function(e) {
-        alert(e);
-      }
-    });
+    $campaignDiv = $(this).closest(".card-campaign");
+
+    if( $(this).hasClass('btn-danger')){
+      //ISCRIVERE
+        $.ajax({ url: '../../php/query.php',
+        data: {Method:'query_sub_campaign', user: $user, campaign: $campaign},
+        type: 'POST',
+        success: function(e) {
+          $campaignDiv.addClass('subbed');
+          $campaignDiv.find('.img-fluid').attr("src","../../ico/campaign-sub.png");
+          $campaignDiv.find('.card-body').addClass('sub');
+          $campaignDiv.find('.btn-sub').removeClass('btn-danger');
+          $campaignDiv.find('.btn-sub').addClass('btn-success');
+          $campaignDiv.find('.btn-sub').text('Richiedi Task');
+          $campaignDiv.find('.btn-sub-remove').removeAttr("hidden");
+        },
+        error: function(e) {
+          alert(e);
+        }
+      });
+    } else {
+      alert("RICHIEDO TASK");
+    }
   });
 
-    $('.card-campaign').on('click', '.btn-sub-remove' ,function(){
+  $('.card-campaign').on('click', '.btn-sub-remove' ,function(){
     $user = '<?php echo $_SESSION['user'] ?>';
     $campaign = $(this).closest(".card-campaign").attr("id");
-    alert($(this).attr('class'));
-    $.ajax({ url: '../../php/query.php',
+    $campaignDiv = $(this).closest(".card-campaign");
+
+      //RIMUOVERE ISCRIZIONE
+      $.ajax({ url: '../../php/query.php',
       data: {Method:'query_remove_campaign', user: $user, campaign: $campaign},
       type: 'POST',
       success: function(e) {
-        alert(e);
-        $(this).closest('.card-campaign').find('.main').removeClass('cnt-block-sub');
-        $(this).closest('.card-campaign').find('.main').addClass("cnt-block");
-        $(this).find('.fas').removeClass('fa-times');
-        $(this).find('.fas').addClass("fa-plus");
-        $(this).removeClass('btn-sub-remove');
-        $(this).addClass("btn-sub");
+        $campaignDiv.removeClass('subbed');
+        $campaignDiv.find('.img-fluid').attr("src","../../ico/campaign.png");
+        $campaignDiv.find('.card-body').removeClass('sub');
+        $campaignDiv.find('.btn-sub').removeClass('btn-success');
+        $campaignDiv.find('.btn-sub').addClass('btn-danger');
+        $campaignDiv.find('.btn-sub').text('Iscriviti');
+        $campaignDiv.find('.btn-sub-remove').attr('hidden', 'hidden');
       },
       error: function(e) {
         alert(e);
