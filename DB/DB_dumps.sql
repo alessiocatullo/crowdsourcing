@@ -1,6 +1,8 @@
+CREATE DATABASE  IF NOT EXISTS `crowd_sourcing` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `crowd_sourcing`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: crowd_sourcing
+-- Host: localhost    Database: crowd_sourcing
 -- ------------------------------------------------------
 -- Server version	5.6.38-log
 
@@ -76,6 +78,33 @@ INSERT INTO `campaign` VALUES (2,'PROVA 2','2018-06-21','2099-06-25','2018-06-21
 UNLOCK TABLES;
 
 --
+-- Table structure for table `campaign_performed`
+--
+
+DROP TABLE IF EXISTS `campaign_performed`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `campaign_performed` (
+  `campaign` int(11) NOT NULL,
+  `user` varchar(45) NOT NULL,
+  PRIMARY KEY (`campaign`,`user`),
+  KEY `user_idx` (`user`),
+  CONSTRAINT `campaign` FOREIGN KEY (`campaign`) REFERENCES `campaign` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `user` FOREIGN KEY (`user`) REFERENCES `user` (`user`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `campaign_performed`
+--
+
+LOCK TABLES `campaign_performed` WRITE;
+/*!40000 ALTER TABLE `campaign_performed` DISABLE KEYS */;
+INSERT INTO `campaign_performed` VALUES (1,'acatullo_wrk@test.com'),(2,'acatullo_wrk@test.com'),(3,'acatullo_wrk@test.com'),(4,'acatullo_wrk@test.com'),(3,'fg@test.com');
+/*!40000 ALTER TABLE `campaign_performed` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `skill`
 --
 
@@ -101,13 +130,6 @@ INSERT INTO `skill` VALUES (1,'Musica',0),(2,'Games',0),(3,'Film',0),(4,'Informa
 /*!40000 ALTER TABLE `skill` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `skill_subcategory`
---
-
-DROP TABLE IF EXISTS `skill_subcategory`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 --
 -- Table structure for table `task`
 --
@@ -254,7 +276,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('1@1','1','admin','admin','2018-10-08','Via dei pini','Pieve Emanuele','Milano','2018-12-14 12:20:26','ADMIN',1),('a@test.com','a','a','a',NULL,NULL,NULL,NULL,'2018-10-29 17:04:18','REQUESTER',1),('acatullo@test.com','1234','Alessio','Catullo',NULL,NULL,NULL,NULL,'2018-12-14 12:20:16','REQUESTER',1),('acatullo_wrk@test.com','1234','Alessio','Catullo',NULL,NULL,NULL,NULL,'2018-12-13 14:49:57','WORKER',1),('asd@asd','asd','asd','asd',NULL,NULL,NULL,NULL,NULL,'REQUESTER',1),('b@test.com','1234','b','b',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('c@test.com','1234','c','c',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('dfg@dfg','dfg','dfg','dfg',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('fg@test.com','1234','Fil','gor',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('frigamonti@test.com','1234','Filippo','Rigamonti',NULL,NULL,NULL,NULL,'2018-06-20 15:37:12','REQUESTER',1),('frigamonti_wrk@test.com','1234','Filippo','Rigamonti',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('g@g','g','Andrea','g',NULL,NULL,NULL,NULL,'2018-10-02 22:51:14','WORKER',1),('gasdf@asdf','asd','giada','gge',NULL,NULL,NULL,NULL,NULL,'REQUESTER',1),('h@h','h','h','h',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('m@c','1234','marta','castoldi',NULL,NULL,NULL,NULL,NULL,'REQUESTER',0),('nacar@gmail.com','asd','andrea','nacar',NULL,NULL,NULL,NULL,'2018-08-24 18:31:16','WORKER',1),('p@p','p','p','p',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('sdf@sdf','sdf','sdf','sdf',NULL,NULL,NULL,NULL,NULL,'REQUESTER',0),('v@c','c','viviana','catullo',NULL,NULL,NULL,NULL,'2018-08-26 17:40:55','REQUESTER',0),('wer@wer','wer','wer','wer',NULL,NULL,NULL,NULL,'2018-12-14 12:11:02','REQUESTER',0);
+INSERT INTO `user` VALUES ('1@1','1','admin','admin','2018-10-08','Via dei pini','Pieve Emanuele','Milano','2018-12-14 12:20:26','ADMIN',1),('a@test.com','a','a','a',NULL,NULL,NULL,NULL,'2018-10-29 17:04:18','REQUESTER',1),('acatullo@test.com','1234','Alessio','Catullo',NULL,NULL,NULL,NULL,'2018-12-19 22:54:28','REQUESTER',1),('acatullo_wrk@test.com','1234','Alessio','Catullo',NULL,NULL,NULL,NULL,'2018-12-20 10:25:45','WORKER',1),('asd@asd','asd','asd','asd',NULL,NULL,NULL,NULL,NULL,'REQUESTER',1),('b@test.com','1234','b','b',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('c@test.com','1234','c','c',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('dfg@dfg','dfg','dfg','dfg',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('fg@test.com','1234','Fil','gor',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('frigamonti@test.com','1234','Filippo','Rigamonti',NULL,NULL,NULL,NULL,'2018-06-20 15:37:12','REQUESTER',1),('frigamonti_wrk@test.com','1234','Filippo','Rigamonti',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('g@g','g','Andrea','g',NULL,NULL,NULL,NULL,'2018-10-02 22:51:14','WORKER',1),('gasdf@asdf','asd','giada','gge',NULL,NULL,NULL,NULL,NULL,'REQUESTER',1),('h@h','h','h','h',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('m@c','1234','marta','castoldi',NULL,NULL,NULL,NULL,NULL,'REQUESTER',0),('nacar@gmail.com','asd','andrea','nacar',NULL,NULL,NULL,NULL,'2018-08-24 18:31:16','WORKER',1),('p@p','p','p','p',NULL,NULL,NULL,NULL,NULL,'WORKER',1),('sdf@sdf','sdf','sdf','sdf',NULL,NULL,NULL,NULL,NULL,'REQUESTER',0),('v@c','c','viviana','catullo',NULL,NULL,NULL,NULL,'2018-08-26 17:40:55','REQUESTER',0),('wer@wer','wer','wer','wer',NULL,NULL,NULL,NULL,'2018-12-14 12:11:02','REQUESTER',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,138 +308,6 @@ LOCK TABLES `user_skills` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'crowd_sourcing'
---
-/*!50003 DROP PROCEDURE IF EXISTS `calculating_score` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `calculating_score`(IN task_id INT(11))
-BEGIN
-DECLARE result_answer INT(11);
-DECLARE answer_number INT(5);
-DECLARE max_worker INT(5);
-    SET result_answer = NULL;
-    SET answer_number = 0;
-    SET max_worker = 0;
-
-SELECT 
-    (tsk_a.answer_id)
-INTO result_answer FROM
-    task_analytics AS tsk_a
-WHERE
-    tsk_a.nof_answer >= (tsk_a.worker_max * tsk_a.majority_required) / 100
-        AND tsk_a.task_state >= 1
-        AND tsk_a.task_id = task_id
-ORDER BY tsk_a.nof_answer DESC
-LIMIT 0 , 1;
-
-SELECT 
-    COUNT(tsk_a.answer), tsk_a.worker_max
-INTO answer_number , max_worker FROM
-    task_analytics AS tsk_a
-WHERE
-    tsk_a.task_state >= 1
-        AND tsk_a.task_id = task_id;
-    
-IF result_answer IS NOT NULL OR answer_number = max_worker
-THEN 
-	UPDATE task SET state = 2
-	WHERE id = task_id;
-    
-    UPDATE task_performed SET score = 1
-	WHERE task = task_id AND answer = result_answer;
-    
-    UPDATE task_performed SET score = 0
-	WHERE task = task_id AND answer != result_answer;
-    
-END IF;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `campaign_analytics` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `campaign_analytics`(IN my_campaign_id INT(11))
-BEGIN
-	DECLARE fetch_done INT DEFAULT FALSE;
-    DECLARE procedure_done INT DEFAULT FALSE;
-	DECLARE my_task_id INT(11);
-	DECLARE task_id_cursor CURSOR FOR SELECT tsk.id FROM task tsk WHERE tsk.campaign = my_campaign_id AND tsk.state >= 2;
-	DECLARE CONTINUE HANDLER FOR NOT FOUND SET fetch_done = TRUE, procedure_done = TRUE;
-    
-    DROP TEMPORARY TABLE IF EXISTS my_tmp_task;
-    CREATE TEMPORARY TABLE IF NOT EXISTS my_tmp_task 
-		(my_tsk_id INT(11) , my_tsk_title VARCHAR(150), my_tsk_description LONGTEXT, my_res_ans_id INT(11), my_res_ans VARCHAR(150));
-    
-    OPEN task_id_cursor;
-    LOOPTASK: LOOP
-    
-		FETCH task_id_cursor INTO my_task_id;
-		IF fetch_done = TRUE THEN
-			LEAVE LOOPTASK;
-		END IF;
-        
-		CALL task_results(my_task_id, @result_answer_id, @result_answer);
-            
-		IF (procedure_done = TRUE) THEN 
-		   SET fetch_done = FALSE;
-		END IF;
-		
-		-- SELECT tsk.id, tsk.title, tsk.description, @result_answer_id, @result_answer FROM task tsk WHERE tsk.id = my_task_id;
-		INSERT INTO my_tmp_task(my_tsk_id, my_tsk_title, my_tsk_description, my_res_ans_id, my_res_ans) 
-			SELECT tsk.id, tsk.title, tsk.description, @result_answer_id, @result_answer FROM task tsk WHERE tsk.id = my_task_id;   
-    END LOOP LOOPTASK;
-    
-    CLOSE task_id_cursor;
-    SELECT * FROM my_tmp_task;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `task_results` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `task_results`(IN task_id INT(11), OUT result_answer_id INT(11), OUT result_answer VARCHAR(150))
-BEGIN
-	SELECT tsk_a.answer_id, tsk_a.answer INTO result_answer_id, result_answer
-    FROM task_analytics AS tsk_a
-    WHERE tsk_a.nof_answer >= (tsk_a.worker_max * tsk_a.majority_required) / 100 AND tsk_a.task_state >= 1 AND tsk_a.task_id = task_id
-    ORDER BY tsk_a.nof_answer DESC
-    LIMIT 0, 1;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-
---
 -- Final view structure for view `task_analytics`
 --
 
@@ -444,4 +334,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-19 15:20:12
+-- Dump completed on 2018-12-23 11:43:13

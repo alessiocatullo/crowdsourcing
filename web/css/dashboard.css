@@ -343,52 +343,32 @@ h1 {
  */
 .our-webcoderskull .card-campaign:hover{
   box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
-  opacity: 0.9;
-}
-.our-webcoderskull .banner{
-  border-radius: 5px 5px 0px 0px;
-  margin: 0px;
 }
 
-.our-webcoderskull .main{
-  margin: 0px;
-  margin-bottom: 2px;
-  float:left; 
-  width:100%; 
-  border-radius: 0px 0px 5px 5px;
-  color: white;
-  padding-bottom: 20px; 
-  text-align:center; 
-  margin: 0 0 28px;
+.our-webcoderskull .sub{
+  opacity: 0.3;
 }
 
-.our-webcoderskull .cnt-block{
-  background:#9e281b;
-}
-.our-webcoderskull .cnt-block-sub{  
-  background: #0d800d;
+
+.our-webcoderskull .sub button{
+  opacity: 1;
 }
 
-.our-webcoderskull h3{ 
-  color: white; 
-  font-size:20px; 
-  font-weight:500; 
-  padding:6px 0;
+.our-webcoderskull h4{ 
   text-transform:uppercase;
-}
-.our-webcoderskull p{ 
-  color: white; 
-}
-
-.our-webcoderskull button{
-  font-size: 25px;
-}
-.our-webcoderskull button:hover{
-  color: #ffffffad;
 }
 
 .ul-campaigns-worker{
   margin:0;
   padding:0;
   list-style:none;
+}
+
+.img-sub{
+  background-color: #0096006b;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center; 
+}
 }

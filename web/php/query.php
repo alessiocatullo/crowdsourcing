@@ -40,18 +40,18 @@
         while($row=mysqli_fetch_array($result_campaign_wrk)){
             echo "
             <li class='campains-element col-12 col-md-6 col-lg-3'>
-                <div class='card-campaign' id=".$row['id'].">
-                    <div class='banner row'>
-                        <div class='col-md-12'>
-                            <button class='btn btn-result ".($row['user'] == null ? 'btn-sub':'btn-sub-remove')." float-right' type='button'>
-                                <i class='fas ".($row['user'] == null ? 'fa-plus':'fa-times')."'></i>
-                            </button>
+                <div class='card card-campaign ' style='margin-bottom: 2pc;'>
+                    <div class='img-sub' style='height: 100%; width: 100%; position: absolute;' ". ($row['user'] != null ? '':'hidden') ."></div>
+                        <img class='img-fluid ". ($row['user'] != null ? 'sub':'') ."'' src='../../ico/campaign.png'>
+                        <div class='card-body'>
+                            <h4 class='card-title'>".$row['name']."</h4>
+                            <h6 class='card-text'>Iscrizioni:</h6>
+                            <h7 class='card-text'>Da: ".$row['dt_accession_start']."</h7>
+                            <p class='card-text'>A: ".$row['dt_accession_end']."</p>
+                            <div class='d-flex justify-content-center' style='margin-top: 2pc;'>
+                                <button class='btn btn-primary'>Iscriviti</button> 
+                            </div>                 
                         </div>
-                    </div>
-                    <div class='main ". ($row['user'] == null ? 'cnt-block':'cnt-block-sub')." equal-hight'>
-                        <h3 class='name-campaigns'>".$row['name']."</h3>
-                        <p class='dt_start_campagins'>Data inizio: ".$row['dt_accession_start']."</p>
-                        <p class='dt_end_campagins'>Data fine: ".$row['dt_accession_end']."</p>
                     </div>
                 </div>
             </li>";
