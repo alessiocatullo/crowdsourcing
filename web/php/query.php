@@ -41,7 +41,9 @@
             echo "
             <li class='campains-element col-12 col-md-6 col-lg-3'>
                 <div class='card card-campaign ". ($row['user'] != null ? 'subbed':'') ."'' id='".$row['id']."' style='margin-bottom: 2pc;'>
-                    <button class='close btn-sub-remove' style='position: absolute; right: 15px; top: 10px;' ".($row['user'] != null ? '':'hidden')."><i class='fas fa-times'></i></button>
+                    <button data-toggle='modal' data-target='#remove-sub' 
+                    class='close btn-sub-remove' style='position: absolute; right: 15px; top: 10px;' 
+                    ".($row['user'] != null ? '':'hidden')."><i class='fas fa-times'></i></button>
                     <img class='img-fluid' src='../../ico/". ($row['user'] != null ? 'campaign-sub':'campaign').".png'>
                     <div class='card-body ". ($row['user'] != null ? 'sub':'') ."'>
                         <h4 class='card-title'>".$row['name']."</h4>
@@ -51,7 +53,9 @@
                     </div>
                     <div class='card-footer'>
                         <div class='d-flex justify-content-center'>
-                            <button class='btn btn-sub btn-". ($row['user'] != null ? 'success':'danger')."'>". ($row['user'] != null ? 'Richiedi Task':'Iscriviti')."</button> 
+                            <button data-toggle='modal' data-target='".($row['user'] != null ? '#task':'#sub')."' class='btn 
+                            btn-sub btn-". ($row['user'] != null ? 'success':'danger')."'>
+                            ". ($row['user'] != null ? 'Richiedi Task':'Iscriviti')."</button> 
                         </div>                 
                     </div>
                 </div>
@@ -82,6 +86,33 @@
         $sql_remove_campaign = "DELETE FROM campaign_performed WHERE campaign = '$campaign' AND user = '$user'";
         $result_remove_campaign = @mysqli_query($con, $sql_remove_campaign) or die("Errore query elimina iscrizione alla campagna");
         return $result_remove_campaign;
+    }
+
+    function query_campaign_wrk_select($user){
+        global $con; 
+        $sql_campaign = "SELECT * FROM campaign WHERE user = '$user'";
+        $result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
+        while($row=mysqli_fetch_array($result_campaign)){
+            echo "";
+        }
+        @mysqli_free_result($result_campaign);
+        return $result_campaign;
+    }
+
+    function query_task_wrk($user)
+    {
+        global $con; 
+        $sql_campaign = "SELECT * FROM campaign WHERE user = '$user'";
+        $result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
+        while($row=mysqli_fetch_array($result_campaign)){
+            echo "<tr>"."<td>".$row['name']."</td>"."<td class='tabletxt-center'>".$row['dt_start']."</td>"."<td class='tabletxt-center'>".$row['dt_end'].
+                "</td>"."<td class='tabletxt-center'>".$row['dt_accession_start']."</td>"."<td class='tabletxt-center'>"
+                .$row['dt_accession_end']."</td>"."<td class='tabletxt-center'>"."<a class='tabletxt-center' href='#details' onclick="."details('".$row['name']."',".$row['id'].")".
+                "><i class='fas fa-eye'></i></a>"."</td>"."<td class='tabletxt-center'>"."<a class='tabletxt-center' onclick="."deleteCampaign(".$row['id'].")".
+                "><i class='fas fa-trash-alt'></i></a>"."</td>"."</tr>";
+        }
+        @mysqli_free_result($result_campaign);
+        return $result_campaign;
     }
 
     function query_details()
