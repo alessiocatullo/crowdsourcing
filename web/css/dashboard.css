@@ -7,6 +7,10 @@ h1 {
   padding-bottom: 9px;
 }
 
+a.disabled {
+    pointer-events: none;
+    color: #b0b8c2;
+}
 /***********************************************/
 /*
  * Navbar
@@ -371,4 +375,15 @@ h1 {
   background-attachment: fixed;
   background-position: center; 
 }
+
+.status-answer-0{
+  background: red;
+}
+
+.status-answer-1{
+  background: yellow;
+}
+
+.status-answer-2{
+ background: green;
 }

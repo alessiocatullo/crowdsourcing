@@ -6,135 +6,11 @@
         $method();
     }
 
+    /*-------------------------------------------------------------------------------------------------------------
+        ADMIN
+    -------------------------------------------------------------------------------------------------------------*/
 
-	function query_campaign($requester)
-	{
-        global $con; 
-		$sql_campaign = "SELECT * FROM campaign WHERE user = '$requester'";
-    	$result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
-    	while($row=mysqli_fetch_array($result_campaign)){
-            echo "<tr>"."<td>".$row['name']."</td>"."<td class='tabletxt-center'>".$row['dt_start']."</td>"."<td class='tabletxt-center'>".$row['dt_end'].
-                "</td>"."<td class='tabletxt-center'>".$row['dt_accession_start']."</td>"."<td class='tabletxt-center'>"
-                .$row['dt_accession_end']."</td>"."<td class='tabletxt-center'>"."<a class='tabletxt-center' href='#details' onclick="."details('".$row['name']."',".$row['id'].")".
-                "><i class='fas fa-eye'></i></a>"."</td>"."<td class='tabletxt-center'>"."<a class='tabletxt-center' onclick="."deleteCampaign(".$row['id'].")".
-                "><i class='fas fa-trash-alt'></i></a>"."</td>"."</tr>";
-        }
-    	@mysqli_free_result($result_campaign);
-    	return $result_campaign;
-	}
-
-    function query_campaign_wrk($user)
-    {
-        global $con;
-        $pointer = '.';
-
-        $sql_campaign_wrk = "SELECT id, name, dt_accession_start, dt_accession_end, cp".$pointer."user 
-            FROM campaign as c 
-            LEFT JOIN 
-                (SELECT campaign, user 
-                FROM campaign_performed 
-                WHERE user = '$user') as cp
-            ON c".$pointer."id = cp".$pointer."campaign";
-
-        $result_campaign_wrk = @mysqli_query($con, $sql_campaign_wrk) or die("Errore query campagne -> $sql_campaign_wrk");
-        while($row=mysqli_fetch_array($result_campaign_wrk)){
-            echo "
-            <li class='campains-element col-12 col-md-6 col-lg-3'>
-                <div class='card card-campaign ". ($row['user'] != null ? 'subbed':'') ."'' id='".$row['id']."' style='margin-bottom: 2pc;'>
-                    <button data-toggle='modal' data-target='#remove-sub' 
-                    class='close btn-sub-remove' style='position: absolute; right: 15px; top: 10px;' 
-                    ".($row['user'] != null ? '':'hidden')."><i class='fas fa-times'></i></button>
-                    <img class='img-fluid' src='../../ico/". ($row['user'] != null ? 'campaign-sub':'campaign').".png'>
-                    <div class='card-body ". ($row['user'] != null ? 'sub':'') ."'>
-                        <h4 class='card-title'>".$row['name']."</h4>
-                        <h6 class='card-text'>Iscrizioni:</h6>
-                        <h7 class='card-text'>Da: ".$row['dt_accession_start']."</h7>
-                        <p class='card-text'>A: ".$row['dt_accession_end']."</p>
-                    </div>
-                    <div class='card-footer'>
-                        <div class='d-flex justify-content-center'>
-                            <button data-toggle='modal' data-target='".($row['user'] != null ? '#task':'#sub')."' class='btn 
-                            btn-sub btn-". ($row['user'] != null ? 'success':'danger')."'>
-                            ". ($row['user'] != null ? 'Richiedi Task':'Iscriviti')."</button> 
-                        </div>                 
-                    </div>
-                </div>
-            </li>";
-        }
-        @mysqli_free_result($result_campaign_wrk);
-        return $result_campaign_wrk;
-    }
-
-    function query_sub_campaign()
-    {
-        global $con;
-        $campaign = $_POST['campaign'];
-        $user = $_POST['user'];
-
-        $sql_sub_campaign = "INSERT INTO campaign_performed (campaign, user) VALUES ('$campaign', '$user')";
-        $result_sub_campaign = @mysqli_query($con, $sql_sub_campaign) 
-            or die("Errore query registrazione alla campagna ->".$campaign." ".$user);
-        return $result_sub_campaign;
-    }
-
-    function query_remove_campaign()
-    {
-        global $con;
-        $campaign = $_POST['campaign'];
-        $user = $_POST['user'];
-
-        $sql_remove_campaign = "DELETE FROM campaign_performed WHERE campaign = '$campaign' AND user = '$user'";
-        $result_remove_campaign = @mysqli_query($con, $sql_remove_campaign) or die("Errore query elimina iscrizione alla campagna");
-        return $result_remove_campaign;
-    }
-
-    function query_campaign_wrk_select($user){
-        global $con; 
-        $sql_campaign = "SELECT * FROM campaign WHERE user = '$user'";
-        $result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
-        while($row=mysqli_fetch_array($result_campaign)){
-            echo "";
-        }
-        @mysqli_free_result($result_campaign);
-        return $result_campaign;
-    }
-
-    function query_task_wrk($user)
-    {
-        global $con; 
-        $sql_campaign = "SELECT * FROM campaign WHERE user = '$user'";
-        $result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
-        while($row=mysqli_fetch_array($result_campaign)){
-            echo "<tr>"."<td>".$row['name']."</td>"."<td class='tabletxt-center'>".$row['dt_start']."</td>"."<td class='tabletxt-center'>".$row['dt_end'].
-                "</td>"."<td class='tabletxt-center'>".$row['dt_accession_start']."</td>"."<td class='tabletxt-center'>"
-                .$row['dt_accession_end']."</td>"."<td class='tabletxt-center'>"."<a class='tabletxt-center' href='#details' onclick="."details('".$row['name']."',".$row['id'].")".
-                "><i class='fas fa-eye'></i></a>"."</td>"."<td class='tabletxt-center'>"."<a class='tabletxt-center' onclick="."deleteCampaign(".$row['id'].")".
-                "><i class='fas fa-trash-alt'></i></a>"."</td>"."</tr>";
-        }
-        @mysqli_free_result($result_campaign);
-        return $result_campaign;
-    }
-
-    function query_details()
-    {
-        global $con;
-        $idCampaign = $_POST['id'];
-
-        $sql_task = "SELECT * FROM task WHERE campaign = '$idCampaign'";
-        $result_task = @mysqli_query($con, $sql_task) or die("Errore query task-details");
-        while($row=mysqli_fetch_array($result_task)){
-            echo "<tr>"."<td>".$row['title']."</td>"."<td>".$row['description']."</td>"."<td class='tabletxt-center'>"
-                .$row['worker_max']."</td>"."<td class='tabletxt-center'>".$row['majority']."</td>"
-                ."<td class='tabletxt-center'>".$row['reward']."</td>"."<td class='tabletxt-center'>"
-                ."<a class='tabletxt-center' href='#answer' onclick="."answer(".$row['id'].")".
-                "><i class='fas fa-list-alt fa-fw'></i>"."</td>"."<td class='tabletxt-center'>"
-                ."<a class='tabletxt-center' href='#keywords' onclick="."keywords(".$row['id'].")".
-                "><i class='fas fa-list-alt fa-fw'></i>"."</td>"."<td style='background: yellow;'>"."</td>"."</tr>";
-        }
-        @mysqli_free_result($result_task);
-        return $result_task;
-    }
-
+    //Query che popula la tabella delle richieste REQUESTER della pagina admin
     function query_user_request()
     {
         global $con;
@@ -158,6 +34,7 @@
         return $result_user_request;
     }
 
+    //Query che accetta la richiesta per REQUESTER selezionato
     function query_accept_user()
     {
         global $con;
@@ -169,6 +46,7 @@
         return $result_user;
     }
 
+    //Query che rifiuta la richiesta per REQUESTER selezionato
     function query_refuse_user()
     {
         global $con;
@@ -180,6 +58,49 @@
         return $result_user;
     }
 
+    /*-------------------------------------------------------------------------------------------------------------
+        REQUESTER
+    -------------------------------------------------------------------------------------------------------------*/
+
+    //Query che stampa i record della pagina campaigns
+    function query_campaign($requester)
+    {
+        global $con; 
+        $sql_campaign = "SELECT * FROM campaign WHERE user = '$requester'";
+        $result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
+        while($row=mysqli_fetch_array($result_campaign)){
+            echo "<tr>"."<td>".$row['name']."</td>"."<td class='tabletxt-center'>".$row['dt_start']."</td>"."<td class='tabletxt-center'>".$row['dt_end'].
+                "</td>"."<td class='tabletxt-center'>".$row['dt_accession_start']."</td>"."<td class='tabletxt-center'>"
+                .$row['dt_accession_end']."</td>"."<td class='tabletxt-center'>"."<a class='tabletxt-center' href='#details' onclick="."details('".$row['name']."',".$row['id'].")".
+                "><i class='fas fa-eye'></i></a>"."</td>"."<td class='tabletxt-center'>"."<a class='tabletxt-center' onclick="."deleteCampaign(".$row['id'].")".
+                "><i class='fas fa-trash-alt'></i></a>"."</td>"."</tr>";
+        }
+        @mysqli_free_result($result_campaign);
+        return $result_campaign;
+    }
+
+    //Query che popula la tabella dei task di una campagna nel dettaglio campagna
+    function query_details()
+    {
+        global $con;
+        $idCampaign = $_POST['id'];
+
+        $sql_task = "SELECT * FROM task WHERE campaign = '$idCampaign'";
+        $result_task = @mysqli_query($con, $sql_task) or die("Errore query task-details");
+        while($row=mysqli_fetch_array($result_task)){
+            echo "<tr>"."<td>".$row['title']."</td>"."<td>".$row['description']."</td>"."<td class='tabletxt-center'>"
+                .$row['worker_max']."</td>"."<td class='tabletxt-center'>".$row['majority']."</td>"
+                ."<td class='tabletxt-center'>".$row['reward']."</td>"."<td class='tabletxt-center'>"
+                ."<a class='tabletxt-center' href='#answer' onclick="."answer(".$row['id'].")".
+                "><i class='fas fa-list-alt fa-fw'></i>"."</td>"."<td class='tabletxt-center'>"
+                ."<a class='tabletxt-center' href='#keywords' onclick="."keywords(".$row['id'].")".
+                "><i class='fas fa-list-alt fa-fw'></i>"."</td>"."<td style='background: yellow;'>"."</td>"."</tr>";
+        }
+        @mysqli_free_result($result_task);
+        return $result_task;
+    }
+
+    //Query che popula il select delle category della creazione nuova campagna
     function query_skill()
     {
         global $con;
@@ -192,6 +113,7 @@
         return $result_category;
     }
 
+    //Query che popula il select delle subcategory della creazione nuova campagna
     function query_skill_subcategory()
     {
         global $con;
@@ -205,6 +127,7 @@
         return $result_subcategory;
     }
 
+    //Query per eliminare una campagna specificata tramite id da ajax
     function delete_campaign(){
         global $con;
         $id = $_POST['id'];
@@ -214,6 +137,7 @@
         return $result_delete_campaigns;
     }
 
+    //Query per eliminare una campagna specificata tramite id da chiamata interna php
     function delete_campaign_wArgument($id){
         global $con;
         $sql_delete_campaigns = "DELETE FROM campaign WHERE id = '$id'";
@@ -222,6 +146,7 @@
         return "Campagna eliminata per precauzione!";
     }
 
+    //Query per creare una nuova campagna
     function insert_campaigns(){
         global $con;
         $task_n = 1;
@@ -302,5 +227,163 @@
         }while(isset($_POST["title-".$task_n]));
         
         return;
+    }
+
+    /*-------------------------------------------------------------------------------------------------------------
+        Worker
+    -------------------------------------------------------------------------------------------------------------*/
+
+    //Query che disegna le card della pagina home del worker
+    function query_campaign_wrk($user)
+    {
+        global $con;
+        $pointer = '.';
+
+        $sql_campaign_wrk = "SELECT id, name, dt_accession_start, dt_accession_end, cp".$pointer."user 
+            FROM campaign as c 
+            LEFT JOIN 
+                (SELECT campaign, user 
+                FROM campaign_performed 
+                WHERE user = '$user') as cp
+            ON c".$pointer."id = cp".$pointer."campaign";
+
+        $result_campaign_wrk = @mysqli_query($con, $sql_campaign_wrk) or die("Errore query campagne -> $sql_campaign_wrk");
+        while($row=mysqli_fetch_array($result_campaign_wrk)){
+            echo "
+            <li class='campains-element col-12 col-md-6 col-lg-3'>
+                <div class='card card-campaign ". ($row['user'] != null ? 'subbed':'') ."'' id='".$row['id']."' style='margin-bottom: 2pc;'>
+                    <button data-toggle='modal' data-target='#remove-sub' 
+                    class='close btn-sub-remove' style='position: absolute; right: 15px; top: 10px;' 
+                    ".($row['user'] != null ? '':'hidden')."><i class='fas fa-times'></i></button>
+                    <img class='img-fluid' src='../../ico/". ($row['user'] != null ? 'campaign-sub':'campaign').".png'>
+                    <div class='card-body ". ($row['user'] != null ? 'sub':'') ."'>
+                        <h4 class='card-title'>".$row['name']."</h4>
+                        <h6 class='card-text'>Iscrizioni:</h6>
+                        <h7 class='card-text'>Da: ".$row['dt_accession_start']."</h7>
+                        <p class='card-text'>A: ".$row['dt_accession_end']."</p>
+                    </div>
+                    <div class='card-footer'>
+                        <div class='d-flex justify-content-center'>
+                            <button data-toggle='modal' data-target='".($row['user'] != null ? '#task':'#sub')."' class='btn 
+                            btn-sub btn-". ($row['user'] != null ? 'success':'danger')."'>
+                            ". ($row['user'] != null ? 'Richiedi Task':'Iscriviti')."</button> 
+                        </div>                 
+                    </div>
+                </div>
+            </li>";
+        }
+        @mysqli_free_result($result_campaign_wrk);
+        return $result_campaign_wrk;
+    }
+
+    //Query che aggiunge l'iscrizione ad una campagna dello user loggato
+    function query_sub_campaign()
+    {
+        global $con;
+        $campaign = $_POST['campaign'];
+        $user = $_POST['user'];
+
+        $sql_sub_campaign = "INSERT INTO campaign_performed (campaign, user) VALUES ('$campaign', '$user')";
+        $result_sub_campaign = @mysqli_query($con, $sql_sub_campaign) 
+            or die("Errore query registrazione alla campagna ->".$campaign." ".$user);
+        return $result_sub_campaign;
+    }
+
+    //Query che rimuove l'iscrizione ad una campagna dello user loggato
+    function query_remove_campaign()
+    {
+        global $con;
+        $campaign = $_POST['campaign'];
+        $user = $_POST['user'];
+
+        $sql_remove_campaign = "DELETE FROM campaign_performed WHERE campaign = '$campaign' AND user = '$user'";
+        $result_remove_campaign = @mysqli_query($con, $sql_remove_campaign) or die("Errore query elimina iscrizione alla campagna");
+        return $result_remove_campaign;
+    }
+
+    //Query che popola il select del filtro dei task nella pagina I MIEI TASK del worker
+    function query_campaign_wrk_select($user){
+        global $con;
+        $pointer = '.';
+
+        $sql_campaign = "SELECT id, name FROM campaign JOIN (SELECT campaign FROM campaign_performed WHERE user = '$user') AS cp WHERE id = cp".$pointer."campaign";
+        $result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
+        while($row=mysqli_fetch_array($result_campaign)){
+            echo "<option value='".$row['id']."'>".$row['name']."</option>";
+        }
+        @mysqli_free_result($result_campaign);
+        return $result_campaign;
+    }
+
+    //Query che scrivere i record dei task posseduti dallo user
+    function query_task_wrk($user)
+    {
+        global $con;
+        $pointer = '.';
+        $status;
+
+        $sql_campaign = 
+        "SELECT  c".$pointer."id as idc, task_filtered".$pointer."id as idt, c".$pointer."name, task_filtered".$pointer."title, task_filtered".$pointer."description,
+        task_filtered".$pointer."answer, task_filtered".$pointer."reward, task_filtered".$pointer."score
+        FROM campaign AS c JOIN (
+            SELECT  *
+            FROM task AS t JOIN (
+                SELECT *
+                FROM task_performed
+                WHERE user = '$user') AS tp
+            WHERE
+                t".$pointer."id = tp".$pointer."task) AS task_filtered
+        WHERE
+            c".$pointer."id = task_filtered".$pointer."campaign";
+
+
+        $result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
+        while($row=mysqli_fetch_array($result_campaign)){
+            if($row['answer'] != null){
+                $row['score'] == 0 ? $status = 1: $status = 2;
+            }else {$status = 0;}
+
+            echo "<tr id='".$row['idc']."-".$row['idt']."'>"."<td>".$row['name']."</td>"."<td class='title-task-record'>".$row['title']."</td>"."<td class='desc-task-record'>".$row['description'].
+                "</td>"."<td class='tabletxt-center'>".$row['reward']."</td>"."<td class='tabletxt-center'>".
+                "<a class='tabletxt-center btn-answer ".($status!=2 ? 'disabled' : '')."' href='' data-toggle='modal' data-target='#answer-form'><i class='fas fa-pen'></i></a>"."</td>".
+                "<td class='status-answer-".$status."'>"."</td>"."</tr>";
+        }
+        @mysqli_free_result($result_campaign);
+        return $result_campaign;
+    }
+
+    //Qui compila il form della domanda
+    function query_task_answer(){
+        global $con;
+        $idTask = $_POST['idTask'];
+
+        $sql = "SELECT answer FROM answer_options WHERE task = '$idTask'";
+        $result = @mysqli_query($con, $sql) or die("Errore query task answer");
+        while($row=mysqli_fetch_array($result)){
+            echo "<div class='radio'>
+                      <label><input type='radio' name='answer-opt' value='".$row['answer']."' required>".$row['answer']."</label>
+                  </div>";
+        }
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    function query_answer_submit{
+        global $con;
+
+        $idTask = $_POST['idTask'];
+        $user = $_POST['user'];
+        parse_str($_POST['formData'], $_POST);
+        $name = $_POST['name'];
+
+        $sql = "SELECT answer FROM answer_options WHERE task = '$idTask'";
+        $result = @mysqli_query($con, $sql) or die("Errore query task answer");
+        while($row=mysqli_fetch_array($result)){
+            echo "<div class='radio'>
+                      <label><input type='radio' name='answer-opt' value='".$row['answer']."' required>".$row['answer']."</label>
+                  </div>";
+        }
+        @mysqli_free_result($result);
+        return $result;
     }
 ?>
