@@ -316,11 +316,12 @@
     }
 
     //Query che scrivere i record dei task posseduti dallo user
-    function query_task_wrk($user)
+    function query_task_wrk()
     {
         global $con;
         $pointer = '.';
         $status;
+        $user = $_POST['user'];
 
         $sql_campaign = 
         "SELECT  c".$pointer."id as idc, task_filtered".$pointer."id as idt, c".$pointer."name, task_filtered".$pointer."title, task_filtered".$pointer."description,
@@ -345,7 +346,7 @@
 
             echo "<tr id='".$row['idc']."-".$row['idt']."'>"."<td>".$row['name']."</td>"."<td class='title-task-record'>".$row['title']."</td>"."<td class='desc-task-record'>".$row['description'].
                 "</td>"."<td class='tabletxt-center'>".$row['reward']."</td>"."<td class='tabletxt-center'>".
-                "<a class='tabletxt-center btn-answer ".($status!=2 ? 'disabled' : '')."' href='' data-toggle='modal' data-target='#answer-form'><i class='fas fa-pen'></i></a>"."</td>".
+                "<a class='tabletxt-center btn-answer ".($status!=0 ? 'disabled' : '')."' href='' data-toggle='modal' data-target='#answer-div'><i class='fas fa-pen'></i></a>"."</td>".
                 "<td class='status-answer-".$status."'>"."</td>"."</tr>";
         }
         @mysqli_free_result($result_campaign);
@@ -360,29 +361,29 @@
         $sql = "SELECT answer FROM answer_options WHERE task = '$idTask'";
         $result = @mysqli_query($con, $sql) or die("Errore query task answer");
         while($row=mysqli_fetch_array($result)){
-            echo "<div class='radio'>
-                      <label><input type='radio' name='answer-opt' value='".$row['answer']."' required>".$row['answer']."</label>
-                  </div>";
+            echo "<input class='form-radio' type='radio' name='answer-opt' id='".$row['answer']."' value='".$row['answer']."' required>
+                    <label for='".$row['answer']."' class='form-text'>".$row['answer']."</label>
+                </input>";
         }
         @mysqli_free_result($result);
         return $result;
     }
 
-    function query_answer_submit{
+    //Qui avviene il submit della risposta
+    function query_answer_submit(){
         global $con;
 
         $idTask = $_POST['idTask'];
         $user = $_POST['user'];
         parse_str($_POST['formData'], $_POST);
-        $name = $_POST['name'];
+        $answer = $_POST['answer-opt'];
 
-        $sql = "SELECT answer FROM answer_options WHERE task = '$idTask'";
+        echo $idTask;
+        echo $user;
+        echo $answer; 
+
+        $sql = "UPDATE task_performed SET score = 0, answer = (SELECT id FROM answer_options WHERE answer = '$answer' LIMIT 1) WHERE task = '$idTask' AND user = '$user'";
         $result = @mysqli_query($con, $sql) or die("Errore query task answer");
-        while($row=mysqli_fetch_array($result)){
-            echo "<div class='radio'>
-                      <label><input type='radio' name='answer-opt' value='".$row['answer']."' required>".$row['answer']."</label>
-                  </div>";
-        }
         @mysqli_free_result($result);
         return $result;
     }

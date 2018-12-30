@@ -2,19 +2,30 @@
 <div>
 	<h1 class="title">I Miei Task</h1>
 	<div class="row filter-campaign-select" style="margin-bottom: 1pc;">
-		<div class="col-md-12 float-right">
-			<select class="form-control select-campaign">
-				<option>---</option>
-		      	<?php
-	                $user = $_SESSION['user'];
-	                query_campaign_wrk_select($user);
-	            ?>
-		    </select>
-		    <button class="filter-campaign btn btn-primary" type="button">
-	          <i class="fas fa-filter"></i>
-	        </button>
-	        <button class="filter-campaign btn btn-primary" type="button">
+		<div class="col-2">
+			<button type="button" class="btn btn-primary float-left" data-toggle="modal" data-target="#legend">
+                <i class="fas fa-info-circle"></i>
+            </button>
+            <button class="sync-campaign btn btn-primary" onclick="task_refresh('<?php echo $_SESSION['user']; ?>')" style="margin-left: 5px;" type="button">
 	          <i class="fas fa-sync-alt"></i>
+	        </button>
+		</div>
+		<div class="col-md-5">
+		</div>
+		<div class="col-4">
+			<div class="col-md-12">
+				<select class="form-control select-campaign">
+					<option>---</option>
+			      	<?php
+		                $user = $_SESSION['user'];
+		                query_campaign_wrk_select($user);
+		            ?>
+			    </select>
+			</div>
+		</div>
+		<div class="col-md-1">
+			<button class="filter-campaign btn btn-primary" type="button">
+	          <i class="fas fa-filter"></i>
 	        </button>
 		</div>
 	</div>
@@ -31,17 +42,16 @@
 	                <th class='tabletxt-center'>Stato</th>
 	        	</tr>
 	        	<tbody>
-	                <?php
-	                    $user = $_SESSION['user'];
-	                    query_task_wrk($user);
-	                ?>
+	        		<script>
+	                    task_refresh('<?php echo $_SESSION['user']; ?>');
+	        		</script>
 	            </tbody>
 	        </thead>
 		</table>
 	</div>
 </div>
 
-<div class="modal fade" data-backdrop="static" id="answer-form">
+<div class="modal fade" data-backdrop="static" id="answer-div">
   <div class="modal-dialog response-modal">
 	<form role="form" id="answer-form">
 	    <div class="modal-content">
@@ -77,24 +87,41 @@
   </div>
 </div>
 
+<div class="modal fade" data-backdrop="static" id="legend">
+  <div class="modal-dialog response-modal">
+	<form role="form" id="answer-form">
+	    <div class="modal-content">
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title">
+	        	Stato
+	        </h4>
+	        <button type="button" class="close" data-dismiss='modal'>&times;</button>
+	      </div>
+	      <!-- Modal body -->
+	      <div class="modal-body">
+	      </div>
+	</form>
+  </div>
+</div>
+
 <script>
 	//Submit FORM
 	$('#answer-form').bind('submit',function(e) {
+		e.preventDefault();
+
 	    var formData = $(this).serialize();
 	    var user = '<?php echo $_SESSION['user'] ?>';
-	    $idTask =  $(".response-modal").attr('id');
+	    var idTask =  $(".response-modal").attr('id');
 
 	    $.ajax({
 	      type: "POST",
 	      url: '../../php/query.php',
-	      data: {Method:'query_answer_submit', formData, user, idTask: $idTask},
+	      data: {Method:'query_answer_submit', formData, user, idTask},
 	      success: function(response){
-	      	if(response.length > 0){
-	      		alert(e);
-	      	} else {
-	      		location.reload();
+	      		$('#answer-div').modal('hide');
+	      		task_refresh(user);
 	      	}
-	      }
 	    });
 	  });
 

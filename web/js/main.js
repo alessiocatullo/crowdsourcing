@@ -248,3 +248,19 @@ function esito(user, esito){
     });
   }
 }
+
+/*******************************************
+WORKER
+*******************************************/
+function task_refresh(user){
+  $('.table-task').find('tbody').empty();
+
+    $.ajax({ 
+    url: '../../php/query.php',
+    data: {Method:'query_task_wrk', user},
+    type: 'POST',
+      success: function(e) {
+        $('.table-task').find('tbody').append(e);
+      }
+  });
+}
