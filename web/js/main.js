@@ -264,3 +264,17 @@ function task_refresh(user){
       }
   });
 }
+
+function select_campaign_filter(user){
+  $('.filter-panel').find('.select-campaign').empty();
+  $('.filter-panel').find('.select-campaign').append("<option>---</option>");
+
+    $.ajax({
+    url: '../../php/query.php',
+    data: {Method:'query_campaign_wrk_select', user},
+    type: 'POST',
+      success: function(e) {
+        $('.filter-panel').find('.select-campaign').append(e);
+      }
+  });
+}

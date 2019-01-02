@@ -96,6 +96,7 @@
           $campaignDiv.find('.btn-sub').text('Richiedi Task');
           $campaignDiv.find('.btn-sub-remove').removeAttr("hidden");
           $campaignDiv.find('.btn-sub').attr('data-target', '#task');
+          select_campaign_filter('<?php echo $_SESSION['user']; ?>');
         },
         error: function(e) {
           alert(e);

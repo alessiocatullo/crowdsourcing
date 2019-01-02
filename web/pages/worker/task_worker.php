@@ -1,55 +1,85 @@
 <!--CAMPAIGNS-->
 <div>
 	<h1 class="title">I Miei Task</h1>
-	<div class="row filter-campaign-select" style="margin-bottom: 1pc;">
-		<div class="col-2">
-			<button type="button" class="btn btn-primary float-left" data-toggle="modal" data-target="#legend">
-                <i class="fas fa-info-circle"></i>
-            </button>
-            <button class="sync-campaign btn btn-primary" onclick="task_refresh('<?php echo $_SESSION['user']; ?>')" style="margin-left: 5px;" type="button">
+	<div class="row menu-task filter-campaign" style="margin-bottom: 1pc;">
+		<div class="col-md-12">
+			<button class="sync-campaign btn btn-primary float-right" onclick="task_refresh('<?php echo $_SESSION['user']; ?>')" style="margin-left: 5px;" type="button">
 	          <i class="fas fa-sync-alt"></i>
 	        </button>
-		</div>
-		<div class="col-md-5">
-		</div>
-		<div class="col-4">
-			<div class="col-md-12">
-				<select class="form-control select-campaign">
-					<option>---</option>
-			      	<?php
-		                $user = $_SESSION['user'];
-		                query_campaign_wrk_select($user);
-		            ?>
-			    </select>
-			</div>
-		</div>
-		<div class="col-md-1">
-			<button class="filter-campaign btn btn-primary" type="button">
-	          <i class="fas fa-filter"></i>
+	        <button type="button" class="btn btn-primary float-right" style="margin-left: 5px;" data-toggle="modal" data-target="#legend">
+                <i class="fas fa-info-circle"></i>
+            </button>
+	        <button type="button" class="btn btn-primary filter-btn float-right" data-toggle="collapse" data-target="#filter-panel">
+	            Filtro
 	        </button>
+	        <div id="filter-panel" class="collapse filter-panel float-right" style="width: 100%;">
+	            <div class="panel panel-default">
+	                <div class="panel-body">
+	                	<div class="row justify-content-md-center" style="margin-bottom: 1pc;">
+	                		<div class="col-md-3" style="margin-right: 10px;">
+	                			<div class="row">
+	                				<h5>Titolo</h5>
+	                			</div>
+	                			<div class="row">
+	                				<input type="text" class="form-control input-sm select-title">
+	                			</div>
+	                		</div>
+	                		<div class="col-md-3">
+	                			<div class="row">
+	                				<h5>Campagna</h5>
+	                			</div>
+	                			<div class="row">
+						            <select class="form-control select-campaign">
+						            	<script>select_campaign_filter('<?php echo $_SESSION['user']; ?>');</script>
+								    </select>
+								</div>
+	                		</div>
+	                		<div class="col-md-2 " style="margin-left: 10px;">
+	                			<div class="row">
+	                				<h5>Stato</h5>
+	                			</div>
+	                			<div class="row">
+		                			<select class="form-control select-status">
+			                			<option>---</option>
+									    <option value="3">Da rispondere</option>
+									    <option value="2">In attesa di conferma</option>
+									    <option value="0">Risposta errata</option>
+									    <option value="1">Risposta corretta</option>
+								    </select>
+	                			</div>
+	                		</div>
+	                		<div class="col-md-1">
+	                			<button type="button" class="btn btn-primary confirm-filter" style="position: absolute; bottom: 0px;">
+                            		Conferma
+                            	</button>  
+	                		</div>
+	                	</div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<div class="row justify-content-md-center table-task">
+		<div class="table-responsive">
+			<table class="table table-striped table-hover">
+		        <thead class="thead-dark">
+		            <tr>
+			    	    <th>Campagna</th>
+		                <th>Titolo</th>
+		                <th>Descrizione</th>
+		                <th class='tabletxt-center'>Ricompensa</th>
+		                <th class='tabletxt-center' style="width: 5%;">Rispondi</th>
+		                <th class='tabletxt-center'>Stato</th>
+		        	</tr>
+		        	<tbody class="table-line-for-filter">
+		        		<script>
+		                    task_refresh('<?php echo $_SESSION['user']; ?>');
+		        		</script>
+		            </tbody>
+		        </thead>
+			</table>
 		</div>
 	</div>
-<div class="row justify-content-md-center table-task">
-	<div class="table-responsive">
-		<table class="table table-striped table-hover">
-	        <thead class="thead-dark">
-	            <tr>
-		    	    <th>Campagna</th>
-	                <th>Titolo</th>
-	                <th>Descrizione</th>
-	                <th class='tabletxt-center'>Ricompensa</th>
-	                <th class='tabletxt-center' style="width: 5%;">Rispondi</th>
-	                <th class='tabletxt-center'>Stato</th>
-	        	</tr>
-	        	<tbody>
-	        		<script>
-	                    task_refresh('<?php echo $_SESSION['user']; ?>');
-	        		</script>
-	            </tbody>
-	        </thead>
-		</table>
-	</div>
-</div>
 
 <div class="modal fade" data-backdrop="static" id="answer-div">
   <div class="modal-dialog response-modal">
@@ -87,7 +117,7 @@
   </div>
 </div>
 
-<div class="modal fade" data-backdrop="static" id="legend">
+<div class="modal fade" id="legend">
   <div class="modal-dialog response-modal">
 	<form role="form" id="answer-form">
 	    <div class="modal-content">
@@ -100,6 +130,30 @@
 	      </div>
 	      <!-- Modal body -->
 	      <div class="modal-body">
+	      	<div class="table-responsive">
+			<table class="table table-striped">
+		        <thead class="thead-dark">
+		        	<tbody>
+		        		<tr>
+		        			<td>Da rispondere</td>
+		        			<td class="status-answer-3"></td>
+		        		</tr>
+		        		<tr>
+		        			<td>In attesa di conferma</td>
+		        			<td class="status-answer-2"></td>
+		        		</tr>
+		        		<tr>
+		        			<td>Risposta errata</td>
+		        			<td class="status-answer-0"></td>
+		        		</tr>
+		        		<tr>
+		        			<td>Risposta corretta</td>
+		        			<td class="status-answer-1"></td>
+		        		</tr>
+		            </tbody>
+		        </thead>
+			</table>
+		</div>
 	      </div>
 	</form>
   </div>
@@ -141,6 +195,23 @@
 	      success: function(response){
 	      	$('.radio-input').html(response);
 	      }
+	    });
+	});
+
+	$('.filter-panel').on('click','.confirm-filter',function() {
+		$title = $('.filter-panel').find('.select-title').val();
+		$campaign = $('.filter-panel').find('.select-campaign :selected').text();
+		$status = $('.filter-panel').find('.select-status :selected').val();
+
+		if($campaign.localeCompare('---') == 0){
+			$campaign = '';
+		}
+
+	    $('.table-line-for-filter tr').filter(function() {
+	    	$(this).toggle($(this).children(":eq(0)").text().indexOf($campaign) > -1);
+	    	$(this).toggle($(this).children(":eq(1)").text().indexOf($title) > -1);
+
+	    	//$(this).toggle($(this).children(":eq(1)").text().indexOf($status) > -1);
 	    });
 	});
 </script> 

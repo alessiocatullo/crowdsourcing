@@ -302,10 +302,11 @@
     }
 
     //Query che popola il select del filtro dei task nella pagina I MIEI TASK del worker
-    function query_campaign_wrk_select($user){
+    function query_campaign_wrk_select(){
         global $con;
         $pointer = '.';
-
+        $user = $_POST['user'];
+        
         $sql_campaign = "SELECT id, name FROM campaign JOIN (SELECT campaign FROM campaign_performed WHERE user = '$user') AS cp WHERE id = cp".$pointer."campaign";
         $result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
         while($row=mysqli_fetch_array($result_campaign)){
@@ -341,12 +342,12 @@
         $result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
         while($row=mysqli_fetch_array($result_campaign)){
             if($row['answer'] != null){
-                $row['score'] == 0 ? $status = 1: $status = 2;
-            }else {$status = 0;}
+                $row['score'] != null ? $status = $row['score']: $status = 2;
+            }else {$status = 3;}
 
             echo "<tr id='".$row['idc']."-".$row['idt']."'>"."<td>".$row['name']."</td>"."<td class='title-task-record'>".$row['title']."</td>"."<td class='desc-task-record'>".$row['description'].
                 "</td>"."<td class='tabletxt-center'>".$row['reward']."</td>"."<td class='tabletxt-center'>".
-                "<a class='tabletxt-center btn-answer ".($status!=0 ? 'disabled' : '')."' href='' data-toggle='modal' data-target='#answer-div'><i class='fas fa-pen'></i></a>"."</td>".
+                "<a class='tabletxt-center btn-answer ".($status!=3 ? 'disabled' : '')."' href='' data-toggle='modal' data-target='#answer-div'><i class='fas fa-pen'></i></a>"."</td>".
                 "<td class='status-answer-".$status."'>"."</td>"."</tr>";
         }
         @mysqli_free_result($result_campaign);
@@ -382,7 +383,7 @@
         echo $user;
         echo $answer; 
 
-        $sql = "UPDATE task_performed SET score = 0, answer = (SELECT id FROM answer_options WHERE answer = '$answer' LIMIT 1) WHERE task = '$idTask' AND user = '$user'";
+        $sql = "UPDATE task_performed SET answer = (SELECT id FROM answer_options WHERE answer = '$answer' LIMIT 1) WHERE task = '$idTask' AND user = '$user'";
         $result = @mysqli_query($con, $sql) or die("Errore query task answer");
         @mysqli_free_result($result);
         return $result;

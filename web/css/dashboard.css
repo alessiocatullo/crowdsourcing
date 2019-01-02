@@ -375,15 +375,15 @@ a.disabled {
   background-attachment: fixed;
   background-position: center; 
 }
-
 .status-answer-0{
   background: red;
 }
-
 .status-answer-1{
+  background: green;
+}
+.status-answer-2{
   background: yellow;
 }
-
-.status-answer-2{
- background: green;
+.status-answer-3{
+  background: lightblue;
 }
