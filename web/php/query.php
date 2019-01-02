@@ -348,7 +348,7 @@
             echo "<tr id='".$row['idc']."-".$row['idt']."'>"."<td>".$row['name']."</td>"."<td class='title-task-record'>".$row['title']."</td>"."<td class='desc-task-record'>".$row['description'].
                 "</td>"."<td class='tabletxt-center'>".$row['reward']."</td>"."<td class='tabletxt-center'>".
                 "<a class='tabletxt-center btn-answer ".($status!=3 ? 'disabled' : '')."' href='' data-toggle='modal' data-target='#answer-div'><i class='fas fa-pen'></i></a>"."</td>".
-                "<td class='status-answer-".$status."'>"."</td>"."</tr>";
+                "<td class='status-answer-".$status." status-opacity'>".$status."</td>"."</tr>";
         }
         @mysqli_free_result($result_campaign);
         return $result_campaign;

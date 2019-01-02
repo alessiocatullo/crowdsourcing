@@ -39,13 +39,20 @@
 	                				<h5>Stato</h5>
 	                			</div>
 	                			<div class="row">
-		                			<select class="form-control select-status">
-			                			<option>---</option>
-									    <option value="3">Da rispondere</option>
-									    <option value="2">In attesa di conferma</option>
-									    <option value="0">Risposta errata</option>
-									    <option value="1">Risposta corretta</option>
-								    </select>
+									<div class="select-status" data-toggle="buttons">
+										<label class="btn status-answer-3">
+											<input type="checkbox" name="options" id="3" autocomplete="off"/>
+										</label>
+										<label class="btn status-answer-2">
+											<input type="checkbox" name="options" id="2" autocomplete="off">
+										</label>
+										<label class="btn status-answer-0">
+											<input type="checkbox" name="options" id="0" autocomplete="off">
+										</label>
+										<label class="btn status-answer-1">
+											<input type="checkbox" name="options" id="1" autocomplete="off">
+										</label>
+									</div>
 	                			</div>
 	                		</div>
 	                		<div class="col-md-1">
@@ -201,17 +208,50 @@
 	$('.filter-panel').on('click','.confirm-filter',function() {
 		$title = $('.filter-panel').find('.select-title').val();
 		$campaign = $('.filter-panel').find('.select-campaign :selected').text();
-		$status = $('.filter-panel').find('.select-status :selected').val();
-
+		$status3 = null; $status2 = null; $status0 = null; $status1 = null;
+		$('.filter-panel').find('.select-status .active input').each(
+			function(){
+				switch($(this).attr('id')) {
+				  case '3':
+				    $status3 = 3;
+				    break;
+				  case '2':
+				    $status2 = 2;
+				    break;
+				  case '0':
+				  	$status0 = 0;
+				  	break;
+				  case '1':
+				  	$status1 = 1;
+				  	break;
+				} 
+			}
+		);
 		if($campaign.localeCompare('---') == 0){
 			$campaign = '';
 		}
 
 	    $('.table-line-for-filter tr').filter(function() {
-	    	$(this).toggle($(this).children(":eq(0)").text().indexOf($campaign) > -1);
-	    	$(this).toggle($(this).children(":eq(1)").text().indexOf($title) > -1);
+	    	$(this).toggle(	
+	    		$(this).children(":eq(1)").text().indexOf($title) > -1 && 
+	    		$(this).children(":eq(0)").text().indexOf($campaign) > -1 );/*&& !(	    			
+			    		$(this).children(":eq(5)").text().indexOf($status3) > -1 ||
+			    		$(this).children(":eq(5)").text().indexOf($status2) > -1 ||
+			    		$(this).children(":eq(5)").text().indexOf($status0) > -1 ||
+			    		$(this).children(":eq(5)").text().indexOf($status1) > -1
+		    		));*/
+	    		
 
-	    	//$(this).toggle($(this).children(":eq(1)").text().indexOf($status) > -1);
+		    	/*$('.table-line-for-filter tr').filter(function() {
+			    	if($status3 != null || $status2 != null || $status0 != null || $status1 != null){
+			    		$(this).toggle(
+				    		$(this).children(":eq(5)").text().indexOf($status3) > -1 ||
+				    		$(this).children(":eq(5)").text().indexOf($status2) > -1 ||
+				    		$(this).children(":eq(5)").text().indexOf($status0) > -1 ||
+				    		$(this).children(":eq(5)").text().indexOf($status1) > -1
+			    		);
+			    	}
+			    });*/
 	    });
 	});
 </script> 
