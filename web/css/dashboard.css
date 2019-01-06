@@ -109,6 +109,10 @@ a.disabled {
   max-width: 40%;
 }
 
+.task-modal{
+  max-width: 80%;
+}
+
 .response-header-error{
   background-color: #d2322d;
   color: white;
@@ -119,23 +123,9 @@ a.disabled {
 }
 
 .details-modal{
-  max-width: 90%;
-  max-height: 80%;
+  max-width: 80%;
 }
 
-.overlay {
- position: fixed;
- top: 0;
- bottom: 0;
- left: 0;
- right: 0;
- background: rgba(0, 0, 0, 0.7);
- visibility: hidden;
- opacity: 1;
-}
-.overlay:target {
- visibility: visible;
-}
 .popup {
  margin: 70px auto;
  padding: 20px;
@@ -388,6 +378,10 @@ a.disabled {
 .status-answer-3{
   background: lightblue;
 }
+.status-answer-all{
+  border: solid 0.1px;
+  border-color: darkgray;
+}
 
 .select-status input{
   visibility:hidden;
@@ -402,4 +396,18 @@ a.disabled {
 }
 .status-opacity{
   color: rgba(0, 0, 0, 0);
+}
+
+.ellipsis{
+  position: relative;
+}
+.ellipsis span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: .75rem;
+  padding-right: .75rem;
 }

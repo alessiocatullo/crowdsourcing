@@ -3,69 +3,34 @@
 	<h1 class="title">I Miei Task</h1>
 	<div class="row menu-task filter-campaign" style="margin-bottom: 1pc;">
 		<div class="col-md-12">
-			<button class="sync-campaign btn btn-primary float-right" onclick="task_refresh('<?php echo $_SESSION['user']; ?>')" style="margin-left: 5px;" type="button">
+			<button class="sync-campaign btn btn-primary float-left" onclick="task_refresh('<?php echo $_SESSION['user']; ?>')" style="margin-left: 5px;" type="button">
 	          <i class="fas fa-sync-alt"></i>
 	        </button>
-	        <button type="button" class="btn btn-primary float-right" style="margin-left: 5px;" data-toggle="modal" data-target="#legend">
+	        <button type="button" class="btn btn-primary float-left" style="margin-left: 5px;" data-toggle="modal" data-target="#legend">
                 <i class="fas fa-info-circle"></i>
             </button>
-	        <button type="button" class="btn btn-primary filter-btn float-right" data-toggle="collapse" data-target="#filter-panel">
-	            Filtro
-	        </button>
-	        <div id="filter-panel" class="collapse filter-panel float-right" style="width: 100%;">
-	            <div class="panel panel-default">
-	                <div class="panel-body">
-	                	<div class="row justify-content-md-center" style="margin-bottom: 1pc;">
-	                		<div class="col-md-3" style="margin-right: 10px;">
-	                			<div class="row">
-	                				<h5>Titolo</h5>
-	                			</div>
-	                			<div class="row">
-	                				<input type="text" class="form-control input-sm select-title">
-	                			</div>
-	                		</div>
-	                		<div class="col-md-3">
-	                			<div class="row">
-	                				<h5>Campagna</h5>
-	                			</div>
-	                			<div class="row">
-						            <select class="form-control select-campaign">
-						            	<script>select_campaign_filter('<?php echo $_SESSION['user']; ?>');</script>
-								    </select>
-								</div>
-	                		</div>
-	                		<div class="col-md-2 " style="margin-left: 10px;">
-	                			<div class="row">
-	                				<h5>Stato</h5>
-	                			</div>
-	                			<div class="row">
-									<div class="select-status" data-toggle="buttons">
-										<label class="btn status-answer-3">
-											<input type="checkbox" name="options" id="3" autocomplete="off"/>
-										</label>
-										<label class="btn status-answer-2">
-											<input type="checkbox" name="options" id="2" autocomplete="off">
-										</label>
-										<label class="btn status-answer-0">
-											<input type="checkbox" name="options" id="0" autocomplete="off">
-										</label>
-										<label class="btn status-answer-1">
-											<input type="checkbox" name="options" id="1" autocomplete="off">
-										</label>
-									</div>
-	                			</div>
-	                		</div>
-	                		<div class="col-md-1">
-	                			<button type="button" class="btn btn-primary confirm-filter" style="position: absolute; bottom: 0px;">
-                            		Conferma
-                            	</button>  
-	                		</div>
-	                	</div>
-	                </div>
-	            </div>
-	        </div>
+            <div class="row float-right">
+				<div class="select-status" data-toggle="buttons">
+					<label class="btn btn-filter status-answer-3" data-target="3">
+						<input type="radio" name="options" id="3" autocomplete="off"/>
+					</label>
+					<label class="btn btn-filter status-answer-2" data-target="2">
+						<input type="radio" name="options" id="2" autocomplete="off">
+					</label>
+					<label class="btn btn-filter status-answer-0" data-target="0">
+						<input type="radio" name="options" id="0" autocomplete="off">
+					</label>
+					<label class="btn btn-filter status-answer-1" data-target="1">
+						<input type="radio" name="options" id="1" autocomplete="off">
+					</label>
+					<label class="btn btn-filter status-answer-all active" data-target="all">
+						<input type="radio" name="options" id="1" autocomplete="off">
+					</label>
+				</div>
+			</div>
 	    </div>
 	</div>
+
 	<div class="row justify-content-md-center table-task">
 		<div class="table-responsive">
 			<table class="table table-striped table-hover">
@@ -87,6 +52,7 @@
 			</table>
 		</div>
 	</div>
+</div>
 
 <div class="modal fade" data-backdrop="static" id="answer-div">
   <div class="modal-dialog response-modal">
@@ -205,53 +171,15 @@
 	    });
 	});
 
-	$('.filter-panel').on('click','.confirm-filter',function() {
-		$title = $('.filter-panel').find('.select-title').val();
-		$campaign = $('.filter-panel').find('.select-campaign :selected').text();
-		$status3 = null; $status2 = null; $status0 = null; $status1 = null;
-		$('.filter-panel').find('.select-status .active input').each(
-			function(){
-				switch($(this).attr('id')) {
-				  case '3':
-				    $status3 = 3;
-				    break;
-				  case '2':
-				    $status2 = 2;
-				    break;
-				  case '0':
-				  	$status0 = 0;
-				  	break;
-				  case '1':
-				  	$status1 = 1;
-				  	break;
-				} 
-			}
-		);
-		if($campaign.localeCompare('---') == 0){
-			$campaign = '';
-		}
-
-	    $('.table-line-for-filter tr').filter(function() {
-	    	$(this).toggle(	
-	    		$(this).children(":eq(1)").text().indexOf($title) > -1 && 
-	    		$(this).children(":eq(0)").text().indexOf($campaign) > -1 );/*&& !(	    			
-			    		$(this).children(":eq(5)").text().indexOf($status3) > -1 ||
-			    		$(this).children(":eq(5)").text().indexOf($status2) > -1 ||
-			    		$(this).children(":eq(5)").text().indexOf($status0) > -1 ||
-			    		$(this).children(":eq(5)").text().indexOf($status1) > -1
-		    		));*/
-	    		
-
-		    	/*$('.table-line-for-filter tr').filter(function() {
-			    	if($status3 != null || $status2 != null || $status0 != null || $status1 != null){
-			    		$(this).toggle(
-				    		$(this).children(":eq(5)").text().indexOf($status3) > -1 ||
-				    		$(this).children(":eq(5)").text().indexOf($status2) > -1 ||
-				    		$(this).children(":eq(5)").text().indexOf($status0) > -1 ||
-				    		$(this).children(":eq(5)").text().indexOf($status1) > -1
-			    		);
-			    	}
-			    });*/
+	$(document).ready(function () {
+	    $('.btn-filter').on('click', function () {
+	      var $target = $(this).data('target');
+	      if ($target != 'all') {
+	        $('.table-line-for-filter tr').css('display', 'none');
+	        $('.table-line-for-filter tr[data-status="' + $target + '"]').fadeIn('slow');
+	      } else {
+	        $('.table-line-for-filter tr').css('display', 'none').fadeIn('slow');
+	      }
 	    });
-	});
+ 	});
 </script> 

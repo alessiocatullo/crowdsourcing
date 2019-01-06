@@ -69,11 +69,17 @@
         $sql_campaign = "SELECT * FROM campaign WHERE user = '$requester'";
         $result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
         while($row=mysqli_fetch_array($result_campaign)){
-            echo "<tr>"."<td>".$row['name']."</td>"."<td class='tabletxt-center'>".$row['dt_start']."</td>"."<td class='tabletxt-center'>".$row['dt_end'].
-                "</td>"."<td class='tabletxt-center'>".$row['dt_accession_start']."</td>"."<td class='tabletxt-center'>"
-                .$row['dt_accession_end']."</td>"."<td class='tabletxt-center'>"."<a class='tabletxt-center' href='#details' onclick="."details('".$row['name']."',".$row['id'].")".
-                "><i class='fas fa-eye'></i></a>"."</td>"."<td class='tabletxt-center'>"."<a class='tabletxt-center' onclick="."deleteCampaign(".$row['id'].")".
-                "><i class='fas fa-trash-alt'></i></a>"."</td>"."</tr>";
+            echo "<tr>".
+            "<td>".$row['name']."</td>".
+            "<td class='tabletxt-center'>".$row['dt_start']."</td>".
+            "<td class='tabletxt-center'>".$row['dt_end']."</td>".
+            "<td class='tabletxt-center'>".$row['dt_accession_start']."</td>".
+            "<td class='tabletxt-center'>".$row['dt_accession_end']."</td>".
+            "<td class='tabletxt-center'>"."<a class='tabletxt-center' data-toggle='modal' data-target='#tasks-campaign' 
+                onclick="."details('".$row['name']."',".$row['id'].")"."><i class='fas fa-eye'></i></a>"."</td>".
+            "<td class='tabletxt-center'>"."<a class='tabletxt-center' onclick="."deleteCampaign(".$row['id'].")".
+                "><i class='fas fa-trash-alt'></i></a>"."</td>".
+            "</tr>";
         }
         @mysqli_free_result($result_campaign);
         return $result_campaign;
@@ -88,13 +94,17 @@
         $sql_task = "SELECT * FROM task WHERE campaign = '$idCampaign'";
         $result_task = @mysqli_query($con, $sql_task) or die("Errore query task-details");
         while($row=mysqli_fetch_array($result_task)){
-            echo "<tr>"."<td>".$row['title']."</td>"."<td>".$row['description']."</td>"."<td class='tabletxt-center'>"
-                .$row['worker_max']."</td>"."<td class='tabletxt-center'>".$row['majority']."</td>"
-                ."<td class='tabletxt-center'>".$row['reward']."</td>"."<td class='tabletxt-center'>"
-                ."<a class='tabletxt-center' href='#answer' onclick="."answer(".$row['id'].")".
-                "><i class='fas fa-list-alt fa-fw'></i>"."</td>"."<td class='tabletxt-center'>"
-                ."<a class='tabletxt-center' href='#keywords' onclick="."keywords(".$row['id'].")".
-                "><i class='fas fa-list-alt fa-fw'></i>"."</td>"."<td style='background: yellow;'>"."</td>"."</tr>";
+            echo "<tr>".
+            "<td class='ellipsis' style='width: 30%;'><span>".$row['title']."</span></td>".
+            "<td class='ellipsis' style='width: 37.9%;'>".$row['description']."</span></td>".
+            "<td class='tabletxt-center' style='width: 5%;'>".$row['worker_max']."</td>".
+            "<td class='tabletxt-center' style='width: 10%;'>".$row['majority']."%</td>".
+            "<td class='tabletxt-center' style='width: 5%;'>".$row['reward']."</td>".
+            "<td class='tabletxt-center' style='width: 5%;'>"."<a class='tabletxt-center' href='#answer' onclick="."answer(".$row['id'].")".
+                "><i class='fas fa-list-alt fa-fw'></i>"."</td>".
+            "<td class='tabletxt-center' style='width: 7%;'>"."<a class='tabletxt-center' href='#keywords' onclick="."keywords(".$row['id'].")".
+                "><i class='fas fa-list-alt fa-fw'></i>"."</td>"."<td style='background: yellow;'>"."</td>".
+            "</tr>";
         }
         @mysqli_free_result($result_task);
         return $result_task;
@@ -345,10 +355,14 @@
                 $row['score'] != null ? $status = $row['score']: $status = 2;
             }else {$status = 3;}
 
-            echo "<tr id='".$row['idc']."-".$row['idt']."'>"."<td>".$row['name']."</td>"."<td class='title-task-record'>".$row['title']."</td>"."<td class='desc-task-record'>".$row['description'].
-                "</td>"."<td class='tabletxt-center'>".$row['reward']."</td>"."<td class='tabletxt-center'>".
-                "<a class='tabletxt-center btn-answer ".($status!=3 ? 'disabled' : '')."' href='' data-toggle='modal' data-target='#answer-div'><i class='fas fa-pen'></i></a>"."</td>".
-                "<td class='status-answer-".$status." status-opacity'>".$status."</td>"."</tr>";
+            echo "<tr data-status='".$status."' id='".$row['idc']."-".$row['idt']."'>".
+                "<td class='ellipsis' style='width: 14.9%;'><span>".$row['name']."</span></td>".
+                "<td class='title-task-record ellipsis' style='width: 25%;'><span>".$row['title']."</span></td>".
+                "<td class='desc-task-record ellipsis' style='width: 30%;'><span>".$row['description']."</span></td>".
+                "<td class='tabletxt-center' style='width: 16%;'>".$row['reward']."</td>".
+                "<td class='tabletxt-center' style='width: 7%;'>"."<a class='tabletxt-center btn-answer ".($status!=3 ? 'disabled' : '')."' href='' data-toggle='modal' data-target='#answer-div'>
+                    <i class='fas fa-pen'></i></a>"."</td>".
+                "<td class='status-answer-".$status." status-opacity' style='width: 7%;'>".$status."</td>"."</tr>";
         }
         @mysqli_free_result($result_campaign);
         return $result_campaign;

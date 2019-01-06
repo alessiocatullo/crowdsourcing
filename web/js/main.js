@@ -51,7 +51,7 @@ ELENCO CAMPAGNE
 //FUNZIONE RIEMPI DIV DEL DETTAGLIO
 function details(name, id) {
   $(".content-details").html("");
-  $( ".title-details" ).append(name);
+  $( ".title-details" ).html("").append(name);
   $.ajax({ url: '../../php/query.php',
            data: {Method:'query_details', id: id},
            type: 'POST',
@@ -158,9 +158,15 @@ function populateSubCategory(id, category){
     data: {Method:'query_skill_subcategory', id_category: category},
     type: 'POST',
       success: function(e) {
-        $('.main-div').find("#" + id).find('.skill-category-select').children('option').remove();
-        $('.main-div').find("#" + id).find('.skill-category-select').append('<option>---</option>');
-        $('.main-div').find("#" + id).find('.skill-category-select').append(e);
+        if(id != 0){
+          $('.main-div').find("#" + id).find('.skill-category-select').children('option').remove();
+          $('.main-div').find("#" + id).find('.skill-category-select').append('<option>---</option>');
+          $('.main-div').find("#" + id).find('.skill-category-select').append(e);
+        } else {
+          $('.skill-category-select').children('option').remove();
+          $('.skill-category-select').append('<option>---</option>');
+          $('.skill-category-select').append(e);
+        }
       }
   });
 }
