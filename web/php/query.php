@@ -147,6 +147,15 @@
         return $result_delete_campaigns;
     }
 
+    //Query per eliminare un task specificato tramite id da chiamata interna php
+    function delete_task_wArgument($id){
+        global $con;
+        $sql = "DELETE FROM task WHERE id = '$id'";
+        $result = @mysqli_query($con, $sql) or die("Errore eliminazione task!");
+        @mysqli_free_result($result);
+        return $result;
+    }
+
     //Query per eliminare una campagna specificata tramite id da chiamata interna php
     function delete_campaign_wArgument($id){
         global $con;
@@ -236,6 +245,77 @@
             $task_n++;
         }while(isset($_POST["title-".$task_n]));
         
+        return;
+    }
+
+    function insert_task(){
+        global $con;
+        $user = $_POST['user'];
+        $campaign = $_POST['campaign'];
+
+        parse_str($_POST['formData'], $_POST);
+
+        $title = $_POST['title'];
+        $description = $_POST['description'];
+        $worker = $_POST['worker'];
+        $majority = $_POST['majority'];
+        $reward = $_POST['reward'];
+        $answerArray = explode("; ", $_POST['answer']);
+        $skillArray = explode("; ", $_POST['skill']);
+
+        $sql = "SELECT id FROM campaign WHERE user = '$user' AND name = '$campaign'";
+        $result = @mysqli_query($con, $sql) or die("Errore select query campaign");
+        $row = mysqli_fetch_array($result);
+        $campaign = $row[0]; 
+        @mysqli_free_result($sql);
+
+        $sql = "INSERT INTO task (title, description, worker_max, majority, reward, campaign) 
+        VALUES ('$title', '$description', '$worker', '$majority', '$reward', '$campaign')";
+        $result = @mysqli_query($con, $sql) or die("Errore inserimento task");
+        @mysqli_free_result($result);
+        //ID TASK
+        $id_task = mysqli_insert_id($con) or die ("Errore recupero id task!");
+
+        $iter_n = 0;
+        do{
+            $answer = $answerArray[$iter_n++];
+            $sql = "INSERT INTO answer_options (answer, task) 
+            VALUES ('$answer', '$id_task')";
+            $result = @mysqli_query($con, $sql) or die("Errore inserimento risposte".delete_task_wArgument($id_task));
+            @mysqli_free_result($result);
+        }while($answerArray[$iter_n] != null);
+        $iter_n = 0;
+
+        do{
+            $skill = $skillArray[$iter_n++];
+            $sql = "SELECT count(id), id FROM skill WHERE name = '$skill'";
+            $result = @mysqli_query($con, $sql) or die ("Errore ricerca skill".delete_task_wArgument($id_task));
+            $row = mysqli_fetch_array($result);
+            if($row['id'] != null){
+                $id_category = $row['id'];
+                @mysqli_free_result($sql);
+
+                $sql = "INSERT INTO task_skill (task, skill) 
+                VALUES ('$id_task', '$id_category')";
+                $result = @mysqli_query($con, $sql) or die("Errore inserimento skill categorie".delete_task_wArgument($id_task));
+                @mysqli_free_result($sql);
+            } else {
+                @mysqli_free_result($sql);
+                $sql = "SELECT count(id), id, category FROM skill_subcategory WHERE name = '$skill'";
+                $result = @mysqli_query($con, $sql) or die ("Errore ricerca skill nelle sottocategorie".delete_task_wArgument($id_task));
+                $row = mysqli_fetch_array($result);
+                $id_category = $row['category'];
+                $id_subcategory = $row['id'];
+                @mysqli_free_result($sql);
+
+                $sql = "INSERT INTO task_skill (task, skill, skill_subcategory) 
+                VALUES ('$id_task', '$id_category', '$id_subcategory')";
+                $result = @mysqli_query($con, $result) or die("Errore inserimento skill sottocategorie".delete_task_wArgument($id_task));
+                @mysqli_free_result($sql);
+            }
+        }while($skillArray[$iter_n] != null);
+        
+        echo $campaign;
         return;
     }
 

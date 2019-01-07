@@ -332,10 +332,10 @@
 
     $('.modal-header').removeClass("response-header-success");
     $('.modal-header').removeClass("response-header-error");
-
+    alert("ok");
     $.ajax({
       type: "POST",
-      url: '../php/query.php',
+      url: '../../php/query.php',
       data: {Method:'insert_campaigns', formData, user},
       success: function(response){
         if(response == ''){
@@ -352,6 +352,9 @@
         }
         $('.modal-footer').html(button);
         $('.modal-title').html(titleText);
+      }, error: function(xhr, ajaxOptions, thrownError){
+        alert(xhr.status);
+        alert(thrownError);
       }
     });
   });

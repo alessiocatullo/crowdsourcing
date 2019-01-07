@@ -68,28 +68,28 @@
 	      <!-- Modal Header -->
 	      <div class="modal-header">
 	        <h2>Aggiungi un task</h2>
-	        <button type="button" class="close" data-dismiss='modal' data-toggle="modal" data-target="#tasks-campaign"><i class="fas fa-arrow-left"></i></button>
+	        <button type="button" class="close" data-dismiss='modal' data-toggle="modal" data-target="#tasks-campaign"><i class="fas fa-arrow-left"></i></a>
 	      </div>
 	      <!-- Modal body -->
 	      <div class="modal-body">
 			<div class="row form-group">
 	          <div class="col-md-6">
 	            <label class="control-label">Titolo</label>
-	            <input maxlength="200" type="text" id="title-task" name="title-task" required="required" class="form-control" placeholder="Inserisci il titolo" />
+	            <input maxlength="200" type="text" name="title" required="required" class="form-control" placeholder="Inserisci il titolo" />
 	          </div>
 	          <div class="col-md-6">
 	            <div class="row">
 	              <div class="col-md-2">
 	                <label class="control-label">Lavoratori</label>
-	                <input type="number" id="worker-task" name="worker-task" required="required" class="form-control" placeholder="1" min="1" max="10" step="1"/>
+	                <input type="number" name="worker" required="required" class="form-control" placeholder="1" min="1" max="10" step="1"/>
 	              </div>
 	              <div class="col-md-3">
 	                <label class="control-label">Maggioranza</label>
-	                <input type="number" id="majority-task" name="majority-task" required="required" class="form-control" placeholder="0%" min="0" max="100" step="10"/>
+	                <input type="number" name="majority" required="required" class="form-control" placeholder="0%" min="0" max="100" step="10"/>
 	              </div>
 	              <div class="col-md-7">
 	                <label class="control-label">Ricompenza</label>
-	                <input maxlength="20" type="text" id="reward-task" name="reward-task" class="form-control" placeholder="Inserisci la ricompenza"/>
+	                <input maxlength="20" type="text" name="reward" class="form-control" placeholder="Inserisci la ricompenza"/>
 	              </div>
 	            </div>
 	          </div>
@@ -103,7 +103,7 @@
 	            </div>
 	            <div class="row form-group">
 	              <div class="col-md-12">
-	                 <textarea class="form-control" type="text" style="resize: none; height: 120%;" row="3" id="description-task" name="description-task" 
+	                 <textarea class="form-control" type="text" style="resize: none; height: 120%;" row="3" name="description" 
 	                 placeholder="Inserisci la descrizione" required='required'></textarea>
 	              </div>
 	            </div>
@@ -129,7 +129,7 @@
 	            </div>
 	            <div class="row form-group">
 	              <div class="col-md-11">
-	                <input class="skill-input form-control readonly" id="skill-task" name="skill-task" type="text" required="required" placeholder="#" autocomplete="off"/>
+	                <input class="skill-input form-control readonly" name="skill" type="text" required="required" placeholder="#" autocomplete="off"/>
 	              </div>
 	              <div class="col-md-1">
 	                <button class="skill-remove btn btn-danger float-right" type="button">
@@ -148,7 +148,7 @@
 	            </div>
 	            <div class="row">
 	              <div class="col-md-11">
-	                <input class="form-control readonly input-answer-task" id="answer-task" name="answer-task" type="text" required="required"  placeholder="Premi il tasto edit per aggiungere risposte"/>
+	                <input class="form-control readonly input-answer-task" name="answer" type="text" required="required"  placeholder="Premi il tasto edit per aggiungere risposte"/>
 	              </div>
 	              <div class="col-md-1">
 	                <button type="button" class="btn btn-primary answerBtn float-right" data-toggle="collapse" data-target="#answer-collapse">
@@ -180,7 +180,7 @@
 		  </div>
 	      <!-- Modal footer -->
 	      <div class="modal-footer">
-	        <button type='submit' class='btn btn-primary add-new-task' data-dismiss='modal' data-toggle="modal" data-target="#tasks-campaign">Aggiungi</button>
+	      	<button type="submit" class="btn btn-primary add-new-task">Aggiungi</button>
 	      </div>
 	  	</form>
     </div>
@@ -194,17 +194,17 @@
     var formData = $(this).serialize();
     var user = '<?php echo $_SESSION['user'] ?>';
     var campaign =  $(".title-details").html();
-    /*
+
 	    $.ajax({
 	      type: "POST",
 	      url: '../../php/query.php',
-	      data: {Method:'query_answer_submit', formData, user, idTask},
-	      success: function(response){
-	      		$('#answer-div').modal('hide');
-	      		task_refresh(user);
-	      	}
+	      data: {Method:'insert_task', formData, user, campaign},
+	      success: function(e){
+	      	$('#new-task-campaign').modal('hide');
+	      	details(campaign, e);
+	      	$('#tasks-campaign').modal('show');
+	      }
 	    });
-	    */
   	});
 
   	$('#new-task-form').on('change', '.skill-select' ,function(){
