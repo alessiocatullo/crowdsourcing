@@ -194,12 +194,17 @@
     var formData = $(this).serialize();
     var user = '<?php echo $_SESSION['user'] ?>';
     var campaign =  $(".title-details").html();
-
 	    $.ajax({
 	      type: "POST",
 	      url: '../../php/query.php',
 	      data: {Method:'insert_task', formData, user, campaign},
 	      success: function(e){
+	      	document.getElementById("new-task-form").reset();
+	      	$('#new-task-campaign').find('.answer-div-task').empty();
+  			$('.skill-category-select').attr('disabled', 'disabled');
+			$('.skill-category-select').children('option').remove();
+        	$('.skill-category-select').append('<option>---</option>');
+	      	$('#answer-collapse').collapse('hide');
 	      	$('#new-task-campaign').modal('hide');
 	      	details(campaign, e);
 	      	$('#tasks-campaign').modal('show');
@@ -266,10 +271,15 @@
 	$('#new-task-form').on('click', '.add-answer' ,function(){
 	    answer = $('.input-answer-div-task').val();
 	    if(answer != ''){
-	      $('.answer-div-task').append('<li class="li-answer">'+ answer + '<span class="close-answer"><i class="fas fa-times"></i></span></li>');
-	      $('.input-answer-task').val($('.input-answer-task').val() + answer + '; ');
-	    }
+	    	var exists = $('.answer-div-task li:contains('+answer+')').length;
+
+			if(!exists){
+				$('.answer-div-task').append('<li class="li-answer">'+ answer + '<span class="close-answer"><i class="fas fa-times"></i></span></li>');
+	      		$('.input-answer-task').val($('.input-answer-task').val() + answer + '; ');
+			}
+
 	    $('.input-answer-div-task').val('');
+	    }
 	});
 
 	$('#new-task-form').on('click', '.close-answer' ,function(){
@@ -282,9 +292,6 @@
 	});
 
 	$('#tasks-campaign').on('click', '.new-task-btn-add' ,function(){
-		$('#new-task-form').find('input').val("");
 		$('.skill-category-select').attr('disabled', 'disabled');
-		$('.skill-category-select').children('option').remove();
-        $('.skill-category-select').append('<option>---</option>');
 	});
 </script>

@@ -461,9 +461,14 @@
   $('#answer').on('click', '.add-answer' ,function(){
     answer = $('.input-answer-div').val();
     if(answer != ''){
-      $('.answer-div').append('<li class="li-answer">'+ answer + '<span class="close-answer"><i class="fas fa-times"></i></span></li>');
+      var exists = $('.answer-div li:contains('+answer+')').length;
+
+      if(!exists){
+        $('.answer-div').append('<li class="li-answer">'+ answer + '<span class="close-answer"><i class="fas fa-times"></i></span></li>');
+      }
+
+      $('.input-answer-div').val('');
     }
-    $('.input-answer-div').val('');
   });
 
   $('#answer').on('click', '.confirm-answer' ,function(){
