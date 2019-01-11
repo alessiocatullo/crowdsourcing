@@ -350,8 +350,8 @@
           $('.modal-body').text(response);
           $('.modal-header').addClass("response-header-error");
         }
-        $('.modal-footer').html(button);
-        $('.modal-title').html(titleText);
+          $('.modal-footer').html(button);
+          $('.modal-title').html(titleText);
       }, error: function(xhr, ajaxOptions, thrownError){
         alert(xhr.status);
         alert(thrownError);

@@ -1,4 +1,3 @@
-<!--CAMPAIGNS-->
 <div>
 	<h1 class="title">I Miei Task</h1>
 	<div class="row menu-task filter-campaign" style="margin-bottom: 1pc;">
@@ -54,7 +53,7 @@
 	</div>
 </div>
 
-<div class="modal fade" data-backdrop="static" id="answer-div">
+<div class="modal fade" id="answer-div">
   <div class="modal-dialog response-modal">
 	<form role="form" id="answer-form">
 	    <div class="modal-content">
@@ -62,7 +61,7 @@
 	      <div class="modal-header">
 	        <h4 class="modal-title">
 	        </h4>
-	        <button type="button" class="close" data-dismiss='modal' onclick="refreshOnTarget('#task_worker')">&times;</button>
+	        <button type="button" class="close" data-dismiss='modal'>&times;</button>
 	      </div>
 	      <!-- Modal body -->
 	      <div class="modal-body">
@@ -87,6 +86,21 @@
 	      </div>
 	    </div>
 	</form>
+  </div>
+</div>
+
+<div class="modal fade" id="answer-div-response">
+  <div class="modal-dialog response-modal">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">
+        </h4>
+        <button type="button" class="close" data-dismiss='modal'>&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body"></div>
+    </div>
   </div>
 </div>
 
@@ -140,6 +154,10 @@
 	    var formData = $(this).serialize();
 	    var user = '<?php echo $_SESSION['user'] ?>';
 	    var idTask =  $(".response-modal").attr('id');
+    	var titleText = '';
+
+   		$('#answer-div-response').find('.modal-header').removeClass("response-header-success");
+    	$('#answer-div-response').find('.modal-header').removeClass("response-header-error");
 
 	    $.ajax({
 	      type: "POST",
@@ -148,14 +166,25 @@
 	      success: function(response){
 	      		$('#answer-div').modal('hide');
 	      		task_refresh(user);
+	      		if(response == ''){
+		          	titleText = "<i class='response-icon fas fa-check-circle'></i> Risposta avvenuta con successo";
+		          	$('#answer-div-response').find('.modal-body').text("Hai risposto con successo! Attendi ora che venga calcolato il risultato.");
+		          	$('#answer-div-response').find('.modal-header').addClass("response-header-success");
+	      		} else {
+	      			titleText = "<i class='fas fa-times-circle'></i> Errore";
+         			$('#answer-div-response').find('.modal-body').text(response);
+          			$('#answer-div-response').find('.modal-header').addClass("response-header-error");
+	      		}
+        		$('#answer-div-response').find('.modal-title').html(titleText);
+	      		$('#answer-div-response').modal('show');
 	      	}
 	    });
 	  });
 
 	$('.table-task').on('click', '.btn-answer' ,function(){
 		$idTask = $(this).closest('tr').attr('id').substring($(this).closest('tr').attr('id').indexOf('-')+1, $(this).closest('tr').attr('id').length);
-		$title = $(this).closest('tr').find('.title-task-record').html();
-		$desc = $(this).closest('tr').find('.desc-task-record').html();
+		$title = $(this).closest('tr').find('.title-task-record').text();
+		$desc = $(this).closest('tr').find('.desc-task-record').text();
 		$('.task-title').text($title);
 		$('.task-desc').text($desc);
 		$('.response-modal').attr('id', $idTask);

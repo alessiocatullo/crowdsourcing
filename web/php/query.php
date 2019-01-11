@@ -456,9 +456,15 @@
         $sql = "SELECT answer FROM answer_options WHERE task = '$idTask'";
         $result = @mysqli_query($con, $sql) or die("Errore query task answer");
         while($row=mysqli_fetch_array($result)){
-            echo "<input class='form-radio' type='radio' name='answer-opt' id='".$row['answer']."' value='".$row['answer']."' required>
-                    <label for='".$row['answer']."' class='form-text'>".$row['answer']."</label>
-                </input>";
+            echo "
+            <div class='col-md-12'>
+                <div class='input-group'>
+                    <span class='input-group-prepend'>
+                        <input class='form-radio' type='radio'  name='answer-opt' id='".$row['answer']."' value='".$row['answer']."' required>
+                    </span>
+              <label for='".$row['answer']."' class='form-text' style='margin-left: 1pc;'>".$row['answer']."</label>
+                </div>
+            </div>";
         }
         @mysqli_free_result($result);
         return $result;
@@ -472,10 +478,6 @@
         $user = $_POST['user'];
         parse_str($_POST['formData'], $_POST);
         $answer = $_POST['answer-opt'];
-
-        echo $idTask;
-        echo $user;
-        echo $answer; 
 
         $sql = "UPDATE task_performed SET answer = (SELECT id FROM answer_options WHERE answer = '$answer' LIMIT 1) WHERE task = '$idTask' AND user = '$user'";
         $result = @mysqli_query($con, $sql) or die("Errore query task answer");

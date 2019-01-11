@@ -1,15 +1,10 @@
 TODO:
+- Algoritmo match
+- 
+
 
 FIX:
-- Fixare .readonly per il task creati dinamicamente
+- la classe .readonly che fa schifo (non dovrebbe permetterti di scrivere o di fare qualsiasi altra cosa)
+- fixare sessione in quanto ora puoi entrare nella parte della dashboard del requester avendo fatto login come worker
+- fixare al login come requester(dopo logout da worker) ti reindirizza nella ancora del requester precedente
 
-NEW:
-- Aggiunta nuova pagina admin.php in cui gestire le richieste dei requester
-- Modificare lo script php per gestire la nuova pagina admin
-- Aggiungere pagina nel login per segnalare al requester appena registrato che dovrà attendere l'accettazione 
-- Implementare l'invio delle richieste agli utenti admin
-- definire il layout della pagina dell'admin
-
-
-README:
--Ho spostato il dum nella cartella DB, e ho messo delle folder per le view e le procedure in modo che non si sovrascrivino ad ogni import del db
