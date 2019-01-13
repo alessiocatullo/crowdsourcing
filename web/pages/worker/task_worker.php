@@ -100,6 +100,10 @@
       </div>
       <!-- Modal body -->
       <div class="modal-body"></div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type='button' class='btn btn-primary' data-dismiss='modal'>Chiudi</button>
+      </div>
     </div>
   </div>
 </div>
@@ -118,31 +122,52 @@
 	      <!-- Modal body -->
 	      <div class="modal-body">
 	      	<div class="table-responsive">
-			<table class="table table-striped">
-		        <thead class="thead-dark">
-		        	<tbody>
-		        		<tr>
-		        			<td>Da rispondere</td>
-		        			<td class="status-answer-3"></td>
-		        		</tr>
-		        		<tr>
-		        			<td>In attesa di conferma</td>
-		        			<td class="status-answer-2"></td>
-		        		</tr>
-		        		<tr>
-		        			<td>Risposta errata</td>
-		        			<td class="status-answer-0"></td>
-		        		</tr>
-		        		<tr>
-		        			<td>Risposta corretta</td>
-		        			<td class="status-answer-1"></td>
-		        		</tr>
-		            </tbody>
-		        </thead>
-			</table>
-		</div>
-	      </div>
+				<table class="table table-striped">
+			        <thead class="thead-dark">
+			        	<tbody>
+			        		<tr>
+			        			<td>Da rispondere</td>
+			        			<td class="status-answer-3"></td>
+			        		</tr>
+			        		<tr>
+			        			<td>In attesa di conferma</td>
+			        			<td class="status-answer-2"></td>
+			        		</tr>
+			        		<tr>
+			        			<td>Risposta errata</td>
+			        			<td class="status-answer-0"></td>
+			        		</tr>
+			        		<tr>
+			        			<td>Risposta corretta</td>
+			        			<td class="status-answer-1"></td>
+			        		</tr>
+			            </tbody>
+			        </thead>
+				</table>
+		  	</div>
+	    </div>
+	  </div>
 	</form>
+  </div>
+</div>
+
+<div class="modal fade" id="sub-check-modal">
+  <div class="modal-dialog response-modal">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header response-header-error">
+        <h4 class="modal-title">
+          <i class='fas fa-times-circle'></i> Iscriviti
+        </h4>
+        <button type="button" class="close" data-dismiss='modal'>&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body"></div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type='button' class='btn btn-danger' data-dismiss='modal' onclick="refreshOnTarget('#home')">Campagne</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -183,12 +208,14 @@
 
 	$('.table-task').on('click', '.btn-answer' ,function(){
 		$idTask = $(this).closest('tr').attr('id').substring($(this).closest('tr').attr('id').indexOf('-')+1, $(this).closest('tr').attr('id').length);
+		$user = '<?php echo $_SESSION['user'] ?>';
+
 		$title = $(this).closest('tr').find('.title-task-record').text();
 		$desc = $(this).closest('tr').find('.desc-task-record').text();
+
 		$('.task-title').text($title);
 		$('.task-desc').text($desc);
 		$('.response-modal').attr('id', $idTask);
-
 		
 	    $.ajax({
 	      type: "POST",
@@ -198,6 +225,21 @@
 	      	$('.radio-input').html(response);
 	      }
 	    });
+
+	    //CHECK ISCRIZIONE
+		$.ajax({
+		      type: "POST",
+		      url: '../../php/query.php',
+		      data: {Method:'query_check_sub',user: $user,idTask: $idTask},
+		      success: function(response){
+		      	if(response != ''){
+			      	$('#sub-check-modal').find('.modal-body').html(response);
+	      			$('#sub-check-modal').modal('show');
+      			} else {
+      				$('#answer-div').modal('show');
+      			}
+		      }
+		});
 	});
 
 	$(document).ready(function () {

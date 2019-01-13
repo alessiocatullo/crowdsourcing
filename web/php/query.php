@@ -75,7 +75,7 @@
             "<td class='tabletxt-center'>".$row['dt_end']."</td>".
             "<td class='tabletxt-center'>".$row['dt_accession_start']."</td>".
             "<td class='tabletxt-center'>".$row['dt_accession_end']."</td>".
-            "<td class='tabletxt-center'>"."<a class='tabletxt-center' data-toggle='modal' data-target='#tasks-campaign' 
+            "<td class='tabletxt-center'>"."<a href='' class='tabletxt-center' data-toggle='modal' data-target='#tasks-campaign' 
                 onclick="."details('".$row['name']."',".$row['id'].")"."><i class='fas fa-eye'></i></a>"."</td>".
             "<td class='tabletxt-center'>"."<a class='tabletxt-center' onclick="."deleteCampaign(".$row['id'].")".
                 "><i class='fas fa-trash-alt'></i></a>"."</td>".
@@ -354,7 +354,7 @@
                     </div>
                     <div class='card-footer'>
                         <div class='d-flex justify-content-center'>
-                            <button data-toggle='modal' data-target='".($row['user'] != null ? '#task':'#sub')."' class='btn 
+                            <button data-toggle='modal' data-target='".($row['user'] != null ? '#task_response':'#sub')."' class='btn 
                             btn-sub btn-". ($row['user'] != null ? 'success':'danger')."'>
                             ". ($row['user'] != null ? 'Richiedi Task':'Iscriviti')."</button> 
                         </div>                 
@@ -440,7 +440,7 @@
                 "<td class='title-task-record ellipsis' style='width: 25%;'><span>".$row['title']."</span></td>".
                 "<td class='desc-task-record ellipsis' style='width: 30%;'><span>".$row['description']."</span></td>".
                 "<td class='tabletxt-center' style='width: 16%;'>".$row['reward']."</td>".
-                "<td class='tabletxt-center' style='width: 7%;'>"."<a class='tabletxt-center btn-answer ".($status!=3 ? 'disabled' : '')."' href='' data-toggle='modal' data-target='#answer-div'>
+                "<td class='tabletxt-center' style='width: 7%;'>"."<a class='tabletxt-center btn-answer ".($status!=3 ? 'disabled' : '')."' href='' data-toggle='modal'>
                     <i class='fas fa-pen'></i></a>"."</td>".
                 "<td class='status-answer-".$status." status-opacity' style='width: 7%;'>".$status."</td>"."</tr>";
         }
@@ -481,6 +481,145 @@
 
         $sql = "UPDATE task_performed SET answer = (SELECT id FROM answer_options WHERE answer = '$answer' LIMIT 1) WHERE task = '$idTask' AND user = '$user'";
         $result = @mysqli_query($con, $sql) or die("Errore query task answer");
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    //Query matching task
+    function query_task_assignment(){
+        global $con;
+        $user = $_POST['user'];
+        $campaign = $_POST['campaign'];
+
+        $sql = "SELECT task_assignment('$user','$campaign') as id";
+        $result = @mysqli_query($con, $sql) or die("Errore query matching task");
+        $row = mysqli_fetch_array($result);
+        @mysqli_free_result($result);
+
+        $id = $row['id'];
+        if($id == null){
+            return;
+        }
+
+        $sql = "INSERT INTO task_performed(task,user) VALUES ('$id','$user')";
+        $result = @mysqli_query($con, $sql) or die("Errore insert nuovo task in task_performed");
+
+        echo $id;
+        return $result;
+    }
+
+    //Query skill
+    function query_skill_wrk(){
+        global $con;
+        $user = $_POST['user'];
+        $pointer = '.';
+
+        $sql = "SELECT main_skill, name FROM user_skills as usk JOIN skill as s ON usk".$pointer."skill = s".$pointer."id WHERE user = '$user';";
+        $result = @mysqli_query($con, $sql) or die("Errore query skills worker");
+        while($row=mysqli_fetch_array($result)){
+            echo "<a style='color: white; margin-right: 3px;' class='badge ".($row['main_skill'] == 0 ? 'badge-success':'badge-primary')."'>".$row['name']."</a>";
+        }
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    //Query skill ul
+    function query_skill_ul_wrk(){
+        global $con;
+        $user = $_POST['user'];
+        $pointer = '.';
+
+        $sql = "SELECT name , skill FROM user_skills as usk JOIN skill as s ON usk".$pointer."skill = s".$pointer."id WHERE user = '$user';";
+        $result = @mysqli_query($con, $sql) or die("Errore query skills worker");
+        while($row=mysqli_fetch_array($result)){
+            echo "<li class='li-answer' id=".$row['skill'].">".$row['name']."<span class='close-answer'><i class='fas fa-times'></i></span></li>";
+        }
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    //Query skill input populate
+    function query_skill_input_populate(){
+        global $con;
+        $user = $_POST['user'];
+        $pointer = '.';
+
+        $sql = "SELECT skill FROM user_skills WHERE user = '$user'";
+        $result = @mysqli_query($con, $sql) or die("Errore query skills worker");
+        while($row=mysqli_fetch_array($result)){
+            echo $row['skill']."; ";
+        }
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    //Query cambia passw
+    function query_change_passw(){
+        global $con;
+        $user = $_POST['user'];
+        $role = $_POST['role'];
+        parse_str($_POST['formData'], $_POST);
+        $passw = $_POST['password'];
+        $new_pass = $_POST['password-new'];
+        $conf_new_pass = $_POST['password-new-confirm'];
+
+        $sql = "SELECT COUNT(*) AS user FROM user  WHERE user = '$user' AND role = '$role' AND password = '$passw'";
+        $result = @mysqli_query($con, $sql) or die("Errore query check passw");
+        $row=mysqli_fetch_array($result);
+
+        if($row['user'] == 1){
+            @mysqli_free_result($result);
+
+            if(strcmp($new_pass, $conf_new_pass) == 0){
+                $sql = "UPDATE user SET password = '$new_pass' WHERE user = '$user' AND role = '$role'";
+                $result = @mysqli_query($con, $sql) or die("Errore query update password");
+                @mysqli_free_result($result);
+                return $result;
+            }
+            echo "Le password non combaciano";
+            return $result;
+        }
+        echo "Password non corretta";
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    function query_modify_skill(){
+        global $con;
+        $user = $_POST['user'];
+        parse_str($_POST['formData'], $_POST);
+        $answerArray = explode("; ", $_POST['skill-input']);
+        $i = 0;
+
+        $sql = "DELETE FROM user_skills WHERE user = '$user'";
+        $result = @mysqli_query($con, $sql) or die("Errore query remove all skills");
+        @mysqli_free_result($result);
+
+        while($answerArray[$i] != null){
+            $sql = "INSERT INTO user_skills (user,skill) VALUES ('$user','$answerArray[$i]')";
+            $result = @mysqli_query($con, $sql) or die("Errore query insert skill: ".$answerArray[$i]);
+            @mysqli_free_result($result);
+            $i++;
+        }
+        return $result;
+    }
+
+    function query_check_sub(){
+        global $con;
+        $user = $_POST['user'];
+        $idTask = $_POST['idTask'];
+        $pointer = '.';
+
+        $sql = "SELECT COUNT(*) as user_check FROM campaign_performed as cp JOIN (SELECT campaign FROM task WHERE id = '$idTask') as t ON cp".$pointer."campaign = t".$pointer."campaign WHERE user = '$user'";
+        $result = @mysqli_query($con, $sql) or die("Errore query remove all skills");
+        $row=mysqli_fetch_array($result);
+
+        if($row['user_check'] == 0){
+          @mysqli_free_result($result);
+          
+          echo "Non sei iscritto alla campagna di questo task! Iscriviti e potrai rispondere.";  
+        }
+
         @mysqli_free_result($result);
         return $result;
     }

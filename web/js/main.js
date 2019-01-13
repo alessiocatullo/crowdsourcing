@@ -153,6 +153,17 @@ function populateSelect(){
 
 //FUNZIONE SELECT SUB CATEGORY
 function populateSubCategory(id, category){
+  if(category == null){
+    if(id != 0){
+      $('.main-div').find("#" + id).find('.skill-category-select').children('option').remove();
+      $('.main-div').find("#" + id).find('.skill-category-select').append('<option>---</option>');
+    }else{
+      $('.skill-category-select').children('option').remove();
+      $('.skill-category-select').append('<option>---</option>');
+    }
+    return;
+  }
+
   $.ajax({ 
     url: '../../php/query.php',
     data: {Method:'query_skill_subcategory', id_category: category},
@@ -227,8 +238,66 @@ function printResults(){
 PROFILE
 *******************************************/
 
-function profile(){
+function profile(user){
+  $.ajax({ 
+      url: '../../php/query.php',
+      data: {Method:'query_skill_wrk', user: user},
+      type: 'POST',
+        success: function(e) {
+          $('#profile').find('.skills-div-profile').html(e);
+        }
+    });
+}
 
+function populateSkill(user){
+  $.ajax({ 
+      url: '../../php/query.php',
+      data: {Method:'query_skill_ul_wrk', user: user},
+      type: 'POST',
+        success: function(e) {
+          $('#edit-skill').find('.skill-div').html(e);
+        }
+    });
+  $.ajax({ 
+      url: '../../php/query.php',
+      data: {Method:'query_skill_input_populate', user: user},
+      type: 'POST',
+        success: function(e) {
+          $('#edit-skill').find('#skill-input').val('').val(e);
+        }
+    });
+  $.ajax({ 
+      url: '../../php/query.php',
+      data: {Method:'query_skill'},
+      type: 'POST',
+        success: function(e) {
+          $('#edit-skill').find('.skill-subcategory-select').children('option').remove();
+          $('#edit-skill').find('.skill-subcategory-select').append('<option>---</option>');
+          $('#edit-skill').find('.skill-subcategory-select').attr("disabled", 'disabled');
+          $('#edit-skill').find('.skill-category-select').children('option').remove();
+          $('#edit-skill').find('.skill-category-select').append("<option>---</option>");
+          $('#edit-skill').find('.skill-category-select').append(e);
+        }
+    });
+}
+
+function populateSubCategorySkill(category){
+    if(category == null){
+        $('#edit-skill').find('.skill-subcategory-select').children('option').remove();
+        $('#edit-skill').find('.skill-subcategory-select').append('<option>---</option>');
+        return;
+    }
+
+    $.ajax({ 
+    url: '../../php/query.php',
+    data: {Method:'query_skill_subcategory', id_category: category},
+    type: 'POST',
+      success: function(e) {
+        $('#edit-skill').find('.skill-subcategory-select').children('option').remove();
+        $('#edit-skill').find('.skill-subcategory-select').append('<option>---</option>');
+        $('#edit-skill').find('.skill-subcategory-select').append(e);
+      }
+    });
 }
 
 /*******************************************

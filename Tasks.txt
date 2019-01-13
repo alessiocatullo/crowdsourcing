@@ -1,10 +1,13 @@
 TODO:
-- Algoritmo match
-- 
-
+- REPORT
+- TOP 10
+- ASSEGNAMENTO RISULTATO
+- AGGIUNGERE AL LOGIN INPUT SKILL O AGGIUNGERE MODAL CHE LE FACCIA SELEZIONARE ALL'INIZO
 
 FIX:
 - la classe .readonly che fa schifo (non dovrebbe permetterti di scrivere o di fare qualsiasi altra cosa)
 - fixare sessione in quanto ora puoi entrare nella parte della dashboard del requester avendo fatto login come worker
 - fixare al login come requester(dopo logout da worker) ti reindirizza nella ancora del requester precedente
 
+DB:
+- Ho AGGIORNATO LE CAMPAGNE CON IL CASCADE SU CAMAPGIN_PERFORMED

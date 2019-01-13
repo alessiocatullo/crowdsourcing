@@ -105,13 +105,41 @@ a.disabled {
     box-shadow: -1px 1.5px 4px;
 }
 
+.modal-dialog{
+  overflow-y: initial !important
+}
+
 .reponse-modal{
   max-width: 40%;
+}
+
+.skill-modal{
+  max-width: 40%;
+}
+
+.skill-modal .modal-body{
+  height: 500px;
+  overflow-y: auto;
+}
+
+.answer-div-task{
+  height: 300px;
+  overflow-y: auto;
+}
+
+.new-task-modal{
+  max-width: 80%;
 }
 
 .task-modal{
   max-width: 80%;
 }
+
+.task-modal .modal-body{
+  height: 500px;
+  overflow-y: scroll;
+}
+
 
 .response-header-error{
   background-color: #d2322d;
@@ -124,6 +152,11 @@ a.disabled {
 
 .details-modal{
   max-width: 80%;
+}
+
+.details-modal .modal-body{
+  height: 650px;
+  overflow-y: auto;
 }
 
 .popup {
@@ -155,7 +188,6 @@ a.disabled {
 .profile-modal{
   max-width: 35%;
 }
-
 
  /***********************************************/
 /*

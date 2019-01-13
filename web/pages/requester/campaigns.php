@@ -62,7 +62,7 @@
 </div>
 
 <div class="modal fade" data-backdrop="static" id="new-task-campaign">
-  <div class="modal-dialog details-modal">
+  <div class="modal-dialog new-task-modal">
     <div class="modal-content">
 	   	<form role="form" id="new-task-form">
 	      <!-- Modal Header -->
@@ -73,110 +73,103 @@
 	      <!-- Modal body -->
 	      <div class="modal-body">
 			<div class="row form-group">
-	          <div class="col-md-6">
-	            <label class="control-label">Titolo</label>
-	            <input maxlength="200" type="text" name="title" required="required" class="form-control" placeholder="Inserisci il titolo" />
-	          </div>
-	          <div class="col-md-6">
-	            <div class="row">
-	              <div class="col-md-2">
-	                <label class="control-label">Lavoratori</label>
-	                <input type="number" name="worker" required="required" class="form-control" placeholder="1" min="1" max="10" step="1"/>
-	              </div>
-	              <div class="col-md-3">
-	                <label class="control-label">Maggioranza</label>
-	                <input type="number" name="majority" required="required" class="form-control" placeholder="0%" min="0" max="100" step="10"/>
-	              </div>
-	              <div class="col-md-7">
-	                <label class="control-label">Ricompenza</label>
-	                <input maxlength="20" type="text" name="reward" class="form-control" placeholder="Inserisci la ricompenza"/>
-	              </div>
-	            </div>
-	          </div>
-	        </div>
-	       	<div class="row">
-	          <div class="col-md-6">
-	            <div class="row">
-	              <div class="col-md-12">
-	                <label class="control-label">Descrizione</label>
-	              </div>
-	            </div>
-	            <div class="row form-group">
-	              <div class="col-md-12">
-	                 <textarea class="form-control" type="text" style="resize: none; height: 120%;" row="3" name="description" 
-	                 placeholder="Inserisci la descrizione" required='required'></textarea>
-	              </div>
-	            </div>
-	          </div>
-	          <div class="col-md-6 border-div">
-	            <label class="control-label">Parole chiave</label>
-	            <div class="row form-group">
-	              <div class="col-md-5">
-	                <select class="form-control skill-select">
-	                  <option>---</option>
-	                </select>
-	              </div>
-	              <div class="col-md-6">
-	                <select class="form-control skill-category-select" disabled>
-	                  <option>---</option>
-	                </select>
-	              </div>
-	              <div class="col-md-1">
-	                <button class="skill-confirm btn btn-primary float-right" type="button">
-	                  <i class="fas fa-plus"></i>
-	                </button>
-	              </div>
-	            </div>
-	            <div class="row form-group">
-	              <div class="col-md-11">
-	                <input class="skill-input form-control readonly" name="skill" type="text" required="required" placeholder="#" autocomplete="off"/>
-	              </div>
-	              <div class="col-md-1">
-	                <button class="skill-remove btn btn-danger float-right" type="button">
-	                  <i class="fas fa-times"></i>
-	                </button>
-	              </div>
-	            </div>
-	          </div>
-	        </div>
-	        <div class="row form-group justify-content-center">
-	          <div class="col-md-12">
-	            <div class="row">
-	              <div class="col-md-12">
-	                <label class="control-label">Risposte</label>
-	              </div>
-	            </div>
-	            <div class="row">
-	              <div class="col-md-11">
-	                <input class="form-control readonly input-answer-task" name="answer" type="text" required="required"  placeholder="Premi il tasto edit per aggiungere risposte"/>
-	              </div>
-	              <div class="col-md-1">
-	                <button type="button" class="btn btn-primary answerBtn float-right" data-toggle="collapse" data-target="#answer-collapse">
-	                  <i class="fas fa-edit"></i>
-	                </button>
-	              </div>
-	            </div>
-	          </div>
-	          	<div class="collapse" id="answer-collapse" style="margin-top: 1pc;">
-				  <div class="container-fluid">
-				    <div class="row form-group">
-				      <div class="col-md-10">
-				        <input type="text" id="test" class="form-control input-answer-div-task" placeholder="Scrivi la risposta" autocomplete="off"/>
-				      </div>
-				      <div class="col-md-2">
-				        <button type="button" class="btn btn-primary float-right add-answer">
-				          <i class="fas fa-plus"></i>
-				        </button>
-				      </div>
-				    </div>
-				    <div class="row">
-				      <div class="col-md-12">
-				        <ul class="answer-div-task ul-answer"></ul>
-				      </div>
-				    </div> 
-				  </div>
-				</div>
-	        </div>
+			  <!--INIZ 1 col-->
+				<div class="col-md-6">
+		          	<div class="row" style="margin-bottom: 10px;">
+		          		<div class="col-md-12">
+				            <label class="control-label">Titolo</label>
+				            <input maxlength="200" type="text" name="title" required="required" class="form-control" placeholder="Inserisci il titolo" />
+				        </div>
+		          	</div>
+		          	<div class="row" style="margin-bottom: 10px;">
+			          	<div class="col-md-12">
+			            	<label class="control-label">Descrizione</label>
+							<textarea class="form-control" type="text" style="resize: none;" row="3" name="description" 
+			                 	placeholder="Inserisci la descrizione" required='required'></textarea>
+			          	</div>
+		          	</div>
+		          	<div class="row" style="margin-bottom: 10px;">
+		          		<div class="col-md-2">
+			                <label class="control-label">Lavoratori</label>
+			                <input type="number" name="worker" required="required" class="form-control" placeholder="1" min="1" max="10" step="1"/>
+			            </div>
+			            <div class="col-md-3">
+			                <label class="control-label">Maggioranza</label>
+			                <input type="number" name="majority" required="required" class="form-control" placeholder="0%" min="0" max="100" step="10"/>
+			            </div>
+			            <div class="col-md-7">
+			                <label class="control-label">Ricompenza</label>
+			                <input maxlength="20" type="text" name="reward" class="form-control" placeholder="Inserisci la ricompenza"/>
+			            </div>
+		          	</div>
+		          	<div class="row">
+			          <div class="col-md-12 border-div">
+			            <label class="control-label">Parole chiave</label>
+			            <div class="row form-group">
+			              <div class="col-md-5">
+			                <select class="form-control skill-select">
+			                  <option>---</option>
+			                </select>
+			              </div>
+			              <div class="col-md-6">
+			                <select class="form-control skill-category-select" disabled>
+			                  <option>---</option>
+			                </select>
+			              </div>
+			              <div class="col-md-1">
+			                <button class="skill-confirm btn btn-primary float-right" type="button">
+			                  <i class="fas fa-plus"></i>
+			                </button>
+			              </div>
+			            </div>
+			            <div class="row form-group">
+			              <div class="col-md-11">
+			                <input class="skill-input form-control readonly" name="skill" type="text" required="required" placeholder="#" autocomplete="off"/>
+			              </div>
+			              <div class="col-md-1">
+			                <button class="skill-remove btn btn-danger float-right" type="button">
+			                  <i class="fas fa-times"></i>
+			                </button>
+			              </div>
+			            </div>
+			          </div>
+		         	</div>	        	
+			  	</div>
+		      <!--FINE 1 col-->
+ 			  <!--INIZ 2 col-->
+			  <div class="col-md-6">
+				<div class="row form-group">
+		          <div class="col-md-12">
+		            <div class="row">
+		              <div class="col-md-12">
+		                <input class="form-control readonly input-answer-task" name="answer" type="hidden"/>
+		              </div>
+		            </div>
+		          </div>
+		          	<div class="col-md-12" id="answer-collapse"">
+					  <div class="container-fluid">
+					  	<label class="control-label">Risposte</label>
+					    <div class="row form-group">
+					      <div class="col-md-11">
+					        <input type="text" id="test" class="form-control input-answer-div-task" placeholder="Scrivi le risposte" autocomplete="off"/>
+					      </div>
+					      <div class="col-md-1">
+					        <button type="button" class="btn btn-primary float-right add-answer">
+					          <i class="fas fa-plus"></i>
+					        </button>
+					      </div>
+					    </div>
+					    <div class="row">
+					      <div class="col-md-12">
+					        <ul class="answer-div-task ul-answer"></ul>
+					      </div>
+					    </div> 
+					  </div>
+					</div>
+		        </div>
+			  </div>
+			  <!--FINE 2 col-->
+			</div>
 		  </div>
 	      <!-- Modal footer -->
 	      <div class="modal-footer">
@@ -190,6 +183,10 @@
 <script>
 	$('#new-task-form').bind('submit',function(e) {
 	e.preventDefault();
+	if($('#new-task-form').find('.input-answer-task').val() == ''){
+		$('#new-task-form').find('.input-answer-div-task').css("border", "2px solid #e40a0a99");
+		return;
+	}
 
     var formData = $(this).serialize();
     var user = '<?php echo $_SESSION['user'] ?>';
@@ -270,16 +267,15 @@
 
 	$('#new-task-form').on('click', '.add-answer' ,function(){
 	    answer = $('.input-answer-div-task').val();
-	    if(answer != ''){
+	    if(answer != '' && answer != " "){
 	    	var exists = $('.answer-div-task li:contains('+answer+')').length;
-
 			if(!exists){
 				$('.answer-div-task').append('<li class="li-answer">'+ answer + '<span class="close-answer"><i class="fas fa-times"></i></span></li>');
 	      		$('.input-answer-task').val($('.input-answer-task').val() + answer + '; ');
 			}
-
 	    $('.input-answer-div-task').val('');
 	    }
+	    $('#new-task-form').find('.input-answer-div-task').css('border-color', '1px solid #ced4da')
 	});
 
 	$('#new-task-form').on('click', '.close-answer' ,function(){
