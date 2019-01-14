@@ -72,6 +72,27 @@
   </div>
 </div>
 
+<div class="modal fade" id="campaign-analytics">
+  <div class="modal-dialog response-modal">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">
+          Statistiche Campagna
+        </h4>
+        <button type="button" class="close" data-dismiss='modal'>&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        Rimozione iscrizione avvenuta con successo! tutti i task a cui hai già riposto resteranno mantenuti in memoria! 
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type='button' class='btn btn-primary' data-dismiss='modal'>Chiudi</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="remove-sub">
   <div class="modal-dialog response-modal">
@@ -122,6 +143,7 @@
           $campaignDiv.find('.btn-sub').removeClass('btn-danger');
           $campaignDiv.find('.btn-sub').addClass('btn-success');
           $campaignDiv.find('.btn-sub').text('Richiedi Task');
+          $campaignDiv.find('.btn-camp-analy').removeAttr("hidden");
           $campaignDiv.find('.btn-sub-remove').removeAttr("hidden");
           $campaignDiv.find('.btn-sub').attr('data-target', '#task_response');
           select_campaign_filter('<?php echo $_SESSION['user']; ?>');
@@ -166,6 +188,7 @@
         $campaignDiv.find('.btn-sub').removeClass('btn-success');
         $campaignDiv.find('.btn-sub').addClass('btn-danger');
         $campaignDiv.find('.btn-sub').text('Iscriviti');
+        $campaignDiv.find('.btn-camp-analy').attr('hidden','hidden');
         $campaignDiv.find('.btn-sub-remove').attr('hidden', 'hidden');
         $campaignDiv.find('.btn-sub').attr('data-target', '#sub');
       },

@@ -43,8 +43,7 @@
 		                <th class='tabletxt-center'>#Lavoratori</th>
 		                <th class='tabletxt-center'>Maggioranza</th>
 		                <th class='tabletxt-center'>Ricompensa</th>
-		                <th class='tabletxt-center'>Risposte</th>
-		                <th class='tabletxt-center'>Keywords</th>
+		                <th class='tabletxt-center'>Risposte/Skills</th>
 		                <th class='tabletxt-center'>Fase</th>
 		        	</tr>
 		        	<tbody class='content-details'>
@@ -56,6 +55,52 @@
       <!-- Modal footer -->
       <div class="modal-footer">
         <button type='button' class='btn btn-primary new-task-btn-add' data-dismiss='modal' data-toggle="modal" data-target="#new-task-campaign" onclick="populateSelect()"><i class="btn-add fas fa-plus"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="answer-skill">
+  <div class="modal-dialog response-modal answer-skill-modal">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">
+        	Risposte/Skills
+        </h4>
+        <button type="button" class="close" data-dismiss='modal' data-toggle="modal" data-target="#tasks-campaign"><i class="fas fa-arrow-left"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+      	<ul class="answer-ofTask" style="margin-bottom: 2pc; margin-top: 2pc;"></ul>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+      	<div class="col-md-12">
+      		<span><strong>Skills: </strong></span>
+	        <span class="skills-footer-details-campaign">
+	        </span>
+      	</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="task-analtics">
+  <div class="modal-dialog response-modal answer-skill-modal">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">
+        	Statistiche Task
+        </h4>
+        <button type="button" class="close" data-dismiss='modal' data-toggle="modal" data-target="#tasks-campaign"><i class="fas fa-arrow-left"></i></button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
       </div>
     </div>
   </div>
@@ -289,5 +334,10 @@
 
 	$('#tasks-campaign').on('click', '.new-task-btn-add' ,function(){
 		$('.skill-category-select').attr('disabled', 'disabled');
+	});
+
+	$('#tasks-campaign').on('click', '.task-analytics-button', function(){
+		$('#tasks-campaign').modal('hide');
+		$('#task-analtics').modal('show');
 	});
 </script>

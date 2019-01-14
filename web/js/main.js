@@ -151,6 +151,35 @@ function populateSelect(){
   });
 }
 
+function populateAnalyticsTask(id){
+  
+}
+
+function populateDetailsTask(id){
+  $('#answer-skill').find('.answer-ofTask').empty();
+  $('#answer-skill').find('.skills-footer-details-campaign').html('');
+    $.ajax({ 
+      url: '../../php/query.php',
+      data: {Method:'query_answer_details', id},
+      type: 'POST',
+        success: function(e) {
+          $('#answer-skill').find('.answer-ofTask').append(e);
+        }
+    });
+
+    $.ajax({ 
+      url: '../../php/query.php',
+      data: {Method:'query_skill_task', id},
+      type: 'POST',
+        success: function(e) {
+          $('#answer-skill').find('.skills-footer-details-campaign').append(e);
+        }
+    });
+
+  $('#tasks-campaign').modal('hide');
+  $('#answer-skill').modal('show');
+}
+
 //FUNZIONE SELECT SUB CATEGORY
 function populateSubCategory(id, category){
   if(category == null){

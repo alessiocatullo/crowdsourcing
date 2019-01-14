@@ -100,10 +100,11 @@
             "<td class='tabletxt-center' style='width: 5%;'>".$row['worker_max']."</td>".
             "<td class='tabletxt-center' style='width: 10%;'>".$row['majority']."%</td>".
             "<td class='tabletxt-center' style='width: 5%;'>".$row['reward']."</td>".
-            "<td class='tabletxt-center' style='width: 5%;'>"."<a class='tabletxt-center' href='#answer' onclick="."answer(".$row['id'].")".
-                "><i class='fas fa-list-alt fa-fw'></i>"."</td>".
-            "<td class='tabletxt-center' style='width: 7%;'>"."<a class='tabletxt-center' href='#keywords' onclick="."keywords(".$row['id'].")".
-                "><i class='fas fa-list-alt fa-fw'></i>"."</td>"."<td style='background: yellow;'>"."</td>".
+            "<td class='tabletxt-center' style='width: 5%;'>"."<a class='tabletxt-center' data-toogle='modal' data-target='#answer-skill' 
+                onclick="."populateDetailsTask(".$row['id'].")"."><i class='fas fa-list-alt fa-fw'></i>"."</td>".
+            "<td class='tabletxt-center status-task-".$row['state']."' style='width: 5%;'>"."<a class='tabletxt-center task-analytics-button' data-toogle='modal' 
+                data-target='#task-analytics' onclick="."populateAnalyticsTask(".$row['id'].")".
+                "><i class='fas fa-info-circle fa-fw'></i>"."</td>".
             "</tr>";
         }
         @mysqli_free_result($result_task);
@@ -319,6 +320,32 @@
         return;
     }
 
+    function query_answer_details(){
+        global $con;
+        $task = $_POST['id'];
+
+        $sql = "SELECT answer FROM answer_options WHERE task = '$task'";
+        $result = @mysqli_query($con, $sql) or die("Errore query answer task");
+        while($row=mysqli_fetch_array($result)){
+            echo "<li style='font-size: x-large;'>".$row['answer']."</li>";
+        }
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    function query_skill_task(){
+        global $con;
+        $task = $_POST['id'];
+        $pointer = '.';
+
+        $sql = "SELECT s".$pointer."name , s".$pointer."main_skill FROM skill as s JOIN task_skill as ts ON s".$pointer."id = ts".$pointer."skill WHERE ts".$pointer."task = '$task'";
+        $result = @mysqli_query($con, $sql) or die("Errore query skill task");
+        while($row=mysqli_fetch_array($result)){
+            echo "<a style='color: white; margin-right: 3px;' class='badge ".($row['main_skill'] == 0 ? 'badge-success':'badge-primary')."'>".$row['name']."</a>";
+        }
+        @mysqli_free_result($result);
+        return $result;
+    }
     /*-------------------------------------------------------------------------------------------------------------
         Worker
     -------------------------------------------------------------------------------------------------------------*/
@@ -342,6 +369,9 @@
             echo "
             <li class='campains-element col-12 col-md-6 col-lg-3'>
                 <div class='card card-campaign ". ($row['user'] != null ? 'subbed':'') ."'' id='".$row['id']."' style='margin-bottom: 2pc;'>
+                    <button data-toggle='modal' data-target='#campaign-analytics' 
+                    class='close btn-camp-analy' style='position: absolute; left: 15px; top: 10px;' 
+                    ".($row['user'] != null ? '':'hidden')."><i class='fas fa-info-circle'></i></button>
                     <button data-toggle='modal' data-target='#remove-sub' 
                     class='close btn-sub-remove' style='position: absolute; right: 15px; top: 10px;' 
                     ".($row['user'] != null ? '':'hidden')."><i class='fas fa-times'></i></button>
@@ -364,6 +394,15 @@
         }
         @mysqli_free_result($result_campaign_wrk);
         return $result_campaign_wrk;
+    }
+
+    function delete_task_assigned_wArgument($id, $user){
+        global $con;
+
+        $sql = "DELETE FROM task_performed WHERE task = '$id' AND user = '$user'";
+        $result = @mysqli_query($con, $sql) 
+            or die("Errore query delete task assigned");
+        return $result;
     }
 
     //Query che aggiunge l'iscrizione ad una campagna dello user loggato
@@ -480,7 +519,8 @@
         $answer = $_POST['answer-opt'];
 
         $sql = "UPDATE task_performed SET answer = (SELECT id FROM answer_options WHERE answer = '$answer' LIMIT 1) WHERE task = '$idTask' AND user = '$user'";
-        $result = @mysqli_query($con, $sql) or die("Errore query task answer");
+        $result = @mysqli_query($con, $sql) or die("Il numero di worker necessari è stato raggiunto! Il task è stato eliminato.".delete_task_assigned_wArgument($idTask,  $user));
+        
         @mysqli_free_result($result);
         return $result;
     }

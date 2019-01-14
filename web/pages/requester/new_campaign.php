@@ -285,7 +285,7 @@
 </div>
 
 <div class="modal fade" data-backdrop="static" id="answer">
-  <div class="modal-dialog response-modal">
+  <div class="modal-dialog response-modal answer-div-new-camp">
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
