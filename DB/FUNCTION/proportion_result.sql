@@ -1,0 +1,6 @@
+CREATE DEFINER=`root`@`localhost` FUNCTION `PROPORTION_RESULT`(tot INT, value INT) RETURNS int(11)
+BEGIN
+	DECLARE n INT;
+    SET n = value*100/tot;
+RETURN n;
+END

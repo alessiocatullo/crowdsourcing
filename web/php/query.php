@@ -100,10 +100,9 @@
             "<td class='tabletxt-center' style='width: 5%;'>".$row['worker_max']."</td>".
             "<td class='tabletxt-center' style='width: 10%;'>".$row['majority']."%</td>".
             "<td class='tabletxt-center' style='width: 5%;'>".$row['reward']."</td>".
-            "<td class='tabletxt-center' style='width: 5%;'>"."<a class='tabletxt-center' data-toogle='modal' data-target='#answer-skill' 
-                onclick="."populateDetailsTask(".$row['id'].")"."><i class='fas fa-list-alt fa-fw'></i>"."</td>".
-            "<td class='tabletxt-center status-task-".$row['state']."' style='width: 5%;'>"."<a class='tabletxt-center task-analytics-button' data-toogle='modal' 
-                data-target='#task-analytics' onclick="."populateAnalyticsTask(".$row['id'].")".
+            "<td class='tabletxt-center' style='width: 5%;'>"."<a class='tabletxt-center task-analytics-button' data-toogle='modal' data-target='#task-analytics' 
+                onclick="."populateAnalyticsTask(".$row['id'].")><i class='fas fa-info-circle fa-fw'></i>"."</td>".
+            "<td class='tabletxt-center status-task-".$row['state']."' style='width: 5%;'></td>".
                 "><i class='fas fa-info-circle fa-fw'></i>"."</td>".
             "</tr>";
         }
@@ -345,6 +344,70 @@
         }
         @mysqli_free_result($result);
         return $result;
+    }
+
+    function query_progress_task(){
+        global $con;
+        $task = $_POST['id'];
+
+        $sql = "SELECT worker_max, answer, nof_answer, proportion_result(worker_max, nof_answer) as percAnswer FROM task_analytics WHERE id = '$task'";
+        $result = @mysqli_query($con, $sql) or die("Errore query progress task analytics");
+        while($row=mysqli_fetch_array($result)){
+            echo 
+                $row['answer']."<span class='float-right strong'>".$row['nof_answer']."/".$row['worker_max']."</span>
+                <div class='progress'>
+                    <div class='progress-bar progress-bar-striped progress-bar-animated' style='width: ".$row['percAnswer']."%;' role='progressbar' aria-valuenow='".$row['nof_answer']."' aria-valuemax='".$row['worker_max']."'></div>
+                </div>";
+        }
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    function query_worker_progress(){
+        global $con;
+        $task = $_POST['id'];
+
+        $sql = "SELECT worker_max, countAnswer_onTask('$task') as nAnswer, proportion_result(worker_max,countAnswer_onTask('$task')) as percAnswer FROM task WHERE id = '$task'";
+        $result = @mysqli_query($con, $sql) or die("Errore query worker progress analytics");
+        while($row=mysqli_fetch_array($result)){
+            echo 
+                "Numero di risposte<span class='float-right strong'>".$row['nAnswer']."/".$row['worker_max']."</span>
+                 <div class='progress'>
+                    <div class='progress-bar progress-bar-striped progress-bar-animated bg-success' style='width: ".$row['percAnswer']."%;' role='progressbar' aria-valuenow='".$row['nAnswer']."' aria-valuemax='".$row['worker_max']."'></div>
+                </div>";
+        }
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    function query_state_task(){
+        global $con;
+        $task = $_POST['id'];    
+
+        $sql = "SELECT state FROM task WHERE id = '$task'";
+        $result = @mysqli_query($con, $sql) or die("Errore query state task");
+        $row=mysqli_fetch_array($result);
+        echo $row['state'];
+        @mysqli_free_result($result);
+        return $result;    
+    }
+
+    function query_esito_task(){
+        global $con;
+        $task = $_POST['id'];
+
+        $sql = "SELECT majority, task_result('$task') as result FROM task WHERE id = '$task'";
+        $result = @mysqli_query($con, $sql) or die("Errore query esito task");
+        $row=mysqli_fetch_array($result);
+
+        if($row['result'] == null){
+            echo $row['majority']."% non raggiunto!";
+        } else {
+            echo $row['majority']."% raggiunto! ".$row['result'];
+        }
+        
+        @mysqli_free_result($result);
+        return $result;       
     }
     /*-------------------------------------------------------------------------------------------------------------
         Worker

@@ -298,7 +298,7 @@
       <div class="container-fluid modal-body">
         <div class="row form-group">
           <div class="col-md-11">
-            <input type="text" id="test" class="form-control input-answer-div" placeholder="Scrivi la risposta" autocomplete="off"/>
+            <input type="text" class="form-control input-answer-div" placeholder="Scrivi le risposte" autocomplete="off"/>
           </div>
           <div class="col-md-1">
             <button type="button" class="btn btn-primary float-right add-answer">

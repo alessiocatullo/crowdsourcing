@@ -439,8 +439,17 @@ a.disabled {
   visibility:hidden;
 }
 
+.task-analytics-button{
+  cursor: pointer;
+}
 .select-status label:hover{
   opacity: 0.5;
+}
+
+.text-state{
+  padding: 1pc;
+  font-size: xx-large;
+  text-align: center;
 }
 
 .select-status .active{

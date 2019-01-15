@@ -152,32 +152,82 @@ function populateSelect(){
 }
 
 function populateAnalyticsTask(id){
-  
-}
-
-function populateDetailsTask(id){
-  $('#answer-skill').find('.answer-ofTask').empty();
-  $('#answer-skill').find('.skills-footer-details-campaign').html('');
-    $.ajax({ 
+  //STATO
+  $('#state-task').removeClass();
+  $('#state-task').addClass('row state-task');
+  $('#state-task').find('.text-state').html("");
+   $.ajax({ 
       url: '../../php/query.php',
-      data: {Method:'query_answer_details', id},
+      data: {Method:'query_state_task', id},
       type: 'POST',
         success: function(e) {
-          $('#answer-skill').find('.answer-ofTask').append(e);
+            if(e.length > 1){
+              alert(e);
+              return;
+            }
+            $('#state-task').addClass('status-task-' + e);
+            switch(e) {
+              case '0':
+                $('#state-task').find('.text-state').append("CREATO");
+                break;
+              case '1':
+                $$('#state-task').find('.text-state').append("IN CORSO");
+                break;
+              case '2':
+                $('#state-task').find('.text-state').append("COMPLETATO");
+                break;
+            }
+            if(e != '2'){
+              $('#task-analtics').find('.modal-footer').attr('hidden', 'hidden');
+            } else {
+              $('#task-analtics').find('.modal-footer').removeAttr('hidden');
+            }
         }
     });
 
+  //ESITO
+  $('#task-analtics').find('.answer-majority-footer').html('');
+  $.ajax({ 
+        url: '../../php/query.php',
+        data: {Method:'query_esito_task', id},
+        type: 'POST',
+          success: function(e) {
+           $('#task-analtics').find('.answer-majority-footer').append(e);
+        }
+    });
+
+  //SKILL
+  $('#task-analtics').find('.skills-footer-details-campaign').html('');
     $.ajax({ 
       url: '../../php/query.php',
       data: {Method:'query_skill_task', id},
       type: 'POST',
         success: function(e) {
-          $('#answer-skill').find('.skills-footer-details-campaign').append(e);
+          $('#task-analtics').find('.skills-footer-details-campaign').append(e);
         }
     });
-
-  $('#tasks-campaign').modal('hide');
-  $('#answer-skill').modal('show');
+  //WORKER
+  $("#task-analtics").find('.worker-bar').html('');
+    $.ajax({ 
+    url: '../../php/query.php',
+    data: {Method:'query_worker_progress', id},
+    type: 'POST',
+      success: function(e) {
+        $("#task-analtics").find('.worker-bar').append('<h4>Worker:</h4>');
+        $("#task-analtics").find('.worker-bar').append(e);
+      }
+    });
+  //ANSWER
+  $("#task-analtics").find('.answer-bars').html('');
+    $.ajax({ 
+    url: '../../php/query.php',
+    data: {Method:'query_progress_task', id},
+    type: 'POST',
+      success: function(e) {
+        $("#task-analtics").find('.answer-bars').append('<h4>Risposte:</h4>');
+        $("#task-analtics").find('.answer-bars').append(e);
+      }
+    });
 }
 
 //FUNZIONE SELECT SUB CATEGORY

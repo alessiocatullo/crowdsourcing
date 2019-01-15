@@ -1,4 +1,3 @@
-DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `calculating_score`(IN task_id INT(11))
 BEGIN
 DECLARE result_answer INT(11);
@@ -13,9 +12,9 @@ SELECT
 INTO result_answer FROM
     task_analytics AS tsk_a
 WHERE
-    tsk_a.nof_answer >= (tsk_a.worker_max * tsk_a.majority_required) / 100
-        AND tsk_a.task_state >= 1
-        AND tsk_a.task_id = task_id
+    tsk_a.nof_answer >= (tsk_a.worker_max * tsk_a.majority) / 100
+        AND tsk_a.state >= 1
+        AND tsk_a.id = task_id
 ORDER BY tsk_a.nof_answer DESC
 LIMIT 0 , 1;
 
@@ -24,8 +23,8 @@ SELECT
 INTO answer_number , max_worker FROM
     task_analytics AS tsk_a
 WHERE
-    tsk_a.task_state >= 1
-        AND tsk_a.task_id = task_id;
+    tsk_a.state >= 1
+        AND tsk_a.id = task_id;
     
 IF result_answer IS NOT NULL OR answer_number = max_worker
 THEN 
@@ -39,5 +38,4 @@ THEN
 	WHERE task = task_id AND answer != result_answer;
     
 END IF;
-END$$
-DELIMITER ;
+END

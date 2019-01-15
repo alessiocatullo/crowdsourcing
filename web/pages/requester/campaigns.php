@@ -43,8 +43,8 @@
 		                <th class='tabletxt-center'>#Lavoratori</th>
 		                <th class='tabletxt-center'>Maggioranza</th>
 		                <th class='tabletxt-center'>Ricompensa</th>
-		                <th class='tabletxt-center'>Risposte/Skills</th>
-		                <th class='tabletxt-center'>Fase</th>
+		                <th class='tabletxt-center'>Info</th>
+		                <th class='tabletxt-center'>Stato</th>
 		        	</tr>
 		        	<tbody class='content-details'>
 		            </tbody>
@@ -98,9 +98,39 @@
       </div>
       <!-- Modal body -->
       <div class="modal-body">
+      	<div class="row state-task" id='state-task' style="margin-bottom: 1pc;">
+      		<div class="col-md-12 text-state">
+      		</div> 
+      	</div>
+      	<div class="row">
+      		<div class="col-md-12 statistics-bars">
+				<div class="row" style="margin-bottom: 1pc;">
+					<div class="col col-md-12 worker-bar">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col col-md-12 answer-bars">
+					</div>
+				</div>
+      		</div>
+      	</div>
+      	<div class="row" style="padding-top: 2pc;">
+      	    <div class="col-md-12">
+	      		<span><strong>Skills: </strong></span>
+		        <span class="skills-footer-details-campaign">
+		        </span>
+      		</div>
+      	</div>
       </div>
       <!-- Modal footer -->
-      <div class="modal-footer">
+      <div class="modal-footer" style="justify-content: flex-start;">
+      	<div class="row" style="font-size: xx-large;">
+      		<div class="col-md-12">
+	      		<span><strong>ESITO: </strong></span>
+		        <span class="answer-majority-footer">
+		        </span>
+		    </div>
+      	</div>
       </div>
     </div>
   </div>
@@ -196,7 +226,7 @@
 					  	<label class="control-label">Risposte</label>
 					    <div class="row form-group">
 					      <div class="col-md-11">
-					        <input type="text" id="test" class="form-control input-answer-div-task" placeholder="Scrivi le risposte" autocomplete="off"/>
+					        <input type="text" class="form-control input-answer-div-task" placeholder="Scrivi le risposte" autocomplete="off"/>
 					      </div>
 					      <div class="col-md-1">
 					        <button type="button" class="btn btn-primary float-right add-answer">

@@ -1,1 +1,21 @@
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `task_analytics` AS select `cmp`.`id` AS `campaign_id`,`cmp`.`name` AS `campaign_name`,`tsk`.`id` AS `task_id`,`tsk`.`title` AS `task_title`,`tsk`.`description` AS `task_description`,`tsk`.`worker_max` AS `worker_max`,`tsk`.`majority` AS `majority_required`,`tsk`.`state` AS `task_state`,`ans`.`id` AS `answer_id`,`ans`.`answer` AS `answer`,count(`tsk_p`.`answer`) AS `nof_answer` from (((`campaign` `cmp` join `task` `tsk` on((`tsk`.`campaign` = `cmp`.`id`))) left join `task_performed` `tsk_p` on((`tsk_p`.`task` = `tsk`.`id`))) left join `answer_options` `ans` on((`ans`.`id` = `tsk_p`.`answer`))) where (`tsk`.`state` >= 1) group by `campaign_id`,`campaign_name`,`task_id`,`task_title`,`task_description`,`tsk`.`worker_max`,`majority_required`,`task_state`,`answer_id`,`ans`.`answer`;
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `task_analytics` AS
+    SELECT 
+        `t`.`campaign` AS `campaign`,
+        `t`.`id` AS `id`,
+        `t`.`title` AS `title`,
+        `t`.`description` AS `description`,
+        `t`.`worker_max` AS `worker_max`,
+        `t`.`majority` AS `majority`,
+        `t`.`state` AS `state`,
+        `ao`.`answer` AS `answer`,
+        `ao`.`id` AS `answer_id`,
+        COUNTANSWER(`t`.`id`, `ao`.`id`) AS `nof_answer`,
+        PROPORTION_RESULT(`t`.`worker_max`,
+                COUNTANSWER(`t`.`id`, `ao`.`id`)) AS `percentage`
+    FROM
+        (`task` `t`
+        JOIN `answer_options` `ao` ON ((`t`.`id` = `ao`.`task`)))
