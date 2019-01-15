@@ -70,19 +70,33 @@
         $result_campaign = @mysqli_query($con, $sql_campaign) or die("Errore query campaign");
         while($row=mysqli_fetch_array($result_campaign)){
             echo "<tr>".
+            "<td class='tabletxt-center'>"."<a style='cursor: pointer;' class='tabletxt-center' data-toggle='modal' data-target='#top10'
+            onclick="."getTop10(".$row['id'].")"."><i class='fas fa-star'></i></a>"."</td>".
             "<td>".$row['name']."</td>".
             "<td class='tabletxt-center'>".$row['dt_start']."</td>".
             "<td class='tabletxt-center'>".$row['dt_end']."</td>".
             "<td class='tabletxt-center'>".$row['dt_accession_start']."</td>".
             "<td class='tabletxt-center'>".$row['dt_accession_end']."</td>".
             "<td class='tabletxt-center'>"."<a href='' class='tabletxt-center' data-toggle='modal' data-target='#tasks-campaign' 
-                onclick="."details('".$row['name']."',".$row['id'].")"."><i class='fas fa-eye'></i></a>"."</td>".
-            "<td class='tabletxt-center'>"."<a class='tabletxt-center' onclick="."deleteCampaign(".$row['id'].")".
+                onclick="."details(".$row['id'].")"."><i class='fas fa-eye'></i></a>"."</td>".
+            "<td class='tabletxt-center'>"."<a style='cursor: pointer;' class='tabletxt-center' onclick="."deleteCampaign(".$row['id'].")".
                 "><i class='fas fa-trash-alt'></i></a>"."</td>".
             "</tr>";
         }
         @mysqli_free_result($result_campaign);
         return $result_campaign;
+    }
+    //Query che il nome della campagna
+    function query_name_details(){
+        global $con;
+        $idCampaign = $_POST['id'];
+
+        $sql = "SELECT name FROM campaign WHERE id = '$idCampaign'";
+        $result = @mysqli_query($con, $sql) or die("Errore query task name");
+        $row = mysqli_fetch_array($result);
+        echo $row['name'];
+        @mysqli_free_result($result);
+        return $result;
     }
 
     //Query che popula la tabella dei task di una campagna nel dettaglio campagna
@@ -177,8 +191,6 @@
         $dt_end = $_POST['dt_end'];
         $dt_accession_start = $_POST['dt_accession_start'];
         $dt_accession_end = $_POST['dt_accession_end'];
-        $answerArray = explode("; ", $_POST['answer-'.$task_n]);
-        $skillArray = explode("; ", $_POST['skill-'.$task_n]);
 
         //INSERT CAMAPAGNA
         $sql_insert_campaigns = "INSERT INTO campaign (name, dt_start, dt_end, dt_accession_start, dt_accession_end, user) 
@@ -196,6 +208,9 @@
             $worker = $_POST['worker-'.$task_n];
             $majority = $_POST['majority-'.$task_n];
             $reward = $_POST['reward-'.$task_n];
+            $answerArray = explode("; ", $_POST['answer-'.$task_n]);
+            $skillArray = explode("; ", $_POST['skill-'.$task_n]);
+
             $sql_insert_task = "INSERT INTO task (title, description, worker_max, majority, reward, campaign) 
             VALUES ('$title', '$description', '$worker', '$majority', '$reward', '$id_campaign')";
             $sql_insert_task = @mysqli_query($con, $sql_insert_task) or die("Errore inserimento task. ".delete_campaign_wArgument($id_campaign));
@@ -241,6 +256,7 @@
                     @mysqli_free_result($sql_insert_answer);
                 }
             }while($skillArray[$iter_n] != null);
+            $iter_n = 0;
 
             $task_n++;
         }while(isset($_POST["title-".$task_n]));
@@ -262,12 +278,6 @@
         $reward = $_POST['reward'];
         $answerArray = explode("; ", $_POST['answer']);
         $skillArray = explode("; ", $_POST['skill']);
-
-        $sql = "SELECT id FROM campaign WHERE user = '$user' AND name = '$campaign'";
-        $result = @mysqli_query($con, $sql) or die("Errore select query campaign");
-        $row = mysqli_fetch_array($result);
-        $campaign = $row[0]; 
-        @mysqli_free_result($sql);
 
         $sql = "INSERT INTO task (title, description, worker_max, majority, reward, campaign) 
         VALUES ('$title', '$description', '$worker', '$majority', '$reward', '$campaign')";

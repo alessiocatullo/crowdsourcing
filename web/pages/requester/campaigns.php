@@ -5,6 +5,7 @@
 		<table class="table table-striped table-hover">
 	        <thead class="thead-dark">
 	            <tr>
+	            	<th></th>
 	    	        <th>Nome</th>
 	                <th class='tabletxt-center'>Data Apertura</th>
 	                <th class='tabletxt-center'>Data Chiusura</th>
@@ -60,31 +61,34 @@
   </div>
 </div>
 
-<div class="modal fade" id="answer-skill">
-  <div class="modal-dialog response-modal answer-skill-modal">
+<div class="modal fade" id="top10">
+  <div class="modal-dialog top10-modal">
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">
-        	Risposte/Skills
-        </h4>
-        <button type="button" class="close" data-dismiss='modal' data-toggle="modal" data-target="#tasks-campaign"><i class="fas fa-arrow-left"></i></button>
+        <h2><i class="fas fa-signal"></i> TOP 10</h2>
+        <button type="button" class="close" data-dismiss='modal'>&times;</button>
       </div>
       <!-- Modal body -->
       <div class="modal-body">
-      	<ul class="answer-ofTask" style="margin-bottom: 2pc; margin-top: 2pc;"></ul>
-      </div>
-      <!-- Modal footer -->
-      <div class="modal-footer">
-      	<div class="col-md-12">
-      		<span><strong>Skills: </strong></span>
-	        <span class="skills-footer-details-campaign">
-	        </span>
-      	</div>
-      </div>
+		<div class="table-responsive">
+			<table class="table table-striped table-hover">
+		        <thead class="table-top10 thead-dark">
+		            <tr>
+		    	        <th>#</th>
+		                <th class='tabletxt-center'>Risposte</th>
+		                <th class='tabletxt-center'>Worker</th>
+		        	</tr>
+		        	<tbody class='content-top10'>
+		            </tbody>
+		        </thead>
+			</table>
+		</div>
+	  </div>
     </div>
   </div>
 </div>
+
 
 <div class="modal fade" id="task-analtics">
   <div class="modal-dialog response-modal answer-skill-modal">
@@ -221,7 +225,7 @@
 		              </div>
 		            </div>
 		          </div>
-		          	<div class="col-md-12" id="answer-collapse"">
+		          	<div class="col-md-12" id="answer-collapse">
 					  <div class="container-fluid">
 					  	<label class="control-label">Risposte</label>
 					    <div class="row form-group">
@@ -265,7 +269,7 @@
 
     var formData = $(this).serialize();
     var user = '<?php echo $_SESSION['user'] ?>';
-    var campaign =  $(".title-details").html();
+    var campaign =  $(".title-details").attr('id');
 	    $.ajax({
 	      type: "POST",
 	      url: '../../php/query.php',
@@ -278,7 +282,7 @@
         	$('.skill-category-select').append('<option>---</option>');
 	      	$('#answer-collapse').collapse('hide');
 	      	$('#new-task-campaign').modal('hide');
-	      	details(campaign, e);
+	      	details(e);
 	      	$('#tasks-campaign').modal('show');
 	      }
 	    });

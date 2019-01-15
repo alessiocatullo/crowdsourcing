@@ -49,15 +49,24 @@ function refreshOnTarget(target){
 ELENCO CAMPAGNE
 *******************************************/
 //FUNZIONE RIEMPI DIV DEL DETTAGLIO
-function details(name, id) {
+function details(id) {
   $(".content-details").html("");
-  $( ".title-details" ).html("").append(name);
+  $(".title-details").html("");
+    $.ajax({ url: '../../php/query.php',
+       data: {Method:'query_name_details', id},
+       type: 'POST',
+       success: function(e) {
+        $(".title-details").attr('id', id);
+        $(".title-details").append(e);
+       }
+  });
+  
   $.ajax({ url: '../../php/query.php',
-           data: {Method:'query_details', id: id},
-           type: 'POST',
-           success: function(e) {
-             $(".content-details").append(e);
-           }
+     data: {Method:'query_details', id},
+     type: 'POST',
+     success: function(e) {
+       $(".content-details").append(e);
+     }
   });
 }
 
@@ -228,6 +237,9 @@ function populateAnalyticsTask(id){
         $("#task-analtics").find('.answer-bars').append(e);
       }
     });
+}
+
+function getTop10(id){
 }
 
 //FUNZIONE SELECT SUB CATEGORY
