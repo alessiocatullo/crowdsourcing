@@ -31,6 +31,5 @@ BEGIN
     END LOOP LOOPTASK;
     
     CLOSE task_id_cursor;
-    SELECT * FROM my_tmp_task;
 END$$
 DELIMITER ;
