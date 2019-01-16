@@ -240,6 +240,15 @@ function populateAnalyticsTask(id){
 }
 
 function getTop10(id){
+  $('#top10').find('.content-top10').empty();
+  $.ajax({ 
+    url: '../../php/query.php',
+    data: {Method:'query_top10', id},
+    type: 'POST',
+      success: function(e) {
+        $('#top10').find('.content-top10').append(e);
+      }
+  });
 }
 
 //FUNZIONE SELECT SUB CATEGORY

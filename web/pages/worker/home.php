@@ -84,7 +84,8 @@
       </div>
       <!-- Modal body -->
       <div class="modal-body">
-        Rimozione iscrizione avvenuta con successo! tutti i task a cui hai già riposto resteranno mantenuti in memoria! 
+        <div class="col-md-12 statistics-bars"></div>
+        <div class="col-md-12 nPosition" style="font-size: xx-large;"></div>
       </div>
       <!-- Modal footer -->
       <div class="modal-footer">
@@ -196,5 +197,27 @@
         alert(e);
       }
     });
+  });
+
+  $('.card-campaign').on('click', '.btn-camp-analytics' ,function(){
+    $user = '<?php echo $_SESSION['user'] ?>';
+    $campaign = $(this).closest(".card-campaign").attr("id");
+    //Printa Campaigns info
+    $.ajax({ url: '../../php/query.php',
+      data: {Method:'query_position_user', user: $user, campaign: $campaign},
+      type: 'POST',
+      success: function(e) {
+       $('#campaign-analytics').find('.nPosition').html("").append('<h3>Posizione: </h3><strong>'+e+'</strong>');
+      }
+    });
+
+    $.ajax({ url: '../../php/query.php',
+      data: {Method:'query_statistics_user_campaign', user: $user, campaign: $campaign},
+      type: 'POST',
+      success: function(e) {
+       $('#campaign-analytics').find('.statistics-bars').html("").append(e);
+      }
+    });
+    $('#campaign-analytics').modal('show'); 
   });
 </script>

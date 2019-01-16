@@ -57,7 +57,6 @@
         @mysqli_free_result($result_user);
         return $result_user;
     }
-
     /*-------------------------------------------------------------------------------------------------------------
         REQUESTER
     -------------------------------------------------------------------------------------------------------------*/
@@ -419,6 +418,30 @@
         @mysqli_free_result($result);
         return $result;       
     }
+
+    function query_top10(){
+        global $con;
+        $campaign = $_POST['id'];
+        $i = 1;
+
+        $sql = "CALL top10_user('$campaign')";
+        $result = @mysqli_query($con, $sql) or die("Errore Call top10 Procedure!");
+        @mysqli_free_result($result);
+
+        $sql = "SELECT * FROM my_tmp_top10";
+        $result = @mysqli_query($con, $sql) or die("Errore select della temporary!");
+        while($row = mysqli_fetch_array($result)){
+            echo "<tr>
+                <td class='tabletxt-center'>".$i."</td>
+                <td class='tabletxt-center'>".$row['my_tot_score']."</td>
+                <td>".$row['my_user']."</td>
+                </tr>";
+            $i++;
+        }
+
+        @mysqli_free_result($result);
+        return $result;
+    }
     /*-------------------------------------------------------------------------------------------------------------
         Worker
     -------------------------------------------------------------------------------------------------------------*/
@@ -442,8 +465,7 @@
             echo "
             <li class='campains-element col-12 col-md-6 col-lg-3'>
                 <div class='card card-campaign ". ($row['user'] != null ? 'subbed':'') ."'' id='".$row['id']."' style='margin-bottom: 2pc;'>
-                    <button data-toggle='modal' data-target='#campaign-analytics' 
-                    class='close btn-camp-analy' style='position: absolute; left: 15px; top: 10px;' 
+                    <button data-toggle='modal' class='close btn-camp-analytics' style='position: absolute; left: 15px; top: 10px;' 
                     ".($row['user'] != null ? '':'hidden')."><i class='fas fa-info-circle'></i></button>
                     <button data-toggle='modal' data-target='#remove-sub' 
                     class='close btn-sub-remove' style='position: absolute; right: 15px; top: 10px;' 
@@ -733,6 +755,59 @@
           echo "Non sei iscritto alla campagna di questo task! Iscriviti e potrai rispondere.";  
         }
 
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    function query_position_user(){
+        global $con;
+        $user = $_POST['user'];
+        $campaign = $_POST['campaign'];
+
+        $sql = "SELECT campaign_user_position('$campaign','$user') as pos";
+        $result = @mysqli_query($con, $sql) or die("Errore query remove all skills");
+        $row=mysqli_fetch_array($result);
+
+        echo $row['pos'];
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    function query_statistics_user_campaign(){
+        global $con;
+        $user = $_POST['user'];
+        $campaign = $_POST['campaign'];
+
+        $sql = "CALL statistics_ofCampaign('$user', '$campaign', @tot_task, @tot_task_sub, @tot_task_answered, @tot_task_valid)";
+        $result = @mysqli_query($con, $sql) or die("Errore Call Procedure - statistics di una campagna!");
+        @mysqli_free_result($result);
+
+        $sql = "SELECT @tot_task as tot_task, @tot_task_sub as tot_task_sub, @tot_task_answered as tot_task_answered, @tot_task_valid as tot_task_valid";
+        $result = @mysqli_query($con, $sql) or die("Errore Call SELECT della procedure!");
+        $row = mysqli_fetch_array($result);
+
+        $tot = $row['tot_task'];
+        $tot_sub = $row['tot_task_sub'];
+        $tot_ans = $row['tot_task_answered'];
+        $tot_cor = $row['tot_task_valid'];
+
+        echo "
+            Tasks a cui sei iscritto<span class='float-right strong'>".$tot_sub."/".$tot."</span>
+            <div class='progress'>
+                <div class='progress-bar progress-bar-striped progress-bar-animated bg-warning' style='width: ".($tot_sub != 0 ? ($tot_sub*100)/$tot : 0)."%;' 
+                role='progressbar' aria-valuenow='".$tot_sub."'  aria-valuemax='".$tot."'></div>
+            </div>
+            Tasks a cui hai risposto<span class='float-right strong'>".$tot_ans."/".$tot."</span>
+            <div class='progress'>
+                <div class='progress-bar progress-bar-striped progress-bar-animated' style='width: ".($tot_ans != 0 ? ($tot_ans*100)/$tot : 0)."%;' 
+                role='progressbar' aria-valuenow='".$tot_ans."'  aria-valuemax='".$tot."'></div>
+            </div>
+            Tasks a cui hai risposto correttamente<span class='float-right strong'>".$tot_cor."/".$row['tot_task']."</span>
+            <div class='progress'>
+                <div class='progress-bar progress-bar-striped progress-bar-animated bg-success' style='width: ".($tot_cor != 0 ? ($tot_cor*100)/$tot : 0)."%;' 
+                role='progressbar' aria-valuenow='".$tot_cor."'  aria-valuemax='".$tot."'></div>
+            </div>
+            ";
         @mysqli_free_result($result);
         return $result;
     }

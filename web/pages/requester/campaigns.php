@@ -72,7 +72,7 @@
       <!-- Modal body -->
       <div class="modal-body">
 		<div class="table-responsive">
-			<table class="table table-striped table-hover">
+			<table class="table table-bordered table-striped table-dark">
 		        <thead class="table-top10 thead-dark">
 		            <tr>
 		    	        <th>#</th>
