@@ -323,7 +323,11 @@
                 @mysqli_free_result($sql);
             }
         }while($skillArray[$iter_n] != null);
-        
+
+        $sql = "SELECT check_assignment_task('$id_task')";
+        $result = @mysqli_query($con, $sql) or die ("Errore scheduling query");
+        @mysqli_free_result($sql);
+
         echo $campaign;
         return;
     }
@@ -452,10 +456,10 @@
         global $con;
         $pointer = '.';
 
-        $sql_campaign_wrk = "SELECT id, name, dt_accession_start, dt_accession_end, cp".$pointer."user 
+        $sql_campaign_wrk = "SELECT id, name, dt_accession_start, dt_accession_end, cp".$pointer."user, cp".$pointer."notification, cp".$pointer."notification_value AS nv
             FROM campaign as c 
             LEFT JOIN 
-                (SELECT campaign, user 
+                (SELECT campaign, user, notification, notification_value
                 FROM campaign_performed 
                 WHERE user = '$user') as cp
             ON c".$pointer."id = cp".$pointer."campaign";
@@ -467,6 +471,9 @@
                 <div class='card card-campaign ". ($row['user'] != null ? 'subbed':'') ."'' id='".$row['id']."' style='margin-bottom: 2pc;'>
                     <button data-toggle='modal' class='close btn-camp-analytics' style='position: absolute; left: 15px; top: 10px;' 
                     ".($row['user'] != null ? '':'hidden')."><i class='fas fa-info-circle'></i></button>
+                    <button class='close notify-bell' style='position: absolute; left: 18px; top: 140px;' 
+                    ".($row['notification'] == null ? 'hidden':'')."><i class='fas ".($row['notification'] == 1 ? 'fa-bell':'fa-bell-slash')."'><span class='badge badge-pill badge-light n_notify' 
+                    style='font-size: small; position: absolute; left: 9px; bottom: 12px;'>".($row['nv'] > 0 ? $row['nv'] : '')."</span></i></button>
                     <button data-toggle='modal' data-target='#remove-sub' 
                     class='close btn-sub-remove' style='position: absolute; right: 15px; top: 10px;' 
                     ".($row['user'] != null ? '':'hidden')."><i class='fas fa-times'></i></button>
@@ -587,16 +594,16 @@
         global $con;
         $idTask = $_POST['idTask'];
 
-        $sql = "SELECT answer FROM answer_options WHERE task = '$idTask'";
+        $sql = "SELECT id, answer FROM answer_options WHERE task = '$idTask'";
         $result = @mysqli_query($con, $sql) or die("Errore query task answer");
         while($row=mysqli_fetch_array($result)){
             echo "
             <div class='col-md-12'>
                 <div class='input-group'>
                     <span class='input-group-prepend'>
-                        <input class='form-radio' type='radio'  name='answer-opt' id='".$row['answer']."' value='".$row['answer']."' required>
+                        <input class='form-radio' type='radio'  name='answer-opt' id='".$row['id']."' value='".$row['id']."' required>
                     </span>
-              <label for='".$row['answer']."' class='form-text' style='margin-left: 1pc;'>".$row['answer']."</label>
+              <label for='".$row['id']."' class='form-text' style='margin-left: 1pc;'>".$row['answer']."</label>
                 </div>
             </div>";
         }
@@ -613,9 +620,11 @@
         parse_str($_POST['formData'], $_POST);
         $answer = $_POST['answer-opt'];
 
-        $sql = "UPDATE task_performed SET answer = (SELECT id FROM answer_options WHERE answer = '$answer' LIMIT 1) WHERE task = '$idTask' AND user = '$user'";
+        $sql = "UPDATE task_performed SET answer = '$answer' WHERE task = '$idTask' AND user = '$user'";
         $result = @mysqli_query($con, $sql) or die("Il numero di worker necessari è stato raggiunto! Il task è stato eliminato.".delete_task_assigned_wArgument($idTask,  $user));
         
+        $sql = "CALL calculating_score('$idTask')";
+        $result = @mysqli_query($con, $sql) or die("La procedure calculating_score ha avuto un problema");
         @mysqli_free_result($result);
         return $result;
     }
@@ -633,13 +642,19 @@
 
         $id = $row['id'];
         if($id == null){
-            return;
+            $sql = "SELECT notification FROM campaign_performed WHERE user = '$user' AND campaign = '$campaign'";
+            $result = @mysqli_query($con, $sql) or die("Errore query notification");
+            $row = mysqli_fetch_array($result);
+            if ($row['notification'] == null){
+                echo 'null';
+            } else {
+                echo $row['notification'];
+            }
+            @mysqli_free_result($result);
+            return $result;
         }
-
         $sql = "INSERT INTO task_performed(task,user) VALUES ('$id','$user')";
         $result = @mysqli_query($con, $sql) or die("Errore insert nuovo task in task_performed");
-
-        echo $id;
         return $result;
     }
 
@@ -792,22 +807,55 @@
         $tot_cor = $row['tot_task_valid'];
 
         echo "
-            Tasks a cui sei iscritto<span class='float-right strong'>".$tot_sub."/".$tot."</span>
+            Iscritto<span class='float-right strong'>".$tot_sub."/".$tot."</span>
             <div class='progress'>
                 <div class='progress-bar progress-bar-striped progress-bar-animated bg-warning' style='width: ".($tot_sub != 0 ? ($tot_sub*100)/$tot : 0)."%;' 
                 role='progressbar' aria-valuenow='".$tot_sub."'  aria-valuemax='".$tot."'></div>
             </div>
-            Tasks a cui hai risposto<span class='float-right strong'>".$tot_ans."/".$tot."</span>
+            Risposto<span class='float-right strong'>".$tot_ans."/".$tot."</span>
             <div class='progress'>
                 <div class='progress-bar progress-bar-striped progress-bar-animated' style='width: ".($tot_ans != 0 ? ($tot_ans*100)/$tot : 0)."%;' 
                 role='progressbar' aria-valuenow='".$tot_ans."'  aria-valuemax='".$tot."'></div>
             </div>
-            Tasks a cui hai risposto correttamente<span class='float-right strong'>".$tot_cor."/".$row['tot_task']."</span>
+            Validi<span class='float-right strong'>".$tot_cor."/".$row['tot_task']."</span>
             <div class='progress'>
                 <div class='progress-bar progress-bar-striped progress-bar-animated bg-success' style='width: ".($tot_cor != 0 ? ($tot_cor*100)/$tot : 0)."%;' 
                 role='progressbar' aria-valuenow='".$tot_cor."'  aria-valuemax='".$tot."'></div>
             </div>
             ";
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    function query_notification_accept(){
+        global $con;
+        $user = $_POST['user'];
+        $campaign = $_POST['campaign'];
+
+        $sql = "UPDATE campaign_performed SET notification = 1 WHERE user = '$user' AND campaign = '$campaign'";
+        $result = @mysqli_query($con, $sql) or die("Errore Update notification success!");
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    function query_notification_refuse(){
+        global $con;
+        $user = $_POST['user'];
+        $campaign = $_POST['campaign'];
+
+        $sql = "UPDATE campaign_performed SET notification = 0 WHERE user = '$user' AND campaign = '$campaign'";
+        $result = @mysqli_query($con, $sql) or die("Errore Update notification denied!");
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    function query_remove_notify(){
+        global $con;
+        $user = $_POST['user'];
+        $campaign = $_POST['campaign'];
+
+        $sql = "UPDATE campaign_performed SET notification_value = 0 WHERE user = '$user' AND campaign = '$campaign'";
+        $result = @mysqli_query($con, $sql) or die("Errore Update notification value!");
         @mysqli_free_result($result);
         return $result;
     }

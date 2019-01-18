@@ -1,4 +1,3 @@
-DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `top10_user`(IN cmp_id INT(11))
 BEGIN
 	
@@ -17,8 +16,8 @@ BEGIN
 		campaign cmp ON cmp.id = tsk.campaign
 	WHERE
 		cmp.id = cmp_id
+        AND tsk_p.answer IS NOT NULL
 	GROUP BY email
 	ORDER BY tot_score DESC, task_answers
 	LIMIT 10;
-END$$
-DELIMITER ;
+END

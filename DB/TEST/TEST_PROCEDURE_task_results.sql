@@ -1,1 +1,0 @@
-CALL task_results(1);

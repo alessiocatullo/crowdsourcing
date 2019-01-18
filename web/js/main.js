@@ -3,7 +3,6 @@ GESTIONE SIDEBAR MENU
 *******************************************/
 //FUNZIONE MENU
 $(document).ready(function(){
-
       var navListItems = $('.admin-menu li');
       var allWells = $('.admin-content');
       allWells.hide();
@@ -18,6 +17,8 @@ $(document).ready(function(){
       } else {
         TabToActive = navListItems.first();
         TabToActive.addClass('active');
+        TabToActive = TabToActive.find('a').attr('href');
+        location.hash = TabToActive;        
         $(TabToActive).show();
       }
 
@@ -180,7 +181,7 @@ function populateAnalyticsTask(id){
                 $('#state-task').find('.text-state').append("CREATO");
                 break;
               case '1':
-                $$('#state-task').find('.text-state').append("IN CORSO");
+                $('#state-task').find('.text-state').append("IN CORSO");
                 break;
               case '2':
                 $('#state-task').find('.text-state').append("COMPLETATO");
@@ -450,6 +451,19 @@ function select_campaign_filter(user){
     type: 'POST',
       success: function(e) {
         $('.filter-panel').find('.select-campaign').append(e);
+      }
+  });
+}
+
+function removeNotify(user, campaign){
+  $.ajax({ 
+    url: '../../php/query.php',
+    data: {Method:'query_remove_notify', user, campaign},
+    type: 'POST',
+      success: function(e) {
+        if(e != ''){
+          alert(e);
+        }
       }
   });
 }

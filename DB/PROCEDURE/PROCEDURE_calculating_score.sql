@@ -1,5 +1,6 @@
 CREATE DEFINER=`root`@`localhost` PROCEDURE `calculating_score`(IN task_id INT(11))
 BEGIN
+DECLARE someone_answered INT(11); 
 DECLARE result_answer INT(11);
 DECLARE answer_number INT(5);
 DECLARE max_worker INT(5);
@@ -25,7 +26,20 @@ INTO answer_number , max_worker FROM
 WHERE
     tsk_a.state >= 1
         AND tsk_a.id = task_id;
-    
+
+SELECT 
+    COUNT(tsk_a.answer)
+INTO someone_answered FROM
+    task_analytics AS tsk_a
+WHERE
+    tsk_a.answer IS NOT NULL
+        AND tsk_a.id = task_id;
+
+IF someone_answered > 0 THEN
+	UPDATE task SET state = 1
+	WHERE id = task_id;
+END IF;
+
 IF result_answer IS NOT NULL OR answer_number = max_worker
 THEN 
 	UPDATE task SET state = 2

@@ -1,6 +1,5 @@
 <!--HEADER-->
 <?php
-  include("../../php/session.php");
   include("../../php/query.php");
 ?>
 <!DOCTYPE html>
@@ -54,7 +53,7 @@
               <div class="col-md-8">
                 <div class="row">
                   <div class="col-md-12">
-                    <h5><?php echo $_SESSION['role'];?><?php if(strcmp($_SESSION['role'], 'WORKER') == 0){echo ' - RATING';}?></h5>
+                    <h5><?php echo $_SESSION['role'];?></h5>
                   </div>
                 </div>
                 <div class="row" style="margin-bottom: 1em;">
@@ -308,7 +307,7 @@
     $(this).closest("div.row").find('.skill-subcategory-select').removeAttr("disabled");
   });
 
-  $('#edit-skill').on('click', '.close-answer' ,function(){
+  $('#edit-skill').on('click', '.close-answer' ,function(){    
     $(this).closest('li').remove();
     var inputVal = '';
     $('.skill-div li').each(function(i){
@@ -319,6 +318,6 @@
   });
 
   $(".logout").on('click', function() {
-    window.localStorage.clear();
+    window.localStorage.setItem('activeTab', '');
   });
 </script>

@@ -16,7 +16,7 @@ BEGIN
     DECLARE task_iterator CURSOR FOR
     
     SELECT tsk.id
-        FROM (SELECT id, state, campaign FROM task WHERE campaign = 1 AND state < 2) as tsk 
+        FROM (SELECT id, state, campaign FROM task WHERE campaign = my_campaign_id AND state < 2) as tsk 
 			LEFT JOIN (SELECT task ,user FROM task_performed WHERE user = my_user) as tp ON tsk.id = tp.task
 		WHERE tp.user IS NULL OR tp.user != my_user;
     

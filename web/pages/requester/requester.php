@@ -1,5 +1,11 @@
 <!--MENUBAR-->
 <?php
+  include("../../php/session.php");
+  if(strcmp($_SESSION['role'], 'REQUESTER') != 0){
+    echo "<script> window.localStorage.setItem('activeTab', ''); </script>";
+    echo "<script> alert(window.localStorage.getItem('activeTab')); </script>";
+    header('Location: ../login/login.php');
+  }
   include_once("../header.php");
 ?>
 <div class="container-fluid">
@@ -11,15 +17,14 @@
       </ul>
     </div>
   </div>
-    <div class="col-sm-9 offset-sm-2 col-md-11 offset-md-1 pt-3 well admin-content" id="campaigns">
-      <?php
-        include("campaigns.php");
-      ?>
-    </div>
-
-    <div class="col-sm-9 offset-sm-2 col-md-11 offset-md-1 pt-3 well admin-content" id="new_campaign">
-      <?php
-        include("new_campaign.php");
-      ?>
-    </div>
+  <div class="col-sm-9 offset-sm-2 col-md-11 offset-md-1 pt-3 well admin-content" id="campaigns">
+    <?php
+      include("campaigns.php");
+    ?>
+  </div>
+  <div class="col-sm-9 offset-sm-2 col-md-11 offset-md-1 pt-3 well admin-content" id="new_campaign">
+    <?php
+      include("new_campaign.php");
+    ?>
+  </div>
 </div>

@@ -3,10 +3,4 @@ TODO:
 
 FIX:
 - la classe .readonly che fa schifo (non dovrebbe permetterti di scrivere o di fare qualsiasi altra cosa)
-- fixare sessione in quanto ora puoi entrare nella parte della dashboard del requester avendo fatto login come worker
-- fixare al login come requester(dopo logout da worker) ti reindirizza nella ancora del requester precedente
 - fixare scorrimento orrizontale input skill
-
-
-DB:
-- Ho AGGIORNATO LE CAMPAGNE CON IL CASCADE SU CAMAPGIN_PERFORMED

@@ -1,4 +1,3 @@
-DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `campaign_analytics`(IN my_campaign_id INT(11))
 BEGIN
 	DECLARE fetch_done INT DEFAULT FALSE;
@@ -31,5 +30,5 @@ BEGIN
     END LOOP LOOPTASK;
     
     CLOSE task_id_cursor;
-END$$
-DELIMITER ;
+    SELECT * FROM my_tmp_task;
+END

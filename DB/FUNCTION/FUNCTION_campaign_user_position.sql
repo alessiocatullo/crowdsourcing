@@ -1,4 +1,3 @@
-DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `campaign_user_position`(cmp_id INT(11), usr_id VARCHAR(254)) RETURNS int(11)
 BEGIN
 	DECLARE fetch_done INT DEFAULT FALSE;
@@ -37,5 +36,4 @@ BEGIN
     CLOSE usr_cursor;
     
 	RETURN usr_position;
-END$$
-DELIMITER ;
+END
