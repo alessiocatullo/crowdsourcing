@@ -21,12 +21,12 @@
                 "<td>".$row['user']."</td>".
                 "<td class='tabletxt-center'>".$row['first_name']."</td>".
                 "<td class='tabletxt-center'>".$row['last_name']."</td>".
-                "<td class='tabletxt-center'>".$row['country']."</td>".
                 "<td>".
                 "<a class='tabletxt-center float-left' data-toggle='modal' 
                 data-target='#accept' onclick="."esito('".$row['user']."','accept')".
                 "><i class='fas fa-check' style='color: green;'></i>".
-                "<a class='tabletxt-center float-right' data-toggle='modal' data-target='#refused'>
+                "<a class='tabletxt-center float-right' data-toggle='modal' data-target='#refused' 
+                onclick="."esito('".$row['user']."','refused')".">
                 <i class='fas fa-times' style='color: red;'></i>"."</td>".
                 "</tr>";
         }
@@ -297,38 +297,16 @@
 
         do{
             $skill = $skillArray[$iter_n++];
-            $sql = "SELECT count(id), id FROM skill WHERE name = '$skill'";
-            $result = @mysqli_query($con, $sql) or die ("Errore ricerca skill".delete_task_wArgument($id_task));
-            $row = mysqli_fetch_array($result);
-            if($row['id'] != null){
-                $id_category = $row['id'];
-                @mysqli_free_result($sql);
 
-                $sql = "INSERT INTO task_skill (task, skill) 
-                VALUES ('$id_task', '$id_category')";
-                $result = @mysqli_query($con, $sql) or die("Errore inserimento skill categorie".delete_task_wArgument($id_task));
-                @mysqli_free_result($sql);
-            } else {
-                @mysqli_free_result($sql);
-                $sql = "SELECT count(id), id, category FROM skill_subcategory WHERE name = '$skill'";
-                $result = @mysqli_query($con, $sql) or die ("Errore ricerca skill nelle sottocategorie".delete_task_wArgument($id_task));
-                $row = mysqli_fetch_array($result);
-                $id_category = $row['category'];
-                $id_subcategory = $row['id'];
-                @mysqli_free_result($sql);
+            $sql = "INSERT INTO task_skill (skill, task) 
+            VALUES ('$skill', '$id_task')";
+            $result = @mysqli_query($con, $sql) or die("Errore inserimento skill".delete_task_wArgument($id_task));
+            @mysqli_free_result($sql);
+        } while($skillArray[$iter_n] != null);
 
-                $sql = "INSERT INTO task_skill (task, skill, skill_subcategory) 
-                VALUES ('$id_task', '$id_category', '$id_subcategory')";
-                $result = @mysqli_query($con, $result) or die("Errore inserimento skill sottocategorie".delete_task_wArgument($id_task));
-                @mysqli_free_result($sql);
-            }
-        }while($skillArray[$iter_n] != null);
-
-        $sql = "SELECT check_assignment_task('$id_task')";
-        $result = @mysqli_query($con, $sql) or die ("Errore scheduling query");
+        $sql = "SELECT check_assignment_task('$campaign','$id_task')";
+        $result = @mysqli_query($con, $sql) or die ("Errore scheduling query ->".$sql);
         @mysqli_free_result($sql);
-
-        echo $campaign;
         return;
     }
 
@@ -462,7 +440,8 @@
                 (SELECT campaign, user, notification, notification_value
                 FROM campaign_performed 
                 WHERE user = '$user') as cp
-            ON c".$pointer."id = cp".$pointer."campaign";
+            ON c".$pointer."id = cp".$pointer."campaign
+            WHERE c".$pointer."dt_accession_start < NOW()";
 
         $result_campaign_wrk = @mysqli_query($con, $sql_campaign_wrk) or die("Errore query campagne -> $sql_campaign_wrk");
         while($row=mysqli_fetch_array($result_campaign_wrk)){
@@ -473,7 +452,7 @@
                     ".($row['user'] != null ? '':'hidden')."><i class='fas fa-info-circle'></i></button>
                     <button class='close notify-bell' style='position: absolute; left: 18px; top: 140px;' 
                     ".($row['notification'] == null ? 'hidden':'')."><i class='fas ".($row['notification'] == 1 ? 'fa-bell':'fa-bell-slash')."'><span class='badge badge-pill badge-light n_notify' 
-                    style='font-size: small; position: absolute; left: 9px; bottom: 12px;'>".($row['nv'] > 0 ? $row['nv'] : '')."</span></i></button>
+                    style='font-size: xx-small; position: absolute; left: 9px; bottom: 12px;'>".($row['nv'] > 0 ? $row['nv'] : '')."</span></i></button>
                     <button data-toggle='modal' data-target='#remove-sub' 
                     class='close btn-sub-remove' style='position: absolute; right: 15px; top: 10px;' 
                     ".($row['user'] != null ? '':'hidden')."><i class='fas fa-times'></i></button>
@@ -598,13 +577,9 @@
         $result = @mysqli_query($con, $sql) or die("Errore query task answer");
         while($row=mysqli_fetch_array($result)){
             echo "
-            <div class='col-md-12'>
-                <div class='input-group'>
-                    <span class='input-group-prepend'>
-                        <input class='form-radio' type='radio'  name='answer-opt' id='".$row['id']."' value='".$row['id']."' required>
-                    </span>
-              <label for='".$row['id']."' class='form-text' style='margin-left: 1pc;'>".$row['answer']."</label>
-                </div>
+            <div class='funkyradio-default'>
+                <input type='radio' name='answer-opt' id='".$row['id']."' value='".$row['id']."'/>
+                <label for='".$row['id']."'>".$row['answer']."</label>
             </div>";
         }
         @mysqli_free_result($result);
@@ -856,6 +831,18 @@
 
         $sql = "UPDATE campaign_performed SET notification_value = 0 WHERE user = '$user' AND campaign = '$campaign'";
         $result = @mysqli_query($con, $sql) or die("Errore Update notification value!");
+        @mysqli_free_result($result);
+        return $result;
+    }
+
+    function query_check_skill(){
+        global $con;
+        $user = $_POST['user'];
+
+        $sql = "SELECT COUNT(*) as n FROM user_skills WHERE user = '$user'";
+        $result = @mysqli_query($con, $sql) or die("Errore Count skills worker!");
+        $row = mysqli_fetch_array($result);
+        echo $row['n'];
         @mysqli_free_result($result);
         return $result;
     }

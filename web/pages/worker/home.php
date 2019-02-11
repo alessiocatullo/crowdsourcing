@@ -69,7 +69,7 @@
         <div class="notify-div" style="border-top: 0.5px solid #ddd; padding-top: 10px;">
           <div class="text-notify"></div>
           <div class="notify" style="text-align: center; font-size: xx-large; padding: 1pc;">
-            <a class="bell" style="cursor: pointer;"><i class="fas fa-bell"></i></a>
+            <a class="bell" style="cursor: pointer;"><i class="fas fa-bell-slash"></i></a>
           </div>
         </div>
       </div>
@@ -197,8 +197,8 @@
             if(e.localeCompare('null') == 0){
               $('#task_response').find('.text-notify').text($response_notify);
               $('#task_response').find('.notify').removeAttr('hidden');
-              $('#task_response').find('.bell').find('i').removeClass('fa-bell-slash');
-              $('#task_response').find('.bell').find('i').addClass('fa-bell');
+              $('#task_response').find('.bell').find('i').removeClass('fa-bell');
+              $('#task_response').find('.bell').find('i').addClass('fa-bell-slash');
               $('#task_response').find('.notify').attr('id', $campaign);
             } else{
               $('#task_response').find('.text-notify').html('');
@@ -230,6 +230,7 @@
         $campaignDiv.find('.btn-sub').addClass('btn-danger');
         $campaignDiv.find('.btn-sub').text('Iscriviti');
         $campaignDiv.find('.btn-camp-analytics').attr('hidden','hidden');
+        $campaignDiv.find('.notify-bell').attr('hidden', 'hidden');
         $campaignDiv.find('.btn-sub-remove').attr('hidden', 'hidden');
         $campaignDiv.find('.btn-sub').attr('data-target', '#sub');
       },
@@ -265,29 +266,32 @@
     $user = '<?php echo $_SESSION['user'] ?>';
     $campaign = $(this).closest(".notify").attr("id");
 
-    if($(this).find('.fas').hasClass('fa-bell')){
+    if($(this).find('.fas').hasClass('fa-bell-slash')){
       $.ajax({ url: '../../php/query.php',
         data: {Method:'query_notification_accept', user: $user, campaign: $campaign},
         type: 'POST',
         success: function(e) {
           if(e == ''){
-            $('#task_response').find('.bell').find('i').removeClass('fa-bell');
-            $('#task_response').find('.bell').find('i').addClass('fa-bell-slash');
-            //$('#'+$campaign).find('.notify-bell').removeAttr('hidden');
+            $('#task_response').find('.bell').find('i').removeClass('fa-bell-slash');
+            $('#task_response').find('.bell').find('i').addClass('fa-bell');
+            $('#'+$campaign).find('.notify-bell').removeAttr('hidden');
+            $('#'+$campaign).find('.notify-bell').find('i').removeClass('fa-bell-slash');
+            $('#'+$campaign).find('.notify-bell').find('i').addClass('fa-bell');
           } else {
             alert(e);
           }
         }
       });
-    }else if($(this).find('.fas').hasClass('fa-bell-slash')){
+    }else if($(this).find('.fas').hasClass('fa-bell')){
       $.ajax({ url: '../../php/query.php',
         data: {Method:'query_notification_refuse', user: $user, campaign: $campaign},
         type: 'POST',
         success: function(e) {
           if(e == ''){
-            $('#task_response').find('.bell').find('i').removeClass('fa-bell-slash');
-            $('#task_response').find('.bell').find('i').addClass('fa-bell');
-            //$('#'+$campaign).find('.notify-bell').removeAttr('hidden');
+            $('#task_response').find('.bell').find('i').removeClass('fa-bell');
+            $('#task_response').find('.bell').find('i').addClass('fa-bell-slash');
+            $('#'+$campaign).find('.notify-bell').find('i').removeClass('fa-bell');
+            $('#'+$campaign).find('.notify-bell').find('i').addClass('fa-bell-slash');
           } else {
             alert(e);
           }

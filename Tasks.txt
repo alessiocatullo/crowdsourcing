@@ -1,6 +1,0 @@
-TODO:
-- AGGIUNGERE AL LOGIN INPUT SKILL O AGGIUNGERE MODAL CHE LE FACCIA SELEZIONARE ALL'INIZO
-
-FIX:
-- la classe .readonly che fa schifo (non dovrebbe permetterti di scrivere o di fare qualsiasi altra cosa)
-- fixare scorrimento orrizontale input skill

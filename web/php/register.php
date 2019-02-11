@@ -6,6 +6,7 @@
 
 	if(isset($_POST['inputMail'])){
 		$mail= $_POST['inputMail'];
+		$radio= $_POST['radio'];
 
 		// definisco la query di inserimento dati
 		$sql = "SELECT COUNT(0) AS register_check
@@ -23,7 +24,6 @@
 			$mail= $_POST['inputMail'];
 			$passw= $_POST['inputPassword'];
 			$passwConf= $_POST['inputPasswordConf'];
-			$radio= $_POST['radio'];
 
 			if(strcmp($passw, $passwConf)==0){
 			// liberazione della memoria dal risultato della query
@@ -32,7 +32,7 @@
 						VALUES ('$mail', '$passw', '$nome', '$cognome', '$radio',".(strcmp($radio,'REQUESTER')==0?"0":("'1'"))." )";
 				$result = mysqli_query($con, $sql) or die ("'$mail', '$passw', '$nome', '$cognome', '$radio'");
 				if(strcmp($radio,'REQUESTER') == 0){
-					$_SESSION['response']='Richiesta effettuata! Appena verrà confermata riceverai una mail';
+					$_SESSION['response']='Richiesta effettuata! Attendi che un Admin confermi la tua richiesta';
 				} else {
 					$_SESSION['response']='Utente registrato! Effettua il login';
 				}
@@ -42,8 +42,8 @@
 				$error = 'Dati Errati! I dati inseriti non sono validi';
 			}
 		}else{
-			$hidden='';
-			$error = 'Utente registrato! Effettua il login';
+			$_SESSION['response'] = 'Utente già registrato! Effettua il login';
+			header ("location: login.php");
 		}
 		@mysqli_free_result($result);
 		@mysqli_close($con);

@@ -58,8 +58,8 @@
 	<form role="form" id="answer-form">
 	    <div class="modal-content">
 	      <!-- Modal Header -->
-	      <div class="modal-header">
-	        <h4 class="modal-title">
+	      <div class="modal-header" style="background: #28a745;color: white;">
+	        <h4 class="modal-title">Rispondi
 	        </h4>
 	        <button type="button" class="close" data-dismiss='modal'>&times;</button>
 	      </div>
@@ -75,8 +75,10 @@
 	      			<h4 class="title task-desc"></h4>
 	      		</div>
 	      	</div>
-	      	<div class="row" style="padding: 2pc;">
+	      	<div class="row" style="padding: 1pc;">
 	      		<div class="col-md-12 radio-input">
+      			    <div class="funkyradio">
+				    </div>
 		      	</div>
 	      	</div>
 	      </div>
@@ -172,6 +174,10 @@
 <script>
 	//Submit FORM
 	$('#answer-form').bind('submit',function(e) {
+		if($(this).serialize() == ''){
+			$('#answer-form').find('.funkyradio-default').find('label').css('border-color', 'red');
+			return;
+		}
 		e.preventDefault();
 
 	    var formData = $(this).serialize();
@@ -220,7 +226,7 @@
 	      url: '../../php/query.php',
 	      data: {Method:'query_task_answer', idTask: $idTask},
 	      success: function(response){
-	      	$('.radio-input').html(response);
+	      	$('.radio-input').find('.funkyradio').html(response);
 	      }
 	    });
 
@@ -238,6 +244,10 @@
       			}
 		      }
 		});
+	});
+
+	$('#answer-form').on('click', '.funkyradio-default', function(){
+		$('#answer-form').find('.funkyradio-default').find('label').css('border-color', '#D1D3D4');
 	});
 
 	$(document).ready(function () {

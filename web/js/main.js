@@ -99,7 +99,7 @@ $(document).ready(function () {
                 $item = $(this);
 
         if (!$item.hasClass('disabled')) {
-            navListItems.removeClass('btn-primary').addClass('btn-default');
+            navListItems.removeClass('btn-primary').addClass('btn-info');
             navListItems.addClass('disabled');
             $item.addClass('btn-primary');
             $item.addClass('btn-primary');
@@ -115,6 +115,23 @@ $(document).ready(function () {
             nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
             curInputs = curStep.find("input[type='text'],input[type='date'],input[type='number'], textarea[type='text']"),
             isValid = true;
+
+        var addAnswerInput = curStep.find('.input-answer');
+        var addSkillInput = curStep.find('.skill-input');
+        
+        for(var i=0; i<addAnswerInput.length; i++){
+            if ($(addAnswerInput[i]).val() == ''){
+                isValid = false;
+                $(addAnswerInput[i]).closest('.row').find('.answerBtn').css('background-color', '#dc3545');
+            }
+        }
+
+        for(var i=0; i<addSkillInput.length; i++){
+            if ($(addSkillInput[i]).val() == ''){
+                isValid = false;
+                $(addSkillInput[i]).closest('.border-div').find('.skill-select').css('border-color', '#dc3545');
+            }
+        }
 
         $(".form-control").removeClass("is-invalid");
         for(var i=0; i<curInputs.length; i++){
@@ -135,12 +152,6 @@ $(document).ready(function () {
         var curStep = $(this).closest(".setup-content"),
             curStepBtn = curStep.attr("id"),
             backStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().prev().children("a");
-
-            if(curStep.attr('id').substring(curStep.attr("id").length - 1) == 2){
-              $('#dt_end').attr('disabled', 'disabled');
-              $('#dt_accession_start').attr('disabled', 'disabled');
-              $('#dt_accession_end').attr('disabled', 'disabled');
-            }
 
             backStepWizard.removeClass('disabled').trigger('click');
     });
@@ -296,6 +307,11 @@ function addTask() {
   clone.find('.skill-select').css('border-color', '#ced4da');
   clone.find('.nTask').text('#' + i);
   clone.find('.input-answer').removeClass('readonly');
+  clone.find('.skill-div-task-campaign li').remove();
+  clone.find('.answerBtn').css('background-color', '#2d5b72');
+  clone.find('input').css('border-color', '#ced4da');
+  clone.find('textarea').val('');
+  clone.find('textarea').css('border-color', '#ced4da');
   clone.find('.content-task').removeAttr('hidden');
   clone.find('input').each(function(){
     $(this).attr('id', $(this).attr("id").substring(0, $(this).attr("id").length - 2) + "-" + i);
@@ -419,7 +435,6 @@ function esito(user, esito){
       data: {Method:'query_refuse_user', user: user},
       type: 'POST',
         success: function(e) {
-          location.reload();
         }
     });
   }

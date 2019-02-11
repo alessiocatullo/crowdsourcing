@@ -36,7 +36,7 @@
 				            	<p>
 		             		    	<a for="inputPassword" class="form-text">Conferma password</a>
 					            	<input type="password" name="inputNewPasswordConf" id="inputPassword" Placeholder="Conferma Password" required>
-					            </p>
+					            </p>						      
 			            	</p>
 			            	<p class="form-err" <?php echo $hidden; ?>>
                 				<a><strong><?php echo $error; ?></strong></a> 

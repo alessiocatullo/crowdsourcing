@@ -203,7 +203,8 @@
 			            </div>
 			            <div class="row form-group">
 			              <div class="col-md-11">
-			                <input class="skill-input form-control readonly" name="skill" type="text" required="required" placeholder="#" autocomplete="off"/>
+			                <input class="skill-input form-control" name="skill" type="hidden" required="required" placeholder="#" autocomplete="off"/>
+			                <ul class="skill-div-task ul-answer ul-skills"></ul>
 			              </div>
 			              <div class="col-md-1">
 			                <button class="skill-remove btn btn-danger float-right" type="button">
@@ -211,6 +212,7 @@
 			                </button>
 			              </div>
 			            </div>
+			            <span style='font-size: small; position: absolute; left: 18px;'> *Max 4 skills</span>
 			          </div>
 		         	</div>	        	
 			  	</div>
@@ -242,11 +244,12 @@
 					      <div class="col-md-12">
 					        <ul class="answer-div-task ul-answer"></ul>
 					      </div>
-					    </div> 
+					    </div>
 					  </div>
 					</div>
 		        </div>
 			  </div>
+			  <span style='font-size: small; position: absolute; right: 18px;'> *Max 4 risposte</span>
 			  <!--FINE 2 col-->
 			</div>
 		  </div>
@@ -267,6 +270,11 @@
 		return;
 	}
 
+	if($('#new-task-form').find('.skill-input').val() == ''){
+		$('#new-task-form').find('.skill-select').css("border", "2px solid #e40a0a99");
+		return;
+	}
+
     var formData = $(this).serialize();
     var user = '<?php echo $_SESSION['user'] ?>';
     var campaign =  $(".title-details").attr('id');
@@ -281,8 +289,14 @@
 			$('.skill-category-select').children('option').remove();
         	$('.skill-category-select').append('<option>---</option>');
 	      	$('#answer-collapse').collapse('hide');
+	      	$('.skill-div-task li').remove();
+	      	$('.skill-input').val('');
+	      	$('.input-answer-task').val('');
 	      	$('#new-task-campaign').modal('hide');
-	      	details(e);
+	      	if(e != ''){
+	      		alert(e);
+	      	}
+	      	details(campaign);
 	      	$('#tasks-campaign').modal('show');
 	      }
 	    });
@@ -294,6 +308,9 @@
   	});
 
   	$('#new-task-form').on('click', '.skill-confirm' ,function(){
+		if($('#new-task-form').find('.skill-div-task li').length > 3){
+	      return;
+	    }
 	    refCategorySub = $(this).closest("div.row").find('.skill-category-select');
 	    refCategory = $(this).closest("div.row").find('.skill-select');
 	    skillInput = $(this).closest("div.border-div").find('.skill-input');
@@ -304,11 +321,19 @@
 	        return;
 	      }
 	    }
-	   refCategory.css('border-color', '#ced4da');
+	   refCategory.css("border", "1px solid #ced4da");
 	    if(refCategorySub.children(":selected").val().localeCompare("---") != 0){
-	      skillInput.val(skillInput.val() + (refCategorySub.children(":selected").val() + "; "));
-	    } else {;
-	      skillInput.val(skillInput.val() + (refCategory.children(":selected").val() + "; "));
+	    	var exists = $('.skill-div-task li:contains('+refCategorySub.children(":selected").val()+')').length;
+			if(!exists){
+    			$('#new-task-form').find('.skill-div-task').append('<li style="float: left; margin-left: 2px; font-size: larger;"><span class="badge badge-primary">'+ refCategorySub.children(":selected").val() +'</span></li>');
+	     		skillInput.val(skillInput.val() + (refCategorySub.children(":selected").attr('id') + "; "));
+	     	}
+	    } else {
+	    	var exists = $('.skill-div-task li:contains('+refCategory.children(":selected").val()+')').length;
+			if(!exists){
+	    		$('#new-task-form').find('.skill-div-task').append('<li style="float: left; margin-left: 2px; font-size: larger;"><span class="badge badge-success">'+ refCategory.children(":selected").val() +'</span></li>');
+	      		skillInput.val(skillInput.val() + (refCategory.children(":selected").attr('id') + "; "));
+	      	}
 	    }
   	});
 
@@ -322,17 +347,8 @@
 	    } else {
 	      $(this).closest("div.row").find('.skill-input').val(skillInput);
 	    }
+	    $('#new-task-form').find('.skill-div-task li').last().remove();
   	});
-
-	$(".readonly").keydown(function(e){
-	    if(e.which != 9){
-	      e.preventDefault();
-	    }
-	});
-
-	$('.readonly').bind("cut paste",function(e) {
-	    e.preventDefault();
-	});
 
 	$('#new-task-form').on('click', '.answerBtn' ,function(){
 	    var index = 0;
@@ -347,14 +363,14 @@
 	$('#new-task-form').on('click', '.add-answer' ,function(){
 	    answer = $('.input-answer-div-task').val();
 	    if(answer != '' && answer != " "){
-	    	var exists = $('.answer-div-task li:contains('+answer+')').length;
+	    	exists = $('.answer-div-task li:contains('+answer+')').text() == answer;
 			if(!exists){
 				$('.answer-div-task').append('<li class="li-answer">'+ answer + '<span class="close-answer"><i class="fas fa-times"></i></span></li>');
 	      		$('.input-answer-task').val($('.input-answer-task').val() + answer + '; ');
 			}
-	    $('.input-answer-div-task').val('');
+	    	$('.input-answer-div-task').val('');
 	    }
-	    $('#new-task-form').find('.input-answer-div-task').css('border-color', '1px solid #ced4da')
+	    $('#new-task-form').find('.input-answer-div-task').css('border', '1px solid #ced4da')
 	});
 
 	$('#new-task-form').on('click', '.close-answer' ,function(){

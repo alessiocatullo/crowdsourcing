@@ -5,6 +5,7 @@
 	$hidden= 'hidden';
 	$color='';
 	$bgcolor='';
+	$_SESSION['user'] = null;
 
 	if(isset($_SESSION['response'])){
 		$hidden='';
@@ -46,6 +47,7 @@
 					$result = mysqli_query($con, $sql) or die ("Errore 2");
 					$row = mysqli_fetch_array($result);
 					$_SESSION['role']= $row['role'];
+					$_SESSION['suggestion'] = 0;
 					$_SESSION['first_name']= $row['first_name'];
 					$_SESSION['last_name']= $row['last_name'];
 					$_SESSION['address']= $row['address'];
@@ -67,7 +69,7 @@
 					$error = "Errore";
 				} else{
 					$hidden='';
-					$error = "Utente ancora in attesa di approvazione";
+					$error = "Utente ancora in fase di approvazione";
 				}
 			} else {
 				$hidden='';

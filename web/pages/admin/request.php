@@ -10,7 +10,6 @@
 	    	        <th>User</th>
 	                <th class='tabletxt-center'>Nome</th>
 	                <th class='tabletxt-center'>Cognome</th>
-	                <th class='tabletxt-center'>Città</th>
 	                <th class='tabletxt-center' style="width: 5%;">Azione</th>
 	        	</tr>
 	        	<tbody>
@@ -51,15 +50,17 @@
       <!-- Modal Header -->
       <div class="modal-header response-header-error">
         <h4 class="modal-title">
-        	<i class='fas fa-times-circle'></i> Confermi?
+        	<i class='fas fa-times-circle'></i> Richiesta eliminata
         </h4>
         <button type="button" class="close" data-dismiss='modal' onclick="refreshOnTarget('#request')">&times;</button>
       </div>
       <!-- Modal body -->
-      <div class="modal-body"></div>
+      <div class="modal-body">
+        La richiesta è stata eliminata con successo. L'utente dovrà ora iscriversi nuovamente.
+      </div>
       <!-- Modal footer -->
       <div class="modal-footer">
-      	<button type='button' class='btn btn-danger' data-dismiss='modal'>Elimina</button>
+      	<button type='button' class='btn btn-primary' data-dismiss='modal' onclick="refreshOnTarget('#request')">Chiudi</button>
       </div>
     </div>
   </div>

@@ -1,13 +1,6 @@
 <!--INDEX PAGE-->
 <?php
 	include('../../php/login.php'); // Includes Login Script
-	
-	/*
-	if(isset($_SESSION["login_user"])){
-		session_start();
-		header("location: home.php");
-	}*/
-
 ?>
 <!DOCTYPE html>
 <html>

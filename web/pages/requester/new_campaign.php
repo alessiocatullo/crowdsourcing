@@ -9,11 +9,11 @@
               <p>Campagna</p>
           </div>
           <div class="stepwizard-step">
-              <a href="#step-2" type="button" class="btn btn-default btn-circle disabled">2</a>
+              <a href="#step-2" type="button" class="btn btn-info btn-circle disabled">2</a>
               <p>Task</p>
           </div>
           <div class="stepwizard-step">
-              <a href="#step-3" type="button" class="btn btn-default btn-circle disabled">3</a>
+              <a href="#step-3" type="button" class="btn btn-info btn-circle disabled">3</a>
               <p>Riepilogo</p>
           </div>
       </div>
@@ -26,20 +26,20 @@
       <div class="col-md-12 task-div" style="padding: 15px;">     
         <div class="form-group">
           <label class="control-label">Nome</label>
-          <input  maxlength="100" id="name" name="name" type="text" required="required" class="form-control" placeholder="nome campagna" value="test"/>
+          <input  maxlength="100" id="name" name="name" type="text" required="required" class="form-control" placeholder="nome campagna"/>
         </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data inizio</label>
               <input type="date" id="dt_start" name="dt_start" required="required" class="form-control" min="<?php echo date("Y-m-d") ?>" 
-                max="2099-01-01" value="2030-12-04"/>
+                max="2099-01-01"/>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data fine</label>
-              <input type="date" id="dt_end" name="dt_end" required="required" class="form-control" max="2099-01-01" value="2030-12-07"/>
+              <input type="date" id="dt_end" name="dt_end" required="required" class="form-control" max="2099-01-01" disabled/>
             </div>
           </div>
         </div>
@@ -47,13 +47,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data iscrizione inizio</label>
-              <input type="date" id="dt_accession_start" name="dt_accession_start" required="required" class="form-control" value="2030-12-05"/>
+              <input type="date" id="dt_accession_start" name="dt_accession_start" required="required" class="form-control" disabled />
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label class="control-label">Data iscrizione fine</label>
-              <input type="date" id="dt_accession_end" name="dt_accession_end" required="required" class="form-control" value="2030-12-06"/>
+              <input type="date" id="dt_accession_end" name="dt_accession_end" required="required" class="form-control" disabled />
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@
           <h3>Aggiungi task</h3>
         </div>
         <div class="col-md-1">
-          <button id="add"class="btn btn-primary float-right" onclick="addTask()" type="button">
+          <button id="add" class="btn btn-primary float-right" onclick="addTask()" type="button">
             <i class="btn-add fas fa-plus"></i>
           </button>
         </div>
@@ -94,21 +94,21 @@
                 <div class="row form-group">
                   <div class="col-md-6">
                     <label class="control-label">Titolo</label>
-                    <input maxlength="200" type="text" id="title-1" name="title-1" required="required" class="form-control" placeholder="Inserisci il titolo"value="test"/>
+                    <input maxlength="200" type="text" id="title-1" name="title-1" required="required" class="form-control" placeholder="Inserisci il titolo"/>
                   </div>
                   <div class="col-md-6">
                     <div class="row">
                       <div class="col-md-2">
                         <label class="control-label">Lavoratori</label>
-                        <input type="number" id="worker-1" name="worker-1" required="required" class="form-control" placeholder="1" min="1" max="10" step="1"value="1"/>
+                        <input type="number" id="worker-1" name="worker-1" required="required" class="form-control" placeholder="1" min="1" max="10" step="1"/>
                       </div>
                       <div class="col-md-3">
                         <label class="control-label">Maggioranza</label>
-                        <input type="number" id="majority-1" name="majority-1" required="required" class="form-control" placeholder="0%" min="0" max="100" step="10" value="10"/>
+                        <input type="number" id="majority-1" name="majority-1" required="required" class="form-control" placeholder="0%" min="0" max="100" step="10"/>
                       </div>
                       <div class="col-md-7">
                         <label class="control-label">Ricompenza</label>
-                        <input maxlength="20" type="text" id="reward-1" name="reward-1" class="form-control" placeholder="Inserisci la ricompenza"value="test"/>
+                        <input maxlength="20" type="text" id="reward-1" name="reward-1" class="form-control" placeholder="Inserisci la ricompenza"/>
                       </div>
                     </div>
                   </div>
@@ -148,7 +148,8 @@
                     </div>
                     <div class="row form-group">
                       <div class="col-md-11">
-                        <input class="skill-input form-control readonly" id="skill-1" name="skill-1" type="text" required="required" placeholder="#" autocomplete="off"/>
+                        <input class="skill-input form-control" id="skill-1" name="skill-1" type="hidden" required="required" autocomplete="off"/>
+                        <ul class="skill-div-task-campaign ul-answer ul-skills"></ul>
                       </div>
                       <div class="col-md-1">
                         <button class="skill-remove btn btn-danger float-right" type="button">
@@ -157,21 +158,17 @@
                       </div>
                     </div>
                   </div>
+                  <span style='font-size: small; position: absolute; right: 18px;'> *Max 4 skills</span>
                 </div>
                 <div class="row form-group">
                   <div class="col-md-12">
                     <div class="row">
                       <div class="col-md-12">
-                        <label class="control-label">Risposte</label>
+                        <input class="form-control input-answer" id="answer-1" name="answer-1" type="hidden" required="required"/>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-11">
-                        <input class="form-control readonly input-answer" id="answer-1" name="answer-1" type="text" required="required"  placeholder="Premi il tasto edit per aggiungere risposte"/>
-                      </div>
-                      <div class="col-md-1">
-                        <button type="button" class="btn btn-primary answerBtn float-right" data-toggle="modal" data-target="#answer">
-                          <i class="fas fa-edit"></i>
+                      <div class="col-md-12 d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary answerBtn" data-toggle="modal" data-target="#answer">
+                          Aggiungi risposte
                         </button>
                       </div>
                     </div>
@@ -260,8 +257,7 @@
         </div>
         <button class="btn btn-primary backBtn btn-lg float-left" style="margin-bottom: 2pc;" 
           type="button">Indietro</button>
-        <button type="submit" class="btn btn-success completeBtn btn-lg float-right" style="margin-bottom: 2pc;"
-          data-toggle="modal" data-target="#response">Crea</button>
+        <button type="submit" class="btn btn-success completeBtn btn-lg float-right" style="margin-bottom: 2pc;">Crea</button>
     </div>
   </form>
 </div>
@@ -314,6 +310,7 @@
       </div>
       <!-- Modal footer -->
       <div class="modal-footer">
+        <span style='font-size: small; position: absolute; left: 18px;'> *Max 4 risposte</span>
         <button type='button' class='btn btn-success confirm-answer' data-dismiss='modal'>Conferma</button>
       </div>
     </div>
@@ -332,7 +329,6 @@
 
     $('.modal-header').removeClass("response-header-success");
     $('.modal-header').removeClass("response-header-error");
-    alert("ok");
     $.ajax({
       type: "POST",
       url: '../../php/query.php',
@@ -352,6 +348,7 @@
         }
           $('.modal-footer').html(button);
           $('.modal-title').html(titleText);
+          $('#response').modal('show');
       }, error: function(xhr, ajaxOptions, thrownError){
         alert(xhr.status);
         alert(thrownError);
@@ -387,6 +384,11 @@
     refCategorySub = $(this).closest("div.row").find('.skill-category-select');
     refCategory = $(this).closest("div.row").find('.skill-select');
     skillInput = $(this).closest("div.border-div").find('.skill-input');
+    skillUl = $(this).closest("div.border-div").find('.skill-div-task-campaign');
+
+    if($(skillUl).find('li').length > 3){
+      return;
+    }
 
     if(refCategorySub.children(":selected").val().localeCompare("---") == 0){
       if(refCategory.children(":selected").val().localeCompare("---") == 0){
@@ -396,9 +398,17 @@
     }
    refCategory.css('border-color', '#ced4da');
     if(refCategorySub.children(":selected").val().localeCompare("---") != 0){
-      skillInput.val(skillInput.val() + (refCategorySub.children(":selected").val() + "; "));
-    } else {;
-      skillInput.val(skillInput.val() + (refCategory.children(":selected").val() + "; "));
+      var exists = $(skillUl).find('li:contains('+refCategorySub.children(":selected").val()+')').length;
+      if(!exists){
+        $(skillUl).append('<li style="float: left; margin-left: 2px; font-size: larger;"><span class="badge badge-primary">'+ refCategorySub.children(":selected").val() +'</span></li>');
+        skillInput.val(skillInput.val() + (refCategorySub.children(":selected").val() + "; "));
+      }
+    } else {
+      var exists = $(skillUl).find('li:contains('+refCategory.children(":selected").val()+')').length;
+      if(!exists){
+        $(skillUl).append('<li style="float: left; margin-left: 2px; font-size: larger;"><span class="badge badge-success">'+ refCategory.children(":selected").val() +'</span></li>');
+        skillInput.val(skillInput.val() + (refCategory.children(":selected").val() + "; "));
+      }
     }
   });
 
@@ -413,15 +423,7 @@
     } else {
       $(this).closest("div.row").find('.skill-input').val(skillInput);
     }
-  });
-  //UN SIMIL READONLY
-  $(".readonly").keydown(function(e){
-    if(e.which != 9){
-      e.preventDefault();
-    }
-  });
-  $('.readonly').bind("cut paste",function(e) {
-    e.preventDefault();
+    $(this).closest("div.border-div").find('.skill-div-task-campaign li').last().remove();
   });
 
   //REMOVE DIV
@@ -447,7 +449,7 @@
   //AGGIUNGI RISPOSTA
   $('#step-2').on('click', '.answerBtn' ,function(){
     var index = 0;
-
+    $(this).css('background-color', '#2d5b72');
     value = $(this).closest('.row').find('.input-answer').val();
     id = $(this).closest('.task-div').attr('id');
     $('#answer').addClass(id);
@@ -459,10 +461,12 @@
   });
 
   $('#answer').on('click', '.add-answer' ,function(){
+    if($('.answer-div li').length >  3){
+      return;
+    }
     answer = $('.input-answer-div').val();
-    if(answer != ''){
-      var exists = $('.answer-div li:contains('+answer+')').length;
-
+    if(answer != '' && answer != " "){
+      exists = $('.answer-div li:contains('+answer+')').text() == answer;
       if(!exists){
         $('.answer-div').append('<li class="li-answer">'+ answer + '<span class="close-answer"><i class="fas fa-times"></i></span></li>');
       }

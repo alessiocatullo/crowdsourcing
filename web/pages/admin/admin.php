@@ -1,11 +1,9 @@
 <!--MENUBAR-->
 <?php
-  include_once("../header.php");
+  include("../../php/session.php");
   if(strcmp($_SESSION['role'], 'ADMIN') != 0){
     echo "<script> window.localStorage.setItem('activeTab', ''); </script>";
-    echo "<script> alert(window.localStorage.getItem('activeTab')); </script>";
     header('Location: ../login/login.php');
-    exit;
   }
   include_once("../header.php");
 ?>

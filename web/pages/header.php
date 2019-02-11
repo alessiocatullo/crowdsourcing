@@ -34,7 +34,7 @@
           <!-- Modal Header -->
           <div class="modal-header">
             <h4 class="modal-title">
-              <h3><?php echo $_SESSION['first_name'].' '.$_SESSION['last_name'];?></h3>
+              <h5><?php echo $_SESSION['role'];?></h5>
             </h4>
             <button type="button" class="close" data-dismiss='modal'>&times;</button>
           </div>
@@ -52,21 +52,12 @@
               <!--colonna destra-->
               <div class="col-md-8">
                 <div class="row">
-                  <div class="col-md-12">
-                    <h5><?php echo $_SESSION['role'];?></h5>
-                  </div>
-                </div>
-                <div class="row" style="margin-bottom: 1em;">
-                  <div class="col-md-10">
-                    <p class="small">
-                      <?php echo $_SESSION['address'];?>, <?php echo $_SESSION['town'];?>, <?php echo $_SESSION['country'];?>
-                      <i class="fas fa-map-marker-alt" style="margin-left: 5px;"></i>
-                    </p>
-                    <p class="small"><?php echo $_SESSION['dt_birth'];?></p>
+                  <div class="col-md-12" style='padding-bottom: 5px; border-bottom: 0.5px solid #ddd; margin-bottom: 1em;'>
+                    <h3><?php echo $_SESSION['first_name'].' '.$_SESSION['last_name'];?></h3>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-10">
+                  <div class="col-md-12">
                     <i class="fas fa-envelope" style="padding-right: 5px;"></i><a><strong>Email:</strong> <?php echo $_SESSION['user'];?></a>
                   </div>
                 </div>
@@ -140,6 +131,7 @@
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
+          <span style='font-size: small; position: absolute; left: 18px;'> *Max 6 skills</span>
           <button type="submit" class="btn btn-success">Conferma</button>
         </div>
       </div>
@@ -198,7 +190,29 @@
       <div class="modal-body"></div>
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type='button' class='btn btn-danger' data-dismiss='modal' data-toggle="modal" data-target="#edit-passw">Riprova</button>
+        <button type='button' class='btn btn-success' data-dismiss='modal' data-toggle="modal" data-target="#edit-passw">Riprova</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="add-skill-suggestion">
+  <div class="modal-dialog response-modal">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header response-header-success">
+        <h4 class="modal-title">
+          <i class='fas fa-info-circle'></i> Ricordati
+        </h4>
+        <button type="button" class="close" data-dismiss='modal'>&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        Non hai nessuna skill configurata nel tuo profilo! Aggiungi subito una skill per poter trovare task adatti a te.
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type='button' class='btn btn-primary' data-dismiss='modal' data-toggle="modal" data-target="#profile">Aggiungi</button>
       </div>
     </div>
   </div>
@@ -212,7 +226,7 @@
         <h4 class="modal-title">
           <i class='response-icon fas fa-check-circle'></i> Password cambiata con successo
         </h4>
-        <button type="button" class="close" data-dismiss='modal' data-toggle="modal" data-target="#profile">&times;</button>
+        <button type="button" class="close" data-dismiss='modal'>&times;</button>
       </div>
       <!-- Modal body -->
       <div class="modal-body">
@@ -277,6 +291,9 @@
   });
 
   $('#edit-skill').on('click', '.add-skill' ,function(){
+    if($('#edit-skill').find('.skill-div li').length > 5){
+      return;
+    }
     refCategory = $(this).closest("div.row").find('.skill-category-select');
     refCategorySub = $(this).closest("div.row").find('.skill-subcategory-select');
 
@@ -319,5 +336,27 @@
 
   $(".logout").on('click', function() {
     window.localStorage.setItem('activeTab', '');
+  });
+
+  $(document).ready(function(){
+    var user = '<?php echo $_SESSION['user'] ?>';
+    var role = '<?php echo $_SESSION['role'] ?>';
+    var sugg = '<?php echo $_SESSION['suggestion'] ?>';
+
+    if(sugg == 1 || role.localeCompare('WORKER') != 0){
+      return;
+    }
+
+    $.ajax({
+      type: "POST",
+      url: '../../php/query.php',
+      data: {Method:'query_check_skill', user},
+      success: function(e){
+        if(e == 0){
+          $('#add-skill-suggestion').modal('show');
+          var sugg = '<?php $_SESSION['suggestion'] = 1 ?>';
+        }
+      }
+    });
   });
 </script>

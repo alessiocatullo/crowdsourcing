@@ -3,7 +3,6 @@
   include("../../php/session.php");
   if(strcmp($_SESSION['role'], 'REQUESTER') != 0){
     echo "<script> window.localStorage.setItem('activeTab', ''); </script>";
-    echo "<script> alert(window.localStorage.getItem('activeTab')); </script>";
     header('Location: ../login/login.php');
   }
   include_once("../header.php");
